@@ -3322,6 +3322,47 @@ print(f"Predicción: {modelo.predict([[1.8, 3, 2, 25]])}")
     </div>
   </section>
 
+  <!-- Ecuación Normal -->
+  <section data-transition="fade">
+    <h3>Ecuación Normal: Solución Analítica</h3>
+    <div style="font-size: 0.7em;">
+      <p>Existe una <strong style="color: var(--c-blue);">solución directa</strong> (sin iteraciones) para regresión lineal:</p>
+      <div class="math-box" style="margin: 0.4em 0;">
+        <span class="katex-block">\theta = (X^T X)^{-1} X^T y</span>
+      </div>
+      <div class="columns" style="margin-top: 0.4em;">
+        <div class="col-50 fragment fade-up">
+          <pre><code class="language-python" data-trim>
+import numpy as np
+
+# Agregar columna de 1s para bias
+X_b = np.c_[np.ones(m), X]
+
+# Ecuación normal
+theta = np.linalg.inv(X_b.T @ X_b) @ X_b.T @ y
+
+# O más estable numéricamente:
+theta, _, _, _ = np.linalg.lstsq(X_b, y, rcond=None)
+          </code></pre>
+        </div>
+        <div class="col-50 fragment fade-up">
+          <table style="font-size: 0.8em;">
+            <thead>
+              <tr><th></th><th style="color: var(--c-blue);">Ec. Normal</th><th style="color: var(--c-orange);">GD</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Iteraciones</td><td>No</td><td>Sí</td></tr>
+              <tr><td>Learning rate</td><td>No</td><td>Sí</td></tr>
+              <tr><td>Complejidad</td><td><span class="katex-inline">O(n^3)</span></td><td><span class="katex-inline">O(kn^2)</span></td></tr>
+              <tr><td>n grande</td><td style="color: #FC6255;">Lento</td><td style="color: #83C167;">Escala bien</td></tr>
+              <tr><td>Otros modelos</td><td style="color: #FC6255;">Solo lineal</td><td style="color: #83C167;">General</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Widget: multi-regression -->
   <section>
     <h3>Widget: Ajusta los Pesos</h3>
@@ -3694,24 +3735,53 @@ b = b - alpha * db
     </div>
   </section>
 
-  <!-- Código Python scaling -->
+  <!-- Código Python scaling: 3 técnicas -->
   <section>
-    <h3>Feature Scaling en Python</h3>
-    <pre><code class="language-python" data-trim>
-from sklearn.preprocessing import StandardScaler
+    <h3>Escalado en Python: 3 Técnicas</h3>
+    <div style="display: flex; gap: 0.6em; font-size: 0.48em;">
+      <!-- Min-Max -->
+      <div style="flex: 1; background: rgba(88,196,221,0.08); border: 1px solid rgba(88,196,221,0.3); border-radius: 8px; padding: 0.5em;">
+        <p style="color: #58C4DD; font-weight: bold; margin: 0 0 0.3em; font-size: 1.1em;">Min-Max Scaling</p>
+        <p style="color: #a8a290; margin: 0 0 0.3em;">Rango: <strong style="color: #58C4DD;">[0, 1]</strong></p>
+        <pre style="margin: 0;"><code class="language-python" data-trim>
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+X_scaled = scaler.fit_transform(X)
+
+print(scaler.data_min_)   # mínimos
+print(scaler.data_max_)   # máximos
+        </code></pre>
+      </div>
+      <!-- Mean Normalization -->
+      <div style="flex: 1; background: rgba(255,134,47,0.08); border: 1px solid rgba(255,134,47,0.3); border-radius: 8px; padding: 0.5em;">
+        <p style="color: #FF862F; font-weight: bold; margin: 0 0 0.3em; font-size: 1.1em;">Mean Normalization</p>
+        <p style="color: #a8a290; margin: 0 0 0.3em;">Rango: <strong style="color: #FF862F;">≈ [-0.5, 0.5]</strong></p>
+        <pre style="margin: 0;"><code class="language-python" data-trim>
+# Manual (no hay sklearn)
 import numpy as np
 
-X = np.array([[2.104,5,1,45], [1.416,3,2,40], [1.534,3,2,30],
-              [0.852,2,1,36], [1.856,4,2,20], [2.500,4,1,10]])
+mu = X.mean(axis=0)
+rng = X.max(axis=0) - X.min(axis=0)
+X_scaled = (X - mu) / rng
+        </code></pre>
+      </div>
+      <!-- Z-Score -->
+      <div style="flex: 1; background: rgba(131,193,103,0.08); border: 1px solid rgba(131,193,103,0.3); border-radius: 8px; padding: 0.5em;">
+        <p style="color: #83C167; font-weight: bold; margin: 0 0 0.3em; font-size: 1.1em;">Z-Score (StandardScaler)</p>
+        <p style="color: #a8a290; margin: 0 0 0.3em;">Media: <strong style="color: #83C167;">0</strong>, Std: <strong style="color: #83C167;">1</strong></p>
+        <pre style="margin: 0;"><code class="language-python" data-trim>
+from sklearn.preprocessing import StandardScaler
 
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-print("Medias:", scaler.mean_)        # [1.71, 3.50, 1.50, 30.17]
-print("Desv. est.:", scaler.scale_)   # [0.53, 0.96, 0.50, 12.27]
-print("X escalado:\n", X_scaled)      # media≈0, std≈1
-    </code></pre>
-    <p class="fragment fade-up" style="font-size: 0.65em; color: var(--c-yellow); text-align: center; margin-top: 0.3em;">
+print(scaler.mean_)    # medias
+print(scaler.scale_)   # desv. est.
+        </code></pre>
+      </div>
+    </div>
+    <p class="fragment fade-up" style="font-size: 0.65em; color: var(--c-yellow); text-align: center; margin-top: 0.5em;">
       Regla práctica: buscar que cada feature tenga rango <span class="katex-inline">-1 \leq x_j \leq 1</span> (aproximadamente)
     </p>
   </section>
@@ -3751,6 +3821,7 @@ print("X escalado:\n", X_scaled)      # media≈0, std≈1
       <div class="col-45 fragment fade-up" style="text-align: center;">
         <img src="img/Clase_02_05_slide04_img02.png" style="max-height: 200px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
         <p style="font-size: 0.5em; color: var(--c-text-dim); margin-top: 0.3em;"><em>"Feature engineering es el arte más importante en ML"</em></p>
+        <p class="fragment fade-up" style="font-size: 0.5em; color: var(--c-purple); margin-top: 0.3em;">Nota: en <strong>Deep Learning</strong> el feature engineering es menos necesario... pero requiere más datos y procesamiento</p>
       </div>
     </div>
   </section>
@@ -3836,6 +3907,88 @@ pipe.fit(x.reshape(-1,1), y)
     </div>
     <div class="fragment fade-up" style="text-align: center; margin-top: 0.3em;">
       <img src="img/Clase_02_05_slide24_img01.png" style="max-height: 130px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
+    </div>
+  </section>
+
+  <!-- Preprocesamiento ϕ(x) y consistencia -->
+  <section data-transition="fade">
+    <h3>Preprocesamiento: <span class="katex-inline">\varphi(x)</span></h3>
+    <div style="font-size: 0.7em;">
+      <p>Denotamos toda transformación de features como una función <span class="katex-inline">\varphi(x)</span>:</p>
+      <div class="math-box" style="margin: 0.3em 0;">
+        <span class="katex-block">x \xrightarrow{\varphi} \begin{bmatrix} x \\ x^2 \\ x^3 \end{bmatrix} \xrightarrow{\text{scaling}} \xrightarrow{\text{modelo}} \hat{y}</span>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(252,98,85,0.08); border: 1px solid rgba(252,98,85,0.3); border-radius: 8px; padding: 0.5em;">
+        <p style="color: #FC6255; font-weight: bold;">Regla fundamental:</p>
+        <p>Toda transformación aplicada en <strong>entrenamiento</strong> debe aplicarse <strong>igual</strong> en predicción.</p>
+        <p style="color: var(--c-text-dim);">Si escalamos, debemos guardar los "momentos" (media, std) del training set.</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <pre><code class="language-python" data-trim>
+# Entrenamiento: fit + transform
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)  # aprende μ, σ
+pipe.fit(X_train_scaled, y_train)
+
+# Predicción: SOLO transform (usa μ, σ guardados)
+X_new_scaled = scaler.transform(X_new)  # NO fit_transform!
+prediccion = pipe.predict(X_new_scaled)
+        </code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Overfitting vs Underfitting -->
+  <section data-transition="fade">
+    <h3>Overfitting vs Underfitting</h3>
+    <div style="display: flex; gap: 0.8em; justify-content: center; font-size: 0.6em; margin-top: 0.3em;">
+      <!-- Underfitting -->
+      <div style="flex: 1; text-align: center; background: rgba(252,98,85,0.08); border: 1px solid rgba(252,98,85,0.3); border-radius: 8px; padding: 0.5em;">
+        <p style="color: #FC6255; font-weight: bold; font-size: 1.1em;">Underfitting</p>
+        <p style="color: #a8a290;">Modelo demasiado <strong>simple</strong></p>
+        <p style="color: #a8a290;">Ej: grado 1 para datos curvos</p>
+        <p style="color: #FC6255; font-size: 0.9em;">Error alto en training <strong>y</strong> test</p>
+        <p style="color: var(--c-text-dim); font-size: 0.85em;">→ "Alto bias"</p>
+      </div>
+      <!-- Good fit -->
+      <div style="flex: 1; text-align: center; background: rgba(131,193,103,0.08); border: 1px solid rgba(131,193,103,0.3); border-radius: 8px; padding: 0.5em;">
+        <p style="color: #83C167; font-weight: bold; font-size: 1.1em;">Buen Ajuste</p>
+        <p style="color: #a8a290;">Modelo de complejidad <strong>adecuada</strong></p>
+        <p style="color: #a8a290;">Ej: grado 2 para datos cuadráticos</p>
+        <p style="color: #83C167; font-size: 0.9em;">Generaliza bien a datos nuevos</p>
+        <p style="color: var(--c-text-dim); font-size: 0.85em;">→ Balance bias/varianza</p>
+      </div>
+      <!-- Overfitting -->
+      <div style="flex: 1; text-align: center; background: rgba(255,255,0,0.06); border: 1px solid rgba(255,255,0,0.3); border-radius: 8px; padding: 0.5em;">
+        <p style="color: #FFFF00; font-weight: bold; font-size: 1.1em;">Overfitting</p>
+        <p style="color: #a8a290;">Modelo demasiado <strong>complejo</strong></p>
+        <p style="color: #a8a290;">Ej: grado 13 para 10 puntos</p>
+        <p style="color: #FFFF00; font-size: 0.9em;">Error ≈0 en training, alto en test</p>
+        <p style="color: var(--c-text-dim); font-size: 0.85em;">→ "Alta varianza"</p>
+      </div>
+    </div>
+    <div class="fragment fade-up" style="font-size: 0.65em; text-align: center; margin-top: 0.5em;">
+      <p style="color: var(--c-orange);">Analogía: <strong>memorizar</strong> los ejemplos del examen vs <strong>aprender</strong> el concepto</p>
+    </div>
+  </section>
+
+  <!-- Navaja de Occam + preview -->
+  <section data-transition="fade">
+    <h3>Navaja de Occam y Selección de Modelos</h3>
+    <div style="font-size: 0.7em;">
+      <div class="math-box" style="background: rgba(131,193,103,0.06); border-color: rgba(131,193,103,0.3);">
+        <p style="color: #83C167; font-weight: bold; margin-bottom: 0.3em;">Navaja de Occam</p>
+        <p>Ante dos modelos que expliquen bien los datos, <strong style="color: var(--c-yellow);">elegir el más simple</strong>.</p>
+        <p style="color: var(--c-text-dim); font-size: 0.9em;">En regresión polinomial: usar el <strong>menor grado</strong> que ajuste bien.</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p><strong style="color: var(--c-blue);">Error de Bayes</strong>: aún el modelo perfecto tiene error por ruido en los datos. Es el error <em>irreducible</em>.</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p style="color: var(--c-orange);">¿Cómo elegimos el mejor modelo en la práctica?</p>
+        <p style="font-size: 0.9em;">→ <strong>Validación cruzada</strong>: dividir los datos en train/test, entrenar con uno y evaluar con el otro.</p>
+        <p style="font-size: 0.85em; color: var(--c-text-dim);">Lo veremos a fondo en próximas clases.</p>
+      </div>
     </div>
   </section>
 
