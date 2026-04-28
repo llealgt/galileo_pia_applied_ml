@@ -319,6 +319,9 @@
 }
 
 .columns .col-60 { flex: 0 0 60%; }
+.columns .col-55 { flex: 0 0 55%; }
+.columns .col-50 { flex: 0 0 50%; }
+.columns .col-45 { flex: 0 0 45%; }
 .columns .col-40 { flex: 0 0 40%; }
 
 /* ---- Application Grid ---- */
@@ -490,6 +493,62 @@
 }
 .reveal .slides section::-webkit-scrollbar-thumb:hover {
   background: rgba(168, 162, 144, 0.5);
+}
+
+/* ---- Home Button ---- */
+.nav-home-btn {
+  position: fixed;
+  top: 12px;
+  left: 16px;
+  z-index: 100;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  padding: 6px 12px;
+  border: 1px solid rgba(88,196,221,0.4);
+  background: rgba(27,27,47,0.85);
+  color: var(--c-blue);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0.5;
+}
+.nav-home-btn:hover {
+  opacity: 1;
+  background: rgba(88,196,221,0.15);
+  box-shadow: 0 0 10px rgba(88,196,221,0.3);
+}
+
+/* ---- Table of Contents ---- */
+.toc-grid {
+  display: flex;
+  gap: 1.5em;
+  justify-content: center;
+}
+.toc-column {
+  flex: 1;
+  max-width: 400px;
+}
+.toc-item {
+  display: block;
+  cursor: pointer;
+  padding: 0.35em 0.6em;
+  margin: 0.15em 0;
+  border-left: 3px solid transparent;
+  border-radius: 0 6px 6px 0;
+  transition: all 0.2s;
+  font-size: 0.6em;
+  color: var(--c-text);
+  text-decoration: none;
+}
+.toc-item:hover {
+  background: rgba(88,196,221,0.1);
+  border-left-color: var(--c-blue);
+  color: var(--c-blue);
+}
+.toc-item .toc-num {
+  color: var(--c-blue);
+  margin-right: 0.5em;
+  font-weight: 700;
 }
 
 /* ---- Responsive ---- */

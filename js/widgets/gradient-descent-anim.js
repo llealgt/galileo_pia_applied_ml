@@ -19,22 +19,12 @@ function initGradientDescentWidget(data) {
 
   const xData = data.x, yData = data.y;
   const m = xData.length;
-  const alpha = 0.1;
 
-  // --- Precompute GD trajectory ---
-  const maxIters = 200;
-  const trajectory = [];
+  // --- Mean-center x for well-conditioned GD ---
+  const xMean = xData.reduce((a, b) => a + b, 0) / m;
+  const xC = xData.map(x => x - xMean);
 
-  function computeGradient(w, b) {
-    let dw = 0, db = 0;
-    for (let i = 0; i < m; i++) {
-      const err = w * xData[i] + b - yData[i];
-      dw += err * xData[i];
-      db += err;
-    }
-    return { dw: dw / m, db: db / m };
-  }
-
+  // Cost function in ORIGINAL (w, b) space (for contour + display)
   function computeCostLocal(w, b) {
     let cost = 0;
     for (let i = 0; i < m; i++) {
@@ -44,14 +34,30 @@ function initGradientDescentWidget(data) {
     return cost / (2 * m);
   }
 
-  // Run GD
-  let w = 0, b = 0;
+  // --- Precompute GD trajectory in centered space, store in original space ---
+  const alpha = 0.5;
+  const maxIters = 100;
+  const trajectory = [];
+
+  let wGD = 0, bcGD = 0; // w and b_centered
   for (let iter = 0; iter <= maxIters; iter++) {
-    const cost = computeCostLocal(w, b);
-    trajectory.push({ w, b, cost, iter });
-    const grad = computeGradient(w, b);
-    w = w - alpha * grad.dw;
-    b = b - alpha * grad.db;
+    // Convert to original space for display: b = b_c - w * xMean
+    const bOrig = bcGD - wGD * xMean;
+    const cost = computeCostLocal(wGD, bOrig);
+    trajectory.push({ w: wGD, b: bOrig, cost, iter });
+
+    // Gradient in centered space
+    let dw = 0, db = 0;
+    for (let i = 0; i < m; i++) {
+      const err = wGD * xC[i] + bcGD - yData[i];
+      dw += err * xC[i];
+      db += err;
+    }
+    dw /= m;
+    db /= m;
+
+    wGD -= alpha * dw;
+    bcGD -= alpha * db;
   }
 
   // --- Precompute contour image ---
@@ -73,7 +79,6 @@ function initGradientDescentWidget(data) {
   // Color map function
   function costToColor(cost) {
     const t = Math.min(1, Math.sqrt(cost / maxC));
-    // Dark blue -> teal -> green -> orange -> red
     let r, g, bl;
     if (t < 0.25) {
       const s = t / 0.25;
@@ -114,6 +119,9 @@ function initGradientDescentWidget(data) {
   let isPlaying = false;
   let animId = null;
   let frameCounter = 0;
+
+  // Analytical optimum
+  const wOpt = 209.4, bOpt = 2.4;
 
   function drawContour() {
     contourCtx.putImageData(contourImageData, 0, 0);
@@ -172,12 +180,12 @@ function initGradientDescentWidget(data) {
     // Minimum marker
     contourCtx.fillStyle = '#83C167';
     contourCtx.beginPath();
-    contourCtx.arc(tw(200), tb(100), 5, 0, Math.PI * 2);
+    contourCtx.arc(tw(wOpt), tb(bOpt), 5, 0, Math.PI * 2);
     contourCtx.fill();
     contourCtx.fillStyle = 'rgba(131,193,103,0.5)';
     contourCtx.font = '9px Fira Code, monospace';
     contourCtx.textAlign = 'left';
-    contourCtx.fillText('min', tw(200) + 8, tb(100) + 4);
+    contourCtx.fillText('min', tw(wOpt) + 8, tb(bOpt) + 4);
   }
 
   function drawRegressionLine() {
@@ -186,7 +194,7 @@ function initGradientDescentWidget(data) {
     lineCtx.fillRect(0, 0, W, H);
 
     const ox = 40, oy = H - 30, pw = W - 55, ph = H - 55;
-    const xMin = 0, xMax = 3, yMin = -100, yMax = 700;
+    const xMin = 0, xMax = 3.5, yMin = -100, yMax = 800;
     function tx(v) { return ox + (v - xMin) / (xMax - xMin) * pw; }
     function ty(v) { return oy - (v - yMin) / (yMax - yMin) * ph; }
 
@@ -245,7 +253,7 @@ function initGradientDescentWidget(data) {
     const pt = trajectory[Math.min(currentStep, trajectory.length - 1)];
     iterVal.textContent = currentStep;
     costVal.textContent = pt.cost.toFixed(0);
-    costVal.style.color = pt.cost < 10 ? '#83C167' : '#FF862F';
+    costVal.style.color = pt.cost < 2000 ? '#83C167' : '#FF862F';
   }
 
   function render() {

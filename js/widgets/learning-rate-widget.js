@@ -15,9 +15,14 @@ function initLearningRateWidget(data) {
 
   const xData = data.x, yData = data.y;
   const m = xData.length;
-  const alphas = [0.001, 0.1, 0.8];
+  const alphas = [0.01, 0.5, 2.1];
   const maxIters = 150;
 
+  // --- Mean-center x for well-conditioned GD ---
+  const xMean = xData.reduce((a, b) => a + b, 0) / m;
+  const xC = xData.map(x => x - xMean);
+
+  // Cost in ORIGINAL (w, b) space
   function computeCostLocal(w, b) {
     let cost = 0;
     for (let i = 0; i < m; i++) {
@@ -27,30 +32,33 @@ function initLearningRateWidget(data) {
     return cost / (2 * m);
   }
 
-  function computeGradient(w, b) {
-    let dw = 0, db = 0;
-    for (let i = 0; i < m; i++) {
-      const err = w * xData[i] + b - yData[i];
-      dw += err * xData[i];
-      db += err;
-    }
-    return { dw: dw / m, db: db / m };
-  }
-
-  // Precompute trajectories for each alpha
+  // Precompute trajectories using centered GD
   const trajectories = alphas.map(alpha => {
     const traj = [];
-    let w = 0, b = 0;
+    let wGD = 0, bcGD = 0;
     for (let iter = 0; iter <= maxIters; iter++) {
-      const cost = computeCostLocal(w, b);
-      traj.push({ w, b, cost: Math.min(cost, 200000), iter });
-      if (cost > 1e10) break; // Diverged
-      const grad = computeGradient(w, b);
-      w = w - alpha * grad.dw;
-      b = b - alpha * grad.db;
+      const bOrig = bcGD - wGD * xMean;
+      const cost = computeCostLocal(wGD, bOrig);
+      traj.push({ w: wGD, b: bOrig, cost: Math.min(cost, 200000), iter });
+
+      // Gradient in centered space
+      let dw = 0, db = 0;
+      for (let i = 0; i < m; i++) {
+        const err = wGD * xC[i] + bcGD - yData[i];
+        dw += err * xC[i];
+        db += err;
+      }
+      dw /= m;
+      db /= m;
+
+      wGD -= alpha * dw;
+      bcGD -= alpha * db;
     }
     return traj;
   });
+
+  // Analytical optimum
+  const wOpt = 209.4, bOpt = 2.4;
 
   let currentStep = 0;
   let isPlaying = false;
@@ -73,7 +81,7 @@ function initLearningRateWidget(data) {
     const oy = topH - 10;
 
     // Find max cost for scaling
-    const maxCost = Math.min(100000, Math.max(...traj.slice(0, Math.min(step + 1, traj.length)).map(p => p.cost)));
+    const maxCost = Math.min(200000, Math.max(...traj.slice(0, Math.min(step + 1, traj.length)).map(p => p.cost)));
 
     // Axes
     ctx.strokeStyle = '#a8a290'; ctx.lineWidth = 1;
@@ -104,8 +112,8 @@ function initLearningRateWidget(data) {
     const bpw = W - 20, bph = botH - 5;
     const bOx = 10;
 
-    // Mini contour (simplified)
-    const wMin = -100, wMax = 450, bMin = -150, bMax = 350;
+    // Mini contour
+    const wMin = -50, wMax = 400, bMin = -150, bMax = 350;
     const gridSize = 4;
     for (let py = 0; py < bph; py += gridSize) {
       for (let px = 0; px < bpw; px += gridSize) {
@@ -128,12 +136,16 @@ function initLearningRateWidget(data) {
     if (step > 0) {
       ctx.strokeStyle = '#FFFF00'; ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.moveTo(tww(traj[0].w), tbb(traj[0].b));
+      ctx.moveTo(
+        Math.max(bOx, Math.min(bOx + bpw, tww(traj[0].w))),
+        Math.max(box, Math.min(box + bph, tbb(traj[0].b)))
+      );
       for (let i = 1; i <= step && i < traj.length; i++) {
         const tw = tww(traj[i].w), tb = tbb(traj[i].b);
-        // Clamp to canvas
-        if (tw < bOx - 20 || tw > bOx + bpw + 20 || tb < box - 20 || tb > box + bph + 20) break;
-        ctx.lineTo(tw, tb);
+        // Clamp to canvas area for drawing
+        const cx = Math.max(bOx, Math.min(bOx + bpw, tw));
+        const cy = Math.max(box, Math.min(box + bph, tb));
+        ctx.lineTo(cx, cy);
       }
       ctx.stroke();
     }
@@ -148,15 +160,15 @@ function initLearningRateWidget(data) {
 
     // Minimum marker
     ctx.fillStyle = '#83C167';
-    ctx.beginPath(); ctx.arc(tww(200), tbb(100), 3, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(tww(wOpt), tbb(bOpt), 3, 0, Math.PI * 2); ctx.fill();
 
     // Alpha label
     ctx.fillStyle = '#ece6d0'; ctx.font = 'bold 12px Fira Code, monospace'; ctx.textAlign = 'center';
-    ctx.fillText(`α = ${alphas[canvasIdx]}`, W / 2, 15);
+    ctx.fillText(`\u03B1 = ${alphas[canvasIdx]}`, W / 2, 15);
 
     // Cost value
     ctx.font = '9px Fira Code, monospace';
-    ctx.fillStyle = pt.cost < 10 ? '#83C167' : (pt.cost > 50000 ? '#FC6255' : '#FF862F');
+    ctx.fillStyle = pt.cost < 2000 ? '#83C167' : (pt.cost > 50000 ? '#FC6255' : '#FF862F');
     ctx.fillText(`J=${pt.cost.toFixed(0)}`, W / 2, 28);
   }
 

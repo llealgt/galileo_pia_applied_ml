@@ -21,6 +21,8 @@
 </head>
 <body>
 
+<button class="nav-home-btn" id="nav-home-btn" title="Ir al inicio">&#8962;</button>
+
 <div class="reveal">
 <div class="slides">
 
@@ -39,6 +41,39 @@
     <aside class="notes">
       Bienvenida al curso. Presentarse, mencionar estructura del curso.
     </aside>
+  </section>
+
+  <!-- Índice Navegable -->
+  <section data-transition="fade">
+    <h3>Índice del Curso</h3>
+    <div class="toc-grid">
+      <div class="toc-column">
+        <h4 style="color: var(--c-blue); font-size: 0.75em; margin-bottom: 0.3em;">Semana 1</h4>
+        <a class="toc-item" onclick="Reveal.slide(0, 0)"><span class="toc-num">0</span>Portada y Bienvenida</a>
+        <a class="toc-item" onclick="Reveal.slide(1, 0)"><span class="toc-num">1</span>Aplicaciones de ML</a>
+        <a class="toc-item" onclick="Reveal.slide(2, 0)"><span class="toc-num">2</span>Motivación</a>
+        <a class="toc-item" onclick="Reveal.slide(3, 0)"><span class="toc-num">3</span>¿Qué es Machine Learning?</a>
+        <a class="toc-item" onclick="Reveal.slide(4, 0)"><span class="toc-num">4</span>Aprendizaje Supervisado</a>
+        <a class="toc-item" onclick="Reveal.slide(5, 0)"><span class="toc-num">5</span>Aprendizaje No Supervisado</a>
+        <a class="toc-item" onclick="Reveal.slide(6, 0)"><span class="toc-num">6</span>Regresión Lineal (1 Variable)</a>
+        <a class="toc-item" onclick="Reveal.slide(7, 0)"><span class="toc-num">7</span>Representación del Modelo</a>
+        <a class="toc-item" onclick="Reveal.slide(8, 0)"><span class="toc-num">8</span>Función de Costo</a>
+        <a class="toc-item" onclick="Reveal.slide(9, 0)"><span class="toc-num">9</span>Repaso: Cálculo Multivariable</a>
+        <a class="toc-item" onclick="Reveal.slide(10, 0)"><span class="toc-num">10</span>Gradient Descent</a>
+        <a class="toc-item" onclick="Reveal.slide(11, 0)"><span class="toc-num">11</span>Resumen Semana 1</a>
+      </div>
+      <div class="toc-column">
+        <h4 style="color: var(--c-orange); font-size: 0.75em; margin-bottom: 0.3em;">Semana 2</h4>
+        <a class="toc-item" onclick="Reveal.slide(12, 0)"><span class="toc-num">12</span>Portada Semana 2</a>
+        <a class="toc-item" onclick="Reveal.slide(13, 0)"><span class="toc-num">13</span>Regresión Múltiple</a>
+        <a class="toc-item" onclick="Reveal.slide(14, 0)"><span class="toc-num">14</span>Vectorización</a>
+        <a class="toc-item" onclick="Reveal.slide(15, 0)"><span class="toc-num">15</span>GD Multivariable</a>
+        <a class="toc-item" onclick="Reveal.slide(16, 0)"><span class="toc-num">16</span>Feature Scaling</a>
+        <a class="toc-item" onclick="Reveal.slide(17, 0)"><span class="toc-num">17</span>Feature Engineering + Polinomial</a>
+        <a class="toc-item" onclick="Reveal.slide(18, 0)"><span class="toc-num">18</span>Resumen Semana 2</a>
+      </div>
+    </div>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin-top: 0.5em; text-align: center;">Click en cualquier sección para navegar directamente</p>
   </section>
 
   <section data-transition="fade">
@@ -2389,10 +2424,18 @@ print(f"${precio[0]:.0f}k")            # $340k
           </div>
         </div>
       </div>
-      <div class="fragment fade-up" style="text-align: center; margin-top: 0.2em;">
-        <img src="img/Clase_02_GradientDescent_slide18_img01.png" alt="Gradiente como dirección de máximo incremento" style="max-width: 440px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.4); background: rgba(255,255,255,0.95); padding: 4px;">
-      </div>
     </div>
+  </section>
+
+  <!-- Imagen: Gradiente como dirección de máximo incremento -->
+  <section data-transition="fade">
+    <h3>Gradiente = Dirección de Máximo Incremento</h3>
+    <div style="text-align: center;">
+      <img src="img/Clase_02_GradientDescent_slide18_img01.png" alt="Gradiente como dirección de máximo incremento" style="max-width: 780px; max-height: 480px; border-radius: 10px; border: 1px solid rgba(88,196,221,0.3); box-shadow: 0 4px 16px rgba(0,0,0,0.5); background: rgba(255,255,255,0.95); padding: 8px;">
+    </div>
+    <p style="font-size: 0.6em; color: var(--c-text-dim); text-align: center; margin-top: 0.5em;">
+      El vector <span class="katex-inline">\nabla f(a,b)</span> apunta en la dirección donde <span class="katex-inline">f</span> crece más rápido desde el punto <span class="katex-inline">(a,b)</span>
+    </p>
   </section>
 
   <!-- Derivada direccional -->
@@ -2511,10 +2554,17 @@ directional_derivative = np.dot(g, u_unit)
         </div>
       </div>
     </div>
-    <div class="fragment fade-up" style="text-align: center; margin-top: 0.4em;">
-      <img src="img/Clase_02_GradientDescent_slide20_img02.png" alt="Función objetivo con curvas de nivel" style="max-width: 300px; border-radius: 10px; border: 1px solid rgba(88,196,221,0.3); box-shadow: 0 2px 12px rgba(0,0,0,0.4);">
-      <p style="font-size: 0.5em; color: var(--c-text-dim); margin-top: 0.2em;">Superficie 3D con curvas de nivel: el gradiente es perpendicular a cada curva</p>
+  </section>
+
+  <!-- Imagen: Superficie 3D con curvas de nivel -->
+  <section data-transition="fade">
+    <h3>Superficie 3D con Curvas de Nivel</h3>
+    <div style="text-align: center;">
+      <img src="img/Clase_02_GradientDescent_slide20_img02.png" alt="Función objetivo con curvas de nivel" style="max-width: 780px; max-height: 480px; border-radius: 10px; border: 1px solid rgba(88,196,221,0.3); box-shadow: 0 4px 16px rgba(0,0,0,0.5);">
     </div>
+    <p style="font-size: 0.6em; color: var(--c-text-dim); text-align: center; margin-top: 0.5em;">
+      El gradiente <span style="color: var(--c-orange);">∇f</span> es perpendicular a cada curva de nivel y apunta hacia el máximo
+    </p>
   </section>
 
   <!-- 3D Surface + Gradient Vector Field (Plotly.js interactive) -->
@@ -2793,20 +2843,41 @@ b = b - alpha * dj_db
       <div style="display: flex; gap: 0.5em; justify-content: center;">
         <div style="text-align: center;">
           <canvas id="lr-comp-1" width="210" height="280"></canvas>
-          <div style="font-size: 0.55em; color: var(--c-text-dim);">&alpha; = 0.001<br><span style="color: var(--c-orange);">Muy lento</span></div>
+          <div style="font-size: 0.55em; color: var(--c-text-dim);">&alpha; = 0.01<br><span style="color: var(--c-orange);">Muy lento</span></div>
         </div>
         <div style="text-align: center;">
           <canvas id="lr-comp-2" width="210" height="280"></canvas>
-          <div style="font-size: 0.55em; color: var(--c-text-dim);">&alpha; = 0.1<br><span style="color: var(--c-green);">Adecuado</span></div>
+          <div style="font-size: 0.55em; color: var(--c-text-dim);">&alpha; = 0.5<br><span style="color: var(--c-green);">Adecuado</span></div>
         </div>
         <div style="text-align: center;">
           <canvas id="lr-comp-3" width="210" height="280"></canvas>
-          <div style="font-size: 0.55em; color: var(--c-text-dim);">&alpha; = 0.8<br><span style="color: var(--c-red);">Diverge!</span></div>
+          <div style="font-size: 0.55em; color: var(--c-text-dim);">&alpha; = 2.1<br><span style="color: var(--c-red);">Diverge!</span></div>
         </div>
       </div>
       <div style="text-align: center; margin-top: 0.5em;">
         <button class="widget-btn" id="lr-comp-play">&#9654; Animar</button>
         <button class="widget-btn" id="lr-comp-reset">&#8634; Reiniciar</button>
+      </div>
+    </div>
+  </section>
+
+  <section data-transition="fade">
+    <h2>Experimenta con &alpha;</h2>
+    <p style="font-size: 0.6em; color: var(--c-text-dim); margin-bottom: 0.3em;">
+      Ajusta el learning rate y observa cómo se comporta la "pelota" sobre la curva de costo
+    </p>
+    <div id="widget-lr-explorer" class="widget-container">
+      <canvas id="lr-explorer-canvas" width="650" height="340"></canvas>
+      <div style="margin-top: 0.4em; display: flex; align-items: center; gap: 0.8em; justify-content: center;">
+        <div class="widget-label" style="display: flex; align-items: center; gap: 0.3em;">
+          <span style="color: var(--c-yellow); font-weight: bold;">&alpha; =</span>
+          <input type="range" class="widget-slider" id="lr-explorer-alpha"
+                 min="0.01" max="1.5" step="0.01" value="0.30" style="width: 160px;">
+          <span id="lr-explorer-alpha-val" style="color: var(--c-yellow); font-family: 'Fira Code', monospace; font-size: 0.9em; min-width: 2.5em;">0.30</span>
+        </div>
+        <button class="widget-btn" id="lr-explorer-play">&#9654; Iniciar</button>
+        <button class="widget-btn" id="lr-explorer-step">&#9197; Paso</button>
+        <button class="widget-btn" id="lr-explorer-reset">&#8634; Reiniciar</button>
       </div>
     </div>
   </section>
@@ -2830,6 +2901,169 @@ b = b - alpha * dj_db
       </p>
     </div>
   </section>
+
+  <section data-transition="fade">
+    <h2>Variantes de Gradient Descent</h2>
+    <p style="font-size: 0.7em; color: var(--c-text-dim); margin-bottom: 0.5em;">
+      Lo que vimos es <strong style="color: var(--c-blue);">Batch Gradient Descent</strong>:
+      usa <em>todo</em> el training set en cada iteración.
+    </p>
+    <p class="fragment fade-up" style="font-size: 0.7em;">
+      Pero... <span style="color: var(--c-orange);">¿qué pasa si el training set es demasiado grande?</span>
+    </p>
+    <div class="fragment fade-up" style="display: flex; gap: 0.8em; justify-content: center; margin-top: 0.5em;">
+      <div style="flex: 1; padding: 0.5em; border: 1px solid var(--c-blue); border-radius: 8px; background: rgba(88,196,221,0.08);">
+        <p style="font-size: 0.65em; color: var(--c-blue); margin: 0;"><strong>Batch GD</strong></p>
+        <p style="font-size: 0.55em; color: var(--c-text-dim); margin: 0.3em 0 0;">Usa <strong>todo</strong> el dataset en cada paso</p>
+        <p style="font-size: 0.5em; color: var(--c-text-dim); margin: 0.2em 0 0;">Convergencia suave, pero lento con datos grandes</p>
+      </div>
+      <div style="flex: 1; padding: 0.5em; border: 1px solid var(--c-green); border-radius: 8px; background: rgba(131,193,103,0.08);">
+        <p style="font-size: 0.65em; color: var(--c-green); margin: 0;"><strong>Mini-Batch GD</strong></p>
+        <p style="font-size: 0.55em; color: var(--c-text-dim); margin: 0.3em 0 0;">Usa un <strong>subconjunto</strong> (e.g. 32, 64 ejemplos)</p>
+        <p style="font-size: 0.5em; color: var(--c-text-dim); margin: 0.2em 0 0;">Balance entre velocidad y estabilidad</p>
+      </div>
+      <div style="flex: 1; padding: 0.5em; border: 1px solid var(--c-red); border-radius: 8px; background: rgba(252,98,85,0.08);">
+        <p style="font-size: 0.65em; color: var(--c-red); margin: 0;"><strong>SGD (Estocástico)</strong></p>
+        <p style="font-size: 0.55em; color: var(--c-text-dim); margin: 0.3em 0 0;">Usa <strong>1 solo</strong> ejemplo por paso</p>
+        <p style="font-size: 0.5em; color: var(--c-text-dim); margin: 0.2em 0 0;">Muy rápido, pero convergencia ruidosa</p>
+      </div>
+    </div>
+    <div class="fragment fade-up" style="margin-top: 0.5em; text-align: center;">
+      <img src="img/Clase_02_03_GradientDescent_Regresion_slide22_img02.png"
+           alt="Trayectorias de Batch, Mini-Batch y SGD en contour plot"
+           style="max-width: 620px; max-height: 250px; border-radius: 8px;">
+    </div>
+  </section>
+
+  <section data-transition="fade">
+    <h2>Batch vs Mini-Batch vs SGD</h2>
+    <div style="display: flex; gap: 1em; align-items: flex-start;">
+      <div style="flex: 1; text-align: center;">
+        <p style="font-size: 0.6em; color: var(--c-text-dim); margin-bottom: 0.3em;">Trayectorias en el espacio de parámetros</p>
+        <img src="img/Clase_02_03_GradientDescent_Regresion_slide22_img01.png"
+             alt="Comparación de trayectorias GD"
+             style="max-width: 360px; border-radius: 6px;">
+      </div>
+      <div style="flex: 1; text-align: center;">
+        <p style="font-size: 0.6em; color: var(--c-text-dim); margin-bottom: 0.3em;">Curvas de costo</p>
+        <img src="img/Clase_02_03_GradientDescent_Regresion_slide22_img03.png"
+             alt="Curvas de costo de las variantes"
+             style="max-width: 360px; border-radius: 6px;">
+      </div>
+    </div>
+    <table class="fragment fade-up" style="font-size: 0.5em; margin: 0.6em auto 0; border-collapse: collapse; width: 90%;">
+      <thead>
+        <tr style="border-bottom: 2px solid var(--c-blue);">
+          <th style="padding: 0.3em 0.5em;"></th>
+          <th style="padding: 0.3em 0.5em; color: var(--c-blue);">Batch GD</th>
+          <th style="padding: 0.3em 0.5em; color: var(--c-red);">SGD</th>
+          <th style="padding: 0.3em 0.5em; color: var(--c-green);">Mini-Batch GD</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+          <td style="padding: 0.3em 0.5em; color: var(--c-text-dim);">Datos por paso</td>
+          <td style="padding: 0.3em 0.5em;">Todo el dataset</td>
+          <td style="padding: 0.3em 0.5em;">1 ejemplo</td>
+          <td style="padding: 0.3em 0.5em;">Subconjunto (32-256)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+          <td style="padding: 0.3em 0.5em; color: var(--c-text-dim);">Convergencia</td>
+          <td style="padding: 0.3em 0.5em;">Suave</td>
+          <td style="padding: 0.3em 0.5em;">Muy ruidosa</td>
+          <td style="padding: 0.3em 0.5em;">Moderada</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.3em 0.5em; color: var(--c-text-dim);">En la práctica</td>
+          <td style="padding: 0.3em 0.5em;">Datasets pequeños</td>
+          <td style="padding: 0.3em 0.5em;">Datos en streaming</td>
+          <td style="padding: 0.3em 0.5em; color: var(--c-yellow);"><strong>El más común</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section data-transition="fade">
+    <h2>Regresión Lineal como Neurona</h2>
+    <div style="display: flex; gap: 1em; align-items: center;">
+      <div style="flex: 1.2; text-align: center;">
+        <svg viewBox="0 0 480 260" style="width: 100%; max-width: 480px;" xmlns="http://www.w3.org/2000/svg">
+          <!-- Input node -->
+          <circle cx="60" cy="130" r="30" fill="none" stroke="#58C4DD" stroke-width="2"/>
+          <text x="60" y="136" text-anchor="middle" fill="#58C4DD" font-size="20" font-family="Fira Code, monospace" font-weight="bold">x</text>
+          <!-- Neuron node -->
+          <circle cx="260" cy="130" r="40" fill="rgba(131,193,103,0.15)" stroke="#83C167" stroke-width="2.5"/>
+          <text x="260" y="124" text-anchor="middle" fill="#83C167" font-size="14" font-family="Fira Code, monospace">Σ</text>
+          <text x="260" y="144" text-anchor="middle" fill="#a8a290" font-size="10" font-family="Fira Code, monospace">f(z)=z</text>
+          <!-- Weight arrow -->
+          <line x1="92" y1="130" x2="218" y2="130" stroke="#FF862F" stroke-width="2" marker-end="url(#arrowOrange)"/>
+          <text x="155" y="118" text-anchor="middle" fill="#FF862F" font-size="16" font-family="Fira Code, monospace" font-weight="bold">w</text>
+          <!-- Bias arrow -->
+          <circle cx="260" cy="30" r="22" fill="none" stroke="#FFFF00" stroke-width="1.5"/>
+          <text x="260" y="36" text-anchor="middle" fill="#FFFF00" font-size="16" font-family="Fira Code, monospace" font-weight="bold">b</text>
+          <line x1="260" y1="52" x2="260" y2="88" stroke="#FFFF00" stroke-width="1.5" marker-end="url(#arrowYellow)"/>
+          <!-- Output arrow -->
+          <line x1="302" y1="130" x2="390" y2="130" stroke="#ece6d0" stroke-width="2" marker-end="url(#arrowWhite)"/>
+          <!-- Output label -->
+          <text x="430" y="126" text-anchor="middle" fill="#ece6d0" font-size="14" font-family="Fira Code, monospace">ŷ =</text>
+          <text x="430" y="146" text-anchor="middle" fill="#ece6d0" font-size="14" font-family="Fira Code, monospace">wx + b</text>
+          <!-- Arrow markers -->
+          <defs>
+            <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#FF862F"/>
+            </marker>
+            <marker id="arrowYellow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#FFFF00"/>
+            </marker>
+            <marker id="arrowWhite" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#ece6d0"/>
+            </marker>
+          </defs>
+          <!-- Labels -->
+          <text x="60" y="180" text-anchor="middle" fill="#a8a290" font-size="10" font-family="Fira Code, monospace">entrada</text>
+          <text x="260" y="190" text-anchor="middle" fill="#a8a290" font-size="10" font-family="Fira Code, monospace">"neurona"</text>
+          <text x="430" y="170" text-anchor="middle" fill="#a8a290" font-size="10" font-family="Fira Code, monospace">salida</text>
+          <!-- Equation box -->
+          <rect x="80" y="220" width="320" height="30" rx="6" fill="rgba(255,255,0,0.08)" stroke="rgba(255,255,0,0.3)" stroke-width="1"/>
+          <text x="240" y="240" text-anchor="middle" fill="#FFFF00" font-size="12" font-family="Fira Code, monospace">Regresión lineal = 1 neurona (activación identidad)</text>
+        </svg>
+      </div>
+      <div style="flex: 1; font-size: 0.6em;">
+        <ul style="line-height: 1.8;">
+          <li class="fragment fade-up">Una <strong style="color: var(--c-green);">red neuronal</strong> es composición de funciones</li>
+          <li class="fragment fade-up">Cada función se llama <strong style="color: var(--c-yellow);">"neurona"</strong>: una activación aplicada a un modelo lineal de las entradas</li>
+          <li class="fragment fade-up">La regresión lineal es una neurona con <strong style="color: var(--c-orange);">activación identidad</strong> <span class="katex-inline">f(z) = z</span></li>
+          <li class="fragment fade-up" style="color: var(--c-blue);">Todo lo aprendido con GD <strong>aplica directamente</strong> a redes neuronales</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section data-transition="fade">
+    <h2>Gradient Descent: Método General</h2>
+    <p style="font-size: 0.8em; color: var(--c-text-dim);">
+      GD es un <strong style="color: var(--c-yellow);">método general de optimización</strong> de funciones.
+    </p>
+    <p class="fragment fade-up" style="font-size: 0.75em;">
+      Con lo que ya aprendimos, tenemos las bases para desarrollar
+      <strong style="color: var(--c-green);">nuevos algoritmos de ML</strong>,
+      no solamente regresión lineal de 1 variable.
+    </p>
+    <div class="fragment fade-up" style="margin-top: 1em;">
+      <div class="roadmap" style="justify-content: center;">
+        <div class="step" style="border-color: var(--c-green); font-size: 0.8em;">Regresión<br>Múltiple<br><span style="font-size:0.7em; color: var(--c-text-dim);">Semana 2</span></div>
+        <div class="arrow">&rarr;</div>
+        <div class="step" style="border-color: var(--c-blue); font-size: 0.8em;">Regresión<br>Logística<br><span style="font-size:0.7em; color: var(--c-text-dim);">Clasificación</span></div>
+        <div class="arrow">&rarr;</div>
+        <div class="step" style="border-color: var(--c-purple); font-size: 0.8em;">Redes<br>Neuronales<br><span style="font-size:0.7em; color: var(--c-text-dim);">Deep Learning</span></div>
+      </div>
+    </div>
+    <p class="fragment fade-up" style="margin-top: 1em; font-size: 0.7em; color: var(--c-orange);">
+      El mismo algoritmo de GD (con variaciones) se usa para entrenar
+      <strong>todos</strong> estos modelos.
+    </p>
+  </section>
+
 </section>
 
 <!-- ============================================================
@@ -2933,6 +3167,745 @@ b = b - alpha * dj_db
   </section>
 </section>
 
+<!-- ============================================================
+     SEMANA 2: REGRESIÓN LINEAL MULTIVARIABLE
+     ============================================================ -->
+
+<!-- ========== Sección 11: Portada Semana 2 + Recapitulación ========== -->
+<section>
+  <section class="section-title">
+    <h2>Semana 2</h2>
+    <h3 style="color: var(--c-orange); font-size: 1.1em;">Regresión Lineal Multivariable</h3>
+    <p style="font-size: 0.6em; color: var(--c-text-dim); margin-top: 1em;">
+      Múltiples features &bull; Vectorización &bull; Feature Scaling &bull; Regresión Polinomial
+    </p>
+  </section>
+
+  <!-- Recapitulación Semana 1 -->
+  <section>
+    <h3>Recapitulación: Semana 1</h3>
+    <div class="roadmap" style="font-size: 0.85em;">
+      <div class="step">Modelo<br><span class="katex-inline">f_{w,b}(x) = wx + b</span></div>
+      <div class="arrow">→</div>
+      <div class="step">Costo<br><span class="katex-inline">J(w,b) = \frac{1}{2m}\sum(f-y)^2</span></div>
+      <div class="arrow">→</div>
+      <div class="step">Gradient Descent<br><span class="katex-inline">w := w - \alpha \frac{\partial J}{\partial w}</span></div>
+    </div>
+    <div class="fragment fade-up" style="margin-top: 0.8em; text-align: center;">
+      <p style="color: var(--c-yellow); font-size: 0.85em;">Todo con <strong>una sola feature</strong> (tamaño → precio)</p>
+      <p style="font-size: 0.8em; color: var(--c-text-dim);">¿Qué pasa cuando tenemos <strong style="color: var(--c-orange);">más información</strong>?</p>
+    </div>
+  </section>
+
+  <!-- Motivación: múltiples features -->
+  <section>
+    <h3>¿Y si tenemos más features?</h3>
+    <table style="font-size: 0.65em; width: 90%; margin: 0.3em auto;">
+      <thead>
+        <tr>
+          <th>Tamaño (1000 sqft)</th>
+          <th># Habitaciones</th>
+          <th># Pisos</th>
+          <th>Edad (años)</th>
+          <th style="color: var(--c-green);">Precio ($1000s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>2.104</td><td>5</td><td>1</td><td>45</td><td style="color: var(--c-green);">460</td></tr>
+        <tr><td>1.416</td><td>3</td><td>2</td><td>40</td><td style="color: var(--c-green);">232</td></tr>
+        <tr><td>1.534</td><td>3</td><td>2</td><td>30</td><td style="color: var(--c-green);">315</td></tr>
+        <tr><td>0.852</td><td>2</td><td>1</td><td>36</td><td style="color: var(--c-green);">178</td></tr>
+        <tr><td>1.856</td><td>4</td><td>2</td><td>20</td><td style="color: var(--c-green);">429</td></tr>
+      </tbody>
+    </table>
+    <div class="fragment fade-up" style="margin-top: 0.6em;">
+      <p style="font-size: 0.75em;">Antes: <span class="katex-inline">x</span> = tamaño → una variable</p>
+      <p style="font-size: 0.75em; color: var(--c-blue);">Ahora: <span class="katex-inline">\vec{x}</span> = [tamaño, habitaciones, pisos, edad] → <strong>n variables</strong></p>
+    </div>
+    <img src="img/Clase_02_04_RegresionLinealMultivariable_slide04_img01.png" class="fragment fade-up" style="max-height: 160px; margin-top: 0.3em; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
+  </section>
+</section>
+
+<!-- ========== Sección 12: Regresión Lineal Múltiple ========== -->
+<section>
+  <section class="section-title">
+    <h2>Regresión Lineal Múltiple</h2>
+    <p style="font-size: 0.7em; color: var(--c-text-dim);">De 1 feature a n features</p>
+  </section>
+
+  <!-- Notación -->
+  <section>
+    <h3>Notación</h3>
+    <table style="font-size: 0.7em; margin: 0.3em auto;">
+      <thead>
+        <tr><th>Símbolo</th><th>Significado</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="katex-inline">n</span></td><td>Número de features</td></tr>
+        <tr><td><span class="katex-inline">x_j</span></td><td>Feature <span class="katex-inline">j</span>-ésima</td></tr>
+        <tr><td><span class="katex-inline">\vec{x}^{(i)}</span></td><td>Vector de features del ejemplo <span class="katex-inline">i</span></td></tr>
+        <tr><td><span class="katex-inline">x_j^{(i)}</span></td><td>Feature <span class="katex-inline">j</span> del ejemplo <span class="katex-inline">i</span></td></tr>
+        <tr><td><span class="katex-inline">\vec{w}</span></td><td>Vector de pesos <span class="katex-inline">[w_1, w_2, \ldots, w_n]</span></td></tr>
+        <tr><td><span class="katex-inline">b</span></td><td>Bias (intercepto)</td></tr>
+      </tbody>
+    </table>
+    <div class="fragment fade-up" style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>Ejemplo: casa <span class="katex-inline">i=2</span> → <span class="katex-inline">\vec{x}^{(2)} = [1.416, 3, 2, 40]</span></p>
+      <p>Feature edad: <span class="katex-inline">x_4^{(2)} = 40</span></p>
+    </div>
+  </section>
+
+  <!-- Modelo -->
+  <section>
+    <h3>Modelo: Regresión Lineal Múltiple</h3>
+    <p style="font-size: 0.75em; color: var(--c-text-dim);">Antes (1 feature):</p>
+    <div class="math-box" style="margin-bottom: 0.5em;">
+      <span class="katex-block">f_{w,b}(x) = wx + b</span>
+    </div>
+    <p class="fragment fade-up" style="font-size: 0.75em; color: var(--c-orange);">Ahora (n features):</p>
+    <div class="math-box fragment fade-up" style="border-color: rgba(255,134,47,0.4);">
+      <span class="katex-block">f_{\vec{w},b}(\vec{x}) = w_1 x_1 + w_2 x_2 + \cdots + w_n x_n + b</span>
+    </div>
+    <div class="fragment fade-up" style="margin-top: 0.5em;">
+      <p style="font-size: 0.7em;">Ejemplo con nuestros datos:</p>
+      <div class="math-box" style="font-size: 0.85em;">
+        <span class="katex-block">f(\vec{x}) = \underset{\text{tamaño}}{\color{#58C4DD}w_1} x_1 + \underset{\text{habs}}{\color{#83C167}w_2} x_2 + \underset{\text{pisos}}{\color{#FF862F}w_3} x_3 + \underset{\text{edad}}{\color{#FC6255}w_4} x_4 + b</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Forma vectorial -->
+  <section>
+    <h3>Forma Vectorial: Producto Punto</h3>
+    <div class="columns">
+      <div class="col-55">
+        <p style="font-size: 0.7em;">La suma <span class="katex-inline">w_1 x_1 + w_2 x_2 + \cdots + w_n x_n</span> es un <strong>producto punto</strong>:</p>
+        <div class="math-box fragment fade-up" style="border-color: rgba(255,255,0,0.3);">
+          <span class="katex-block">f_{\vec{w},b}(\vec{x}) = \vec{w} \cdot \vec{x} + b</span>
+        </div>
+        <div class="fragment fade-up" style="font-size: 0.65em; margin-top: 0.5em;">
+          <p>donde:</p>
+          <p><span class="katex-inline">\vec{w} = [w_1, w_2, \ldots, w_n]</span></p>
+          <p><span class="katex-inline">\vec{x} = [x_1, x_2, \ldots, x_n]</span></p>
+          <p><span class="katex-inline">\vec{w} \cdot \vec{x} = \sum_{j=1}^{n} w_j x_j</span></p>
+        </div>
+      </div>
+      <div class="col-45 fragment fade-up">
+        <img src="img/Clase_02_04_RegresionLinealMultivariable_slide09_img01.png" style="max-height: 200px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
+        <p style="font-size: 0.55em; color: var(--c-text-dim); text-align: center;">También llamado <em>multiple linear regression</em></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ejemplo sklearn -->
+  <section>
+    <h3>Ejemplo: sklearn con Múltiples Features</h3>
+    <pre><code class="language-python" data-trim>
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+# Datos: [tamaño, habs, pisos, edad]
+X = np.array([[2.104,5,1,45], [1.416,3,2,40], [1.534,3,2,30],
+              [0.852,2,1,36], [1.856,4,2,20]])
+y = np.array([460, 232, 315, 178, 429])
+
+modelo = LinearRegression()
+modelo.fit(X, y)
+
+print(f"w = {modelo.coef_}")       # pesos para cada feature
+print(f"b = {modelo.intercept_}")   # bias
+print(f"Predicción: {modelo.predict([[1.8, 3, 2, 25]])}")
+    </code></pre>
+    <div class="fragment fade-up" style="font-size: 0.7em; margin-top: 0.3em;">
+      <p style="color: var(--c-yellow);">sklearn hace esto internamente con la <em>ecuación normal</em></p>
+      <p style="color: var(--c-text-dim);">Nosotros aprenderemos a hacerlo con <strong>gradient descent</strong></p>
+    </div>
+  </section>
+
+  <!-- Widget: multi-regression -->
+  <section>
+    <h3>Widget: Ajusta los Pesos</h3>
+    <p style="font-size: 0.6em; color: var(--c-text-dim);">Modifica <span class="katex-inline">w_1, w_2, w_3, w_4, b</span> y observa las predicciones</p>
+    <div class="widget-container" id="multi-regression-container" style="padding: 0.5em;">
+      <canvas id="multi-regression-canvas" width="880" height="380"></canvas>
+    </div>
+  </section>
+
+  <!-- Conexión con Deep Learning: múltiples variables -->
+  <section data-transition="fade">
+    <h2>Regresión Múltiple como Neurona</h2>
+    <div style="display: flex; gap: 1em; align-items: center;">
+      <div style="flex: 1.2; text-align: center;">
+        <svg viewBox="0 0 500 340" style="width: 100%; max-width: 500px;" xmlns="http://www.w3.org/2000/svg">
+          <!-- Arrow markers -->
+          <defs>
+            <marker id="arrowOrangeM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#FF862F"/>
+            </marker>
+            <marker id="arrowYellowM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#FFFF00"/>
+            </marker>
+            <marker id="arrowWhiteM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#ece6d0"/>
+            </marker>
+          </defs>
+          <!-- Input nodes -->
+          <circle cx="60" cy="60" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
+          <text x="60" y="66" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">x₁</text>
+          <circle cx="60" cy="130" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
+          <text x="60" y="136" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">x₂</text>
+          <circle cx="60" cy="200" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
+          <text x="60" y="206" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">x₃</text>
+          <!-- Dots -->
+          <text x="60" y="248" text-anchor="middle" fill="#a8a290" font-size="20" font-family="Fira Code, monospace">⋮</text>
+          <circle cx="60" cy="280" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
+          <text x="60" y="286" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">xₙ</text>
+          <!-- Neuron node -->
+          <circle cx="280" cy="170" r="42" fill="rgba(131,193,103,0.15)" stroke="#83C167" stroke-width="2.5"/>
+          <text x="280" y="164" text-anchor="middle" fill="#83C167" font-size="16" font-family="Fira Code, monospace">Σ</text>
+          <text x="280" y="184" text-anchor="middle" fill="#a8a290" font-size="10" font-family="Fira Code, monospace">f(z)=z</text>
+          <!-- Weight arrows -->
+          <line x1="88" y1="68" x2="236" y2="155" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
+          <text x="145" y="96" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">w₁</text>
+          <line x1="88" y1="133" x2="236" y2="163" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
+          <text x="155" y="138" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">w₂</text>
+          <line x1="88" y1="197" x2="236" y2="175" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
+          <text x="155" y="196" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">w₃</text>
+          <line x1="88" y1="273" x2="236" y2="188" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
+          <text x="140" y="258" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">wₙ</text>
+          <!-- Bias -->
+          <circle cx="280" cy="50" r="22" fill="none" stroke="#FFFF00" stroke-width="1.5"/>
+          <text x="280" y="56" text-anchor="middle" fill="#FFFF00" font-size="16" font-family="Fira Code, monospace" font-weight="bold">b</text>
+          <line x1="280" y1="72" x2="280" y2="126" stroke="#FFFF00" stroke-width="1.5" marker-end="url(#arrowYellowM)"/>
+          <!-- Output -->
+          <line x1="324" y1="170" x2="400" y2="170" stroke="#ece6d0" stroke-width="2" marker-end="url(#arrowWhiteM)"/>
+          <text x="448" y="164" text-anchor="middle" fill="#ece6d0" font-size="13" font-family="Fira Code, monospace">ŷ =</text>
+          <text x="448" y="184" text-anchor="middle" fill="#ece6d0" font-size="13" font-family="Fira Code, monospace">w⃗·x⃗ + b</text>
+          <!-- Labels -->
+          <text x="60" y="318" text-anchor="middle" fill="#a8a290" font-size="9" font-family="Fira Code, monospace">n entradas</text>
+          <text x="280" y="226" text-anchor="middle" fill="#a8a290" font-size="9" font-family="Fira Code, monospace">"neurona"</text>
+          <text x="448" y="206" text-anchor="middle" fill="#a8a290" font-size="9" font-family="Fira Code, monospace">salida</text>
+        </svg>
+      </div>
+      <div style="flex: 1; font-size: 0.6em;">
+        <ul style="line-height: 1.8;">
+          <li class="fragment fade-up">Misma neurona, pero ahora con <strong style="color: var(--c-blue);">n entradas</strong> en vez de 1</li>
+          <li class="fragment fade-up">Cada feature <span class="katex-inline">x_j</span> tiene su propio peso <strong style="color: var(--c-orange);">w<sub>j</sub></strong></li>
+          <li class="fragment fade-up">La neurona calcula <span class="katex-inline">\vec{w} \cdot \vec{x} + b</span> — el <strong style="color: var(--c-yellow);">producto punto</strong></li>
+          <li class="fragment fade-up" style="color: var(--c-green);">Agregar más capas de neuronas → <strong>red neuronal profunda</strong> (deep learning)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</section>
+
+<!-- ========== Sección 13: Vectorización ========== -->
+<section>
+  <section class="section-title">
+    <h2>Vectorización</h2>
+    <p style="font-size: 0.7em; color: var(--c-text-dim);">Código más rápido y más limpio</p>
+  </section>
+
+  <!-- Sin vs Con vectorización -->
+  <section>
+    <h3>¿Qué es Vectorización?</h3>
+    <div class="comparison">
+      <div class="side incorrect">
+        <h4 style="color: var(--c-red); font-size: 0.75em;">Sin vectorización (loop)</h4>
+        <pre style="font-size: 0.9em;"><code class="language-python" data-trim>
+f = 0
+for j in range(n):
+    f = f + w[j] * x[j]
+f = f + b
+        </code></pre>
+        <p style="font-size: 0.6em; color: var(--c-text-dim);">Operaciones secuenciales: una a la vez</p>
+      </div>
+      <div class="side correct">
+        <h4 style="color: var(--c-green); font-size: 0.75em;">Con vectorización (NumPy)</h4>
+        <pre style="font-size: 0.9em;"><code class="language-python" data-trim>
+f = np.dot(w, x) + b
+        </code></pre>
+        <p style="font-size: 0.6em; color: var(--c-text-dim);">Una sola operación: todas en paralelo</p>
+      </div>
+    </div>
+    <p class="fragment fade-up" style="font-size: 0.65em; color: var(--c-yellow); text-align: center; margin-top: 0.5em;">
+      Mismo resultado, pero <code>np.dot</code> es <strong>100-1000x más rápido</strong> con datos grandes
+    </p>
+  </section>
+
+  <!-- ¿Por qué es más rápido? -->
+  <section>
+    <h3>¿Por qué es más rápido?</h3>
+    <div class="columns">
+      <div class="col-55">
+        <ul style="font-size: 0.7em;">
+          <li class="fragment fade-up"><strong style="color: var(--c-blue);">Hardware paralelo</strong>: CPUs modernas tienen instrucciones SIMD que procesan múltiples datos simultáneamente</li>
+          <li class="fragment fade-up"><strong style="color: var(--c-green);">NumPy</strong> usa librerías optimizadas en C/Fortran (BLAS, LAPACK)</li>
+          <li class="fragment fade-up"><strong style="color: var(--c-orange);">GPUs</strong>: miles de núcleos pequeños — vectorización es esencial para deep learning</li>
+        </ul>
+        <div class="fragment fade-up" style="margin-top: 0.4em;">
+          <img src="img/Clase_02_04_RegresionLinealMultivariable_slide10_img01.png" style="max-height: 150px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
+        </div>
+      </div>
+      <div class="col-45 fragment fade-up">
+        <pre style="font-size: 0.8em;"><code class="language-python" data-trim>
+import numpy as np, time
+
+n = 10_000_000
+w = np.random.rand(n)
+x = np.random.rand(n)
+
+# Loop
+t0 = time.time()
+f = 0
+for j in range(n):
+    f += w[j] * x[j]
+print(f"Loop: {time.time()-t0:.3f}s")
+
+# Vectorizado
+t0 = time.time()
+f = np.dot(w, x)
+print(f"Dot:  {time.time()-t0:.3f}s")
+        </code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Widget: Vectorización animada -->
+  <section>
+    <h3>Visualización: Loop vs Dot Product</h3>
+    <p style="font-size: 0.6em; color: var(--c-text-dim);">Observa cómo las operaciones se ejecutan secuencialmente vs en paralelo</p>
+    <div class="widget-container" id="vectorization-container" style="padding: 0.5em;">
+      <canvas id="vectorization-canvas" width="880" height="360"></canvas>
+    </div>
+  </section>
+
+  <!-- GD Vectorizado -->
+  <section>
+    <h3>Gradient Descent Vectorizado</h3>
+    <div class="comparison">
+      <div class="side incorrect" style="font-size: 0.8em;">
+        <h4 style="color: var(--c-red); font-size: 0.75em;">Con loops</h4>
+        <pre style="font-size: 0.85em;"><code class="language-python" data-trim>
+for i in range(m):
+    err = f(x[i]) - y[i]
+    for j in range(n):
+        dw[j] += err * x[i][j]
+    db += err
+w = w - alpha * dw / m
+b = b - alpha * db / m
+        </code></pre>
+      </div>
+      <div class="side correct" style="font-size: 0.8em;">
+        <h4 style="color: var(--c-green); font-size: 0.75em;">Vectorizado</h4>
+        <pre style="font-size: 0.85em;"><code class="language-python" data-trim>
+err = X @ w + b - y
+dw = (1/m) * X.T @ err
+db = (1/m) * np.sum(err)
+w = w - alpha * dw
+b = b - alpha * db
+        </code></pre>
+      </div>
+    </div>
+    <p class="fragment fade-up" style="font-size: 0.65em; color: var(--c-text-dim); text-align: center; margin-top: 0.5em;">
+      El operador <code>@</code> en NumPy es multiplicación de matrices (<code>np.matmul</code>)
+    </p>
+  </section>
+</section>
+
+<!-- ========== Sección 14: Gradient Descent para Múltiples Variables ========== -->
+<section>
+  <section class="section-title">
+    <h2>Gradient Descent</h2>
+    <h3 style="color: var(--c-orange); font-size: 0.9em;">para Múltiples Variables</h3>
+  </section>
+
+  <!-- Extensión del algoritmo -->
+  <section>
+    <h3>Algoritmo Extendido</h3>
+    <p style="font-size: 0.7em; color: var(--c-text-dim);">Misma idea, más parámetros:</p>
+    <div class="math-box" style="font-size: 0.9em;">
+      <span class="katex-block">\text{Repetir hasta converger:}</span>
+    </div>
+    <div class="fragment fade-up" style="margin-top: 0.3em;">
+      <div class="math-box" style="border-color: rgba(88,196,221,0.4);">
+        <span class="katex-block">w_j := w_j - \alpha \frac{\partial J}{\partial w_j} \quad \text{para } j = 1, \ldots, n</span>
+      </div>
+      <div class="math-box" style="border-color: rgba(131,193,103,0.4);">
+        <span class="katex-block">b := b - \alpha \frac{\partial J}{\partial b}</span>
+      </div>
+    </div>
+    <div class="fragment fade-up" style="font-size: 0.65em; color: var(--c-text-dim); margin-top: 0.3em;">
+      <p>Actualización <strong>simultánea</strong> de todos los <span class="katex-inline">w_j</span> y <span class="katex-inline">b</span></p>
+    </div>
+  </section>
+
+  <!-- Derivadas parciales -->
+  <section>
+    <h3>Derivadas Parciales</h3>
+    <div class="columns" style="align-items: center;">
+      <div class="col-55">
+        <div class="math-box" style="font-size: 0.85em;">
+          <span class="katex-block">\frac{\partial J}{\partial w_j} = \frac{1}{m} \sum_{i=1}^{m} \left( f_{\vec{w},b}(\vec{x}^{(i)}) - y^{(i)} \right) x_j^{(i)}</span>
+        </div>
+        <div class="math-box fragment fade-up" style="font-size: 0.85em; margin-top: 0.3em;">
+          <span class="katex-block">\frac{\partial J}{\partial b} = \frac{1}{m} \sum_{i=1}^{m} \left( f_{\vec{w},b}(\vec{x}^{(i)}) - y^{(i)} \right)</span>
+        </div>
+        <p class="fragment fade-up" style="font-size: 0.65em; color: var(--c-text-dim); margin-top: 0.3em;">
+          Nota: cada <span class="katex-inline">\frac{\partial J}{\partial w_j}</span> se multiplica por <span class="katex-inline" style="color: var(--c-yellow);">x_j^{(i)}</span> — la feature correspondiente
+        </p>
+      </div>
+      <div class="col-45 fragment fade-up">
+        <img src="img/Clase_02_04_RegresionLinealMultivariable_slide14_img01.png" style="max-height: 250px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparación 1 var vs n vars -->
+  <section>
+    <h3>1 Variable vs n Variables</h3>
+    <div class="comparison" style="font-size: 0.75em;">
+      <div class="side" style="border: 1px solid var(--c-blue);">
+        <h4 style="color: var(--c-blue); font-size: 0.85em;">1 feature</h4>
+        <div class="math-box" style="font-size: 0.85em;">
+          <span class="katex-block">w := w - \alpha \frac{1}{m}\sum(f - y)x</span>
+        </div>
+        <div class="math-box" style="font-size: 0.85em;">
+          <span class="katex-block">b := b - \alpha \frac{1}{m}\sum(f - y)</span>
+        </div>
+      </div>
+      <div class="side" style="border: 1px solid var(--c-orange);">
+        <h4 style="color: var(--c-orange); font-size: 0.85em;">n features</h4>
+        <div class="math-box" style="font-size: 0.85em;">
+          <span class="katex-block">w_j := w_j - \alpha \frac{1}{m}\sum(f - y)x_j^{(i)}</span>
+        </div>
+        <div class="math-box" style="font-size: 0.85em;">
+          <span class="katex-block">b := b - \alpha \frac{1}{m}\sum(f - y)</span>
+        </div>
+      </div>
+    </div>
+    <p class="fragment fade-up" style="font-size: 0.7em; color: var(--c-yellow); text-align: center; margin-top: 0.5em;">
+      La regla de <span class="katex-inline">b</span> es <strong>idéntica</strong>. La de <span class="katex-inline">w_j</span> solo agrega el subíndice <span class="katex-inline">j</span>.
+    </p>
+  </section>
+
+  <!-- Ecuación Normal -->
+  <section>
+    <h3>Alternativa: La Ecuación Normal</h3>
+    <div class="math-box" style="font-size: 0.9em; border-color: rgba(154,114,172,0.4);">
+      <span class="katex-block">\vec{w} = (X^T X)^{-1} X^T \vec{y}</span>
+    </div>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <table style="font-size: 0.9em; margin: 0 auto;">
+        <thead><tr><th></th><th>Gradient Descent</th><th>Ecuación Normal</th></tr></thead>
+        <tbody>
+          <tr><td>Iterativo</td><td style="color: var(--c-green);">Sí</td><td>No (solución directa)</td></tr>
+          <tr><td>Learning rate <span class="katex-inline">\alpha</span></td><td>Necesario</td><td style="color: var(--c-green);">No necesario</td></tr>
+          <tr><td>Escala con n grande</td><td style="color: var(--c-green);">Bien</td><td style="color: var(--c-red);">Lento <span class="katex-inline">O(n^3)</span></td></tr>
+          <tr><td>Uso en la práctica</td><td style="color: var(--c-green);">Muy común</td><td>Solo n &lt; 10,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fragment fade-up" style="font-size: 0.6em; color: var(--c-text-dim); margin-top: 0.4em; text-align: center;">
+      sklearn usa la ecuación normal internamente para <code>LinearRegression</code>
+    </p>
+  </section>
+</section>
+
+<!-- ========== Sección 15: Feature Scaling ========== -->
+<section>
+  <section class="section-title">
+    <h2>Feature Scaling</h2>
+    <p style="font-size: 0.7em; color: var(--c-text-dim);">Hacer que gradient descent converja más rápido</p>
+  </section>
+
+  <!-- El Problema -->
+  <section>
+    <h3>El Problema: Rangos Diferentes</h3>
+    <div class="columns">
+      <div class="col-55">
+        <p style="font-size: 0.7em;">Nuestras features tienen rangos muy distintos:</p>
+        <table style="font-size: 0.65em; margin: 0.3em 0;">
+          <thead><tr><th>Feature</th><th>Rango</th></tr></thead>
+          <tbody>
+            <tr><td><span class="katex-inline">x_1</span> Tamaño</td><td>0.8 – 2.5 (1000 sqft)</td></tr>
+            <tr><td><span class="katex-inline">x_2</span> Habitaciones</td><td>2 – 5</td></tr>
+            <tr><td><span class="katex-inline">x_3</span> Pisos</td><td>1 – 2</td></tr>
+            <tr><td><span class="katex-inline">x_4</span> Edad</td><td>10 – 50 (años)</td></tr>
+          </tbody>
+        </table>
+        <p class="fragment fade-up" style="font-size: 0.65em; color: var(--c-orange);">
+          Resultado: contornos de <span class="katex-inline">J</span> son <strong>elipses alargadas</strong> → GD zigzaguea
+        </p>
+      </div>
+      <div class="col-45 fragment fade-up" style="text-align: center;">
+        <img src="img/Clase_02_05_slide15_img01.png" style="max-height: 280px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
+        <p style="font-size: 0.5em; color: var(--c-text-dim);">Sin scaling vs con scaling</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Técnica 1: Dividir por máximo -->
+  <section>
+    <h3>3 Técnicas de Feature Scaling</h3>
+    <div style="font-size: 0.75em;">
+      <div class="math-box" style="width: 85%; text-align: left; margin-bottom: 0.4em;">
+        <p><strong style="color: var(--c-blue);">1. Dividir por máximo:</strong></p>
+        <span class="katex-block">x_j^{\text{scaled}} = \frac{x_j}{\max(x_j)}</span>
+        <p style="font-size: 0.8em; color: var(--c-text-dim);">Rango resultante: [0, 1]</p>
+      </div>
+      <div class="math-box fragment fade-up" style="width: 85%; text-align: left; margin-bottom: 0.4em;">
+        <p><strong style="color: var(--c-green);">2. Mean normalization:</strong></p>
+        <span class="katex-block">x_j^{\text{scaled}} = \frac{x_j - \mu_j}{\max(x_j) - \min(x_j)}</span>
+        <p style="font-size: 0.8em; color: var(--c-text-dim);">Rango resultante: aprox. [-0.5, 0.5]</p>
+      </div>
+      <div class="math-box fragment fade-up" style="width: 85%; text-align: left;">
+        <p><strong style="color: var(--c-orange);">3. Z-score normalization:</strong></p>
+        <span class="katex-block">x_j^{\text{scaled}} = \frac{x_j - \mu_j}{\sigma_j}</span>
+        <p style="font-size: 0.8em; color: var(--c-text-dim);">Rango resultante: media=0, desv. est.=1</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ejemplo numérico -->
+  <section>
+    <h3>Ejemplo: Scaling del Tamaño</h3>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);"><span class="katex-inline">x_1</span> = Tamaño: [2.104, 1.416, 1.534, 0.852, 1.856, 2.500, 1.200, 1.800]</p>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);"><span class="katex-inline">\mu = 1.658</span>, <span class="katex-inline">\sigma = 0.507</span>, min=0.852, max=2.500</p>
+    <table style="font-size: 0.6em; margin: 0.3em auto;">
+      <thead>
+        <tr>
+          <th>Original</th>
+          <th style="color: var(--c-blue);">÷ max</th>
+          <th style="color: var(--c-green);">Mean norm.</th>
+          <th style="color: var(--c-orange);">Z-score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>2.104</td><td style="color: var(--c-blue);">0.842</td><td style="color: var(--c-green);">0.271</td><td style="color: var(--c-orange);">0.880</td></tr>
+        <tr><td>1.416</td><td style="color: var(--c-blue);">0.566</td><td style="color: var(--c-green);">-0.147</td><td style="color: var(--c-orange);">-0.477</td></tr>
+        <tr><td>0.852</td><td style="color: var(--c-blue);">0.341</td><td style="color: var(--c-green);">-0.489</td><td style="color: var(--c-orange);">-1.590</td></tr>
+        <tr><td>2.500</td><td style="color: var(--c-blue);">1.000</td><td style="color: var(--c-green);">0.511</td><td style="color: var(--c-orange);">1.661</td></tr>
+      </tbody>
+    </table>
+    <div class="fragment fade-up" style="text-align: center; margin-top: 0.3em;">
+      <img src="img/Clase_02_05_slide14_img01.png" style="max-height: 160px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
+    </div>
+  </section>
+
+  <!-- Código Python scaling -->
+  <section>
+    <h3>Feature Scaling en Python</h3>
+    <pre><code class="language-python" data-trim>
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+X = np.array([[2.104,5,1,45], [1.416,3,2,40], [1.534,3,2,30],
+              [0.852,2,1,36], [1.856,4,2,20], [2.500,4,1,10]])
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+print("Medias:", scaler.mean_)        # [1.71, 3.50, 1.50, 30.17]
+print("Desv. est.:", scaler.scale_)   # [0.53, 0.96, 0.50, 12.27]
+print("X escalado:\n", X_scaled)      # media≈0, std≈1
+    </code></pre>
+    <p class="fragment fade-up" style="font-size: 0.65em; color: var(--c-yellow); text-align: center; margin-top: 0.3em;">
+      Regla práctica: buscar que cada feature tenga rango <span class="katex-inline">-1 \leq x_j \leq 1</span> (aproximadamente)
+    </p>
+  </section>
+
+  <!-- Widget: Feature Scaling -->
+  <section>
+    <h3>Widget: Feature Scaling y Convergencia</h3>
+    <p style="font-size: 0.6em; color: var(--c-text-dim);">Compara gradient descent sin scaling vs con scaling</p>
+    <div class="widget-container" id="feature-scaling-container" style="padding: 0.5em;">
+      <canvas id="feature-scaling-canvas" width="880" height="380"></canvas>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 16: Feature Engineering + Regresión Polinomial ========== -->
+<section>
+  <section class="section-title">
+    <h2>Feature Engineering</h2>
+    <h3 style="color: var(--c-orange); font-size: 0.9em;">y Regresión Polinomial</h3>
+  </section>
+
+  <!-- ¿Qué es Feature Engineering? -->
+  <section>
+    <h3>¿Qué es Feature Engineering?</h3>
+    <div class="columns">
+      <div class="col-55">
+        <p style="font-size: 0.75em;">Crear <strong>nuevas features</strong> a partir de las existentes usando conocimiento del dominio.</p>
+        <div class="fragment fade-up" style="font-size: 0.7em; margin-top: 0.3em;">
+          <p><strong style="color: var(--c-blue);">Ejemplo:</strong> Predicción de precio de casa</p>
+          <p>Features originales: <span class="katex-inline">x_1</span> = frontage, <span class="katex-inline">x_2</span> = depth</p>
+          <div class="math-box" style="margin-top: 0.3em;">
+            <span class="katex-block">x_3 = x_1 \times x_2 = \text{área}</span>
+          </div>
+          <p style="color: var(--c-text-dim); font-size: 0.85em; margin-top: 0.3em;">El <strong>área</strong> puede predecir mejor el precio que frontage y depth por separado</p>
+        </div>
+      </div>
+      <div class="col-45 fragment fade-up" style="text-align: center;">
+        <img src="img/Clase_02_05_slide04_img02.png" style="max-height: 200px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
+        <p style="font-size: 0.5em; color: var(--c-text-dim); margin-top: 0.3em;"><em>"Feature engineering es el arte más importante en ML"</em></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Regresión Polinomial: motivación -->
+  <section>
+    <h3>¿Qué pasa con datos no lineales?</h3>
+    <div class="columns">
+      <div class="col-55">
+        <p style="font-size: 0.7em;">A veces los datos no siguen una línea recta:</p>
+        <canvas id="nonlinear-data-demo" width="400" height="250" style="margin-top: 0.3em;"></canvas>
+      </div>
+      <div class="col-45 fragment fade-up">
+        <p style="font-size: 0.7em;">Solución: <strong style="color: var(--c-orange);">features polinomiales</strong></p>
+        <div class="math-box" style="font-size: 0.85em; margin-top: 0.3em;">
+          <span class="katex-block">f(x) = w_1 x + w_2 x^2 + b</span>
+        </div>
+        <div class="math-box fragment fade-up" style="font-size: 0.85em; margin-top: 0.3em;">
+          <span class="katex-block">f(x) = w_1 x + w_2 x^2 + w_3 x^3 + b</span>
+        </div>
+        <div class="math-box fragment fade-up" style="font-size: 0.85em; margin-top: 0.3em; border-color: rgba(131,193,103,0.3);">
+          <span class="katex-block">f(x) = w_1 x + w_2 \sqrt{x} + b</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visualización de curvas polinomiales -->
+  <section>
+    <h3>Comparación de Modelos</h3>
+    <div class="columns" style="align-items: center;">
+      <div class="col-50">
+        <img src="img/Clase_02_05_slide19_img02.png" style="max-height: 200px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
+        <p style="font-size: 0.55em; color: var(--c-text-dim); text-align: center;">Cuadrática: <span class="katex-inline">\theta_0 + \theta_1 x + \theta_2 x^2</span></p>
+      </div>
+      <div class="col-50 fragment fade-up">
+        <img src="img/Clase_02_05_slide20_img02.png" style="max-height: 200px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
+        <p style="font-size: 0.55em; color: var(--c-text-dim); text-align: center;">Cúbica: <span class="katex-inline">\theta_0 + \theta_1 x + \theta_2 x^2 + \theta_3 x^3</span></p>
+      </div>
+    </div>
+    <div class="fragment fade-up" style="margin-top: 0.5em;">
+      <p style="font-size: 0.65em; color: var(--c-yellow); text-align: center;">
+        <strong>Cuidado:</strong> <span class="katex-inline">x^2, x^3</span> crecen rápido → <strong>feature scaling es crucial</strong> en regresión polinomial
+      </p>
+    </div>
+  </section>
+
+  <!-- Código Python -->
+  <section>
+    <h3>Regresión Polinomial en Python</h3>
+    <div class="columns">
+      <div class="col-50">
+        <p style="font-size: 0.65em; color: var(--c-text-dim);">Forma manual (NumPy):</p>
+        <pre style="font-size: 0.85em;"><code class="language-python" data-trim>
+import numpy as np
+
+x = np.array([1, 2, 3, 4, 5, 6, 7])
+# Crear features: x, x², x³
+X_poly = np.column_stack([
+    x, x**2, x**3
+])
+print(X_poly.shape)  # (7, 3)
+        </code></pre>
+      </div>
+      <div class="col-50 fragment fade-up">
+        <p style="font-size: 0.65em; color: var(--c-text-dim);">Con sklearn Pipeline:</p>
+        <pre style="font-size: 0.85em;"><code class="language-python" data-trim>
+from sklearn.preprocessing import (
+    PolynomialFeatures,
+    StandardScaler)
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import (
+    LinearRegression)
+
+pipe = Pipeline([
+  ('poly', PolynomialFeatures(3)),
+  ('scaler', StandardScaler()),
+  ('reg', LinearRegression())
+])
+pipe.fit(x.reshape(-1,1), y)
+        </code></pre>
+      </div>
+    </div>
+    <div class="fragment fade-up" style="text-align: center; margin-top: 0.3em;">
+      <img src="img/Clase_02_05_slide24_img01.png" style="max-height: 130px; border-radius: 8px; border: 1px solid rgba(88,196,221,0.2);">
+    </div>
+  </section>
+
+  <!-- Widget: Regresión Polinomial -->
+  <section>
+    <h3>Widget: Regresión Polinomial Interactiva</h3>
+    <p style="font-size: 0.6em; color: var(--c-text-dim);">Selecciona el grado del polinomio y observa el ajuste</p>
+    <div class="widget-container" id="polynomial-container" style="padding: 0.5em;">
+      <canvas id="polynomial-canvas" width="880" height="380"></canvas>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 17: Resumen Semana 2 ========== -->
+<section>
+  <section class="section-title">
+    <h2>Resumen: Semana 2</h2>
+  </section>
+
+  <!-- Roadmap visual -->
+  <section>
+    <h3>Lo que Aprendimos</h3>
+    <div style="font-size: 0.7em;">
+      <div class="roadmap" style="flex-wrap: wrap; justify-content: center;">
+        <div class="step active" style="border-color: var(--c-blue);">Regresión Lineal<br>Múltiple<br><span style="font-size: 0.8em; color: var(--c-text-dim);"><span class="katex-inline">\vec{w} \cdot \vec{x} + b</span></span></div>
+        <div class="arrow">→</div>
+        <div class="step active" style="border-color: var(--c-green);">Vectorización<br><span style="font-size: 0.8em; color: var(--c-text-dim);"><code>np.dot(w, x)</code></span></div>
+        <div class="arrow">→</div>
+        <div class="step active" style="border-color: var(--c-orange);">GD Multivariable<br><span style="font-size: 0.8em; color: var(--c-text-dim);"><span class="katex-inline">w_j := w_j - \alpha \frac{\partial J}{\partial w_j}</span></span></div>
+      </div>
+      <div class="roadmap" style="flex-wrap: wrap; justify-content: center; margin-top: 0.3em;">
+        <div class="step active" style="border-color: var(--c-purple);">Feature Scaling<br><span style="font-size: 0.8em; color: var(--c-text-dim);">Z-score, Mean norm.</span></div>
+        <div class="arrow">→</div>
+        <div class="step active" style="border-color: var(--c-yellow);">Feature Engineering<br><span style="font-size: 0.8em; color: var(--c-text-dim);">Crear nuevas features</span></div>
+        <div class="arrow">→</div>
+        <div class="step active" style="border-color: var(--c-pink);">Regresión Polinomial<br><span style="font-size: 0.8em; color: var(--c-text-dim);"><span class="katex-inline">w_1 x + w_2 x^2 + \cdots</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparación: Simple vs Múltiple -->
+  <section>
+    <h3>Regresión Simple vs Múltiple</h3>
+    <table style="font-size: 0.65em; margin: 0.3em auto;">
+      <thead>
+        <tr><th></th><th style="color: var(--c-blue);">Simple (Semana 1)</th><th style="color: var(--c-orange);">Múltiple (Semana 2)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Features</td><td>1</td><td>n</td></tr>
+        <tr><td>Modelo</td><td><span class="katex-inline">f = wx + b</span></td><td><span class="katex-inline">f = \vec{w} \cdot \vec{x} + b</span></td></tr>
+        <tr><td>Parámetros</td><td>w, b</td><td><span class="katex-inline">w_1 \ldots w_n, b</span></td></tr>
+        <tr><td>GD</td><td>2 actualizaciones</td><td>n+1 actualizaciones</td></tr>
+        <tr><td>Feature Scaling</td><td>No necesario</td><td>Muy recomendado</td></tr>
+        <tr><td>Visualización</td><td>Recta en 2D</td><td>Hiperplano en nD</td></tr>
+      </tbody>
+    </table>
+    <div class="fragment fade-up" style="margin-top: 0.5em;">
+      <p style="font-size: 0.7em; color: var(--c-green); text-align: center;">
+        Próxima semana: <strong>Regresión Logística</strong> — clasificación con ML
+      </p>
+      <p style="font-size: 0.6em; color: var(--c-text-dim); text-align: center;">
+        Notebooks para practicar: <code>04_Multiple_Variable_Linear_Regression.ipynb</code>
+      </p>
+    </div>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); text-align: center; margin-top: 0.5em;">
+      Material adaptado de DeepLearning.AI (CC BY-SA 2.0) y Universidad Galileo
+    </p>
+  </section>
+</section>
+
 </div><!-- .slides -->
 </div><!-- .reveal -->
 
@@ -2953,7 +3926,12 @@ b = b - alpha * dj_db
 <script src="js/widgets/cost-surface-widget.js"></script>
 <script src="js/widgets/gradient-descent-anim.js"></script>
 <script src="js/widgets/learning-rate-widget.js"></script>
+<script src="js/widgets/lr-explorer-widget.js"></script>
 <script src="js/widgets/hill-descent-widget.js"></script>
+<script src="js/widgets/multi-regression-widget.js"></script>
+<script src="js/widgets/vectorization-widget.js"></script>
+<script src="js/widgets/feature-scaling-widget.js"></script>
+<script src="js/widgets/polynomial-regression-widget.js"></script>
 
 <script>
 // ============================================================
@@ -2970,6 +3948,17 @@ Reveal.initialize({
   height: 700,
   margin: 0.04,
   plugins: [ RevealHighlight, RevealNotes ]
+});
+
+// ============================================================
+// Home button navigation
+// ============================================================
+const navHomeBtn = document.getElementById('nav-home-btn');
+navHomeBtn.addEventListener('click', () => Reveal.slide(0, 0));
+// Hide on portada
+navHomeBtn.style.display = 'none';
+Reveal.on('slidechanged', function(e) {
+  navHomeBtn.style.display = (e.indexh === 0 && e.indexv === 0) ? 'none' : 'block';
 });
 
 // ============================================================
@@ -2996,7 +3985,18 @@ renderKaTeX();
 // ============================================================
 const HOUSING = {
   simple: { x: [1.0, 1.4, 1.7, 2.0, 2.5], y: [300.0, 350.0, 330.0, 500.0, 460.0] },
-  extended: { x: [1.0, 1.7, 2.0, 2.5, 3.0, 3.2], y: [250, 300, 480, 430, 630, 730] }
+  extended: { x: [1.0, 1.7, 2.0, 2.5, 3.0, 3.2], y: [250, 300, 480, 430, 630, 730] },
+  multi: {
+    // 8 casas, 4 features: [size(1000sqft), bedrooms, floors, age(years)]
+    X: [[2.104,5,1,45],[1.416,3,2,40],[1.534,3,2,30],[0.852,2,1,36],
+        [1.856,4,2,20],[2.500,4,1,10],[1.200,2,1,50],[1.800,3,2,25]],
+    y: [460,232,315,178,429,573,195,375],
+    features: ['Tamaño (1000 sqft)', 'Habitaciones', 'Pisos', 'Edad (años)']
+  },
+  nonlinear: {
+    x: [1, 2, 3, 4, 5, 6, 7],
+    y: [1, 4.5, 9, 16, 24, 37, 50]
+  }
 };
 
 // ============================================================
@@ -3432,13 +4432,13 @@ function drawPoint(ctx, x, y, color, size, type) {
     ctx.beginPath();
     for (let x = 0; x < c2.width; x++) {
       let t = (x - c2.width/2) / 50;
-      let y = t * t * 20 + 40;
+      let y = -t * t * 17 + 160;
       x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.stroke();
     // Mark global minimum
     ctx.fillStyle = C.green; ctx.font = '11px Fira Code, monospace'; ctx.textAlign = 'center';
-    ctx.fillText('▼ mínimo global', c2.width/2, c2.height - 20);
+    ctx.fillText('▼ mínimo global', c2.width/2, 185);
   }
 })();
 
@@ -3472,6 +4472,51 @@ function drawPoint(ctx, x, y, color, size, type) {
   ctx.fillText('0', ox - 5, oy + 3);
   ctx.fillStyle = C.green; ctx.font = '11px Fira Code, monospace'; ctx.textAlign = 'left';
   ctx.fillText('Converge ✓', ox + pw - 80, oy - 20);
+})();
+
+// Nonlinear data demo (Section 16)
+(function() {
+  const canvas = document.getElementById('nonlinear-data-demo');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+
+  const ox = 45, oy = H - 30, pw = W - 65, ph = H - 55;
+  drawAxes(ctx, ox, oy, pw, ph, 'x', 'y');
+  drawGrid(ctx, ox, oy, pw, ph, 7, 5);
+
+  const xD = HOUSING.nonlinear.x, yD = HOUSING.nonlinear.y;
+  function tx(v) { return ox + (v / 8) * pw; }
+  function ty(v) { return oy - (v / 55) * ph; }
+
+  // Tick labels
+  ctx.fillStyle = C.textDim; ctx.font = '9px Fira Code, monospace'; ctx.textAlign = 'center';
+  for (let v = 1; v <= 7; v++) ctx.fillText(v, tx(v), oy + 12);
+  ctx.textAlign = 'right';
+  for (let v = 0; v <= 50; v += 10) ctx.fillText(v, ox - 5, ty(v) + 3);
+
+  // Data points
+  xD.forEach((x, i) => drawPoint(ctx, tx(x), ty(yD[i]), C.red, 5, 'dot'));
+
+  // Failed linear fit line
+  ctx.strokeStyle = C.textDim; ctx.lineWidth = 1.5; ctx.setLineDash([6, 4]);
+  ctx.beginPath(); ctx.moveTo(tx(0.5), ty(-4.5)); ctx.lineTo(tx(7.5), ty(56)); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = C.textDim; ctx.font = '10px Fira Code, monospace'; ctx.textAlign = 'right';
+  ctx.fillText('¿Lineal?', tx(7.3), ty(52));
+
+  // Show curvature hint
+  ctx.strokeStyle = C.yellow; ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  for (let x = 0.5; x <= 7.5; x += 0.1) {
+    const y = 1.1 * x * x - 0.5 * x + 0.5;
+    const sx = tx(x), sy = ty(y);
+    x === 0.5 ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy);
+  }
+  ctx.stroke();
+  ctx.fillStyle = C.yellow; ctx.textAlign = 'left';
+  ctx.fillText('¿Cuadrática?', tx(4), ty(5));
 })();
 
 // ============================================================
@@ -3518,20 +4563,51 @@ Reveal.on('slidechanged', function(event) {
   }
   if (slide.querySelector('#widget-gd-anim') && !widgetsInitialized.gd) {
     if (typeof initGradientDescentWidget === 'function') {
-      initGradientDescentWidget(HOUSING.simple);
+      initGradientDescentWidget(HOUSING.extended);
       widgetsInitialized.gd = true;
     }
   }
   if (slide.querySelector('#widget-lr-comparison') && !widgetsInitialized.lrcomp) {
     if (typeof initLearningRateWidget === 'function') {
-      initLearningRateWidget(HOUSING.simple);
+      initLearningRateWidget(HOUSING.extended);
       widgetsInitialized.lrcomp = true;
+    }
+  }
+  if (slide.querySelector('#widget-lr-explorer') && !widgetsInitialized.lrExplorer) {
+    if (typeof initLRExplorerWidget === 'function') {
+      initLRExplorerWidget();
+      widgetsInitialized.lrExplorer = true;
     }
   }
   if (slide.querySelector('#widget-hill-descent') && !widgetsInitialized.hillDescent) {
     if (typeof initHillDescentWidget === 'function') {
       initHillDescentWidget();
       widgetsInitialized.hillDescent = true;
+    }
+  }
+  // Semana 2 widgets
+  if (slide.querySelector('#multi-regression-canvas') && !widgetsInitialized.multiReg) {
+    if (typeof initMultiRegressionWidget === 'function') {
+      initMultiRegressionWidget(HOUSING.multi);
+      widgetsInitialized.multiReg = true;
+    }
+  }
+  if (slide.querySelector('#vectorization-canvas') && !widgetsInitialized.vectorization) {
+    if (typeof initVectorizationWidget === 'function') {
+      initVectorizationWidget();
+      widgetsInitialized.vectorization = true;
+    }
+  }
+  if (slide.querySelector('#feature-scaling-canvas') && !widgetsInitialized.featureScaling) {
+    if (typeof initFeatureScalingWidget === 'function') {
+      initFeatureScalingWidget();
+      widgetsInitialized.featureScaling = true;
+    }
+  }
+  if (slide.querySelector('#polynomial-canvas') && !widgetsInitialized.polynomial) {
+    if (typeof initPolynomialWidget === 'function') {
+      initPolynomialWidget(HOUSING.nonlinear);
+      widgetsInitialized.polynomial = true;
     }
   }
 });
