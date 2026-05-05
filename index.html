@@ -72,6 +72,19 @@
         <a class="toc-item" onclick="Reveal.slide(17, 0)"><span class="toc-num">17</span>Feature Engineering + Polinomial</a>
         <a class="toc-item" onclick="Reveal.slide(18, 0)"><span class="toc-num">18</span>Resumen Semana 2</a>
       </div>
+      <div class="toc-column">
+        <h4 style="color: var(--c-green); font-size: 0.75em; margin-bottom: 0.3em;">Semana 3</h4>
+        <a class="toc-item" onclick="Reveal.slide(19, 0)"><span class="toc-num">19</span>Portada Semana 3</a>
+        <a class="toc-item" onclick="Reveal.slide(20, 0)"><span class="toc-num">20</span>Intro Clasificación</a>
+        <a class="toc-item" onclick="Reveal.slide(21, 0)"><span class="toc-num">21</span>K-Nearest Neighbors</a>
+        <a class="toc-item" onclick="Reveal.slide(22, 0)"><span class="toc-num">22</span>Regresión Logística</a>
+        <a class="toc-item" onclick="Reveal.slide(23, 0)"><span class="toc-num">23</span>Frontera de Decisión</a>
+        <a class="toc-item" onclick="Reveal.slide(24, 0)"><span class="toc-num">24</span>Costo Logístico</a>
+        <a class="toc-item" onclick="Reveal.slide(25, 0)"><span class="toc-num">25</span>GD Logístico</a>
+        <a class="toc-item" onclick="Reveal.slide(26, 0)"><span class="toc-num">26</span>Regularización</a>
+        <a class="toc-item" onclick="Reveal.slide(27, 0)"><span class="toc-num">27</span>Clasificación Múltiple</a>
+        <a class="toc-item" onclick="Reveal.slide(28, 0)"><span class="toc-num">28</span>Resumen Semana 3</a>
+      </div>
     </div>
     <p style="font-size: 0.5em; color: var(--c-text-dim); margin-top: 0.5em; text-align: center;">Click en cualquier sección para navegar directamente</p>
   </section>
@@ -3826,6 +3839,78 @@ print(scaler.scale_)   # desv. est.
     </div>
   </section>
 
+  <!-- Tipos de Feature Engineering -->
+  <section data-transition="fade">
+    <h3>Tipos de Feature Engineering</h3>
+    <div style="display: flex; gap: 0.6em; font-size: 0.55em; margin-top: 0.2em;">
+      <!-- Seleccionar -->
+      <div style="flex: 1; background: rgba(252,98,85,0.06); border: 1px solid rgba(252,98,85,0.3); border-radius: 8px; padding: 0.5em;">
+        <p style="color: #FC6255; font-weight: bold; font-size: 1.1em;">1. Seleccionar</p>
+        <p style="color: #a8a290;">Elegir features relevantes, descartar irrelevantes</p>
+        <table style="font-size: 0.9em; margin-top: 0.3em; width: 100%;">
+          <tr><td>¿Marca del auto afuera?</td><td style="color: #FC6255;">✗ No</td></tr>
+          <tr><td>¿Código del vendedor?</td><td style="color: #FC6255;">✗ No</td></tr>
+          <tr><td>¿Colonia con seguridad?</td><td style="color: #83C167;">✓ Sí</td></tr>
+          <tr><td>¿Nombre del vecino?</td><td style="color: #FF862F;">? Analizar</td></tr>
+        </table>
+      </div>
+      <!-- Crear -->
+      <div style="flex: 1; background: rgba(131,193,103,0.06); border: 1px solid rgba(131,193,103,0.3); border-radius: 8px; padding: 0.5em;">
+        <p style="color: #83C167; font-weight: bold; font-size: 1.1em;">2. Crear</p>
+        <p style="color: #a8a290;">Combinar features existentes</p>
+        <div style="margin-top: 0.3em;">
+          <p><code style="color: #58C4DD;">area</code> = frontage × depth</p>
+          <p><code style="color: #58C4DD;">baños</code> = total_cuartos − habitaciones</p>
+          <p><code style="color: #58C4DD;">antigüedad</code> = año_actual − año_construcción</p>
+        </div>
+      </div>
+      <!-- Transformar -->
+      <div style="flex: 1; background: rgba(255,255,0,0.06); border: 1px solid rgba(255,255,0,0.3); border-radius: 8px; padding: 0.5em;">
+        <p style="color: #FFFF00; font-weight: bold; font-size: 1.1em;">3. Transformar</p>
+        <p style="color: #a8a290;">Cambiar representación</p>
+        <div style="margin-top: 0.3em;">
+          <p>Texto → números (NLP)</p>
+          <p>Escalado/normalización</p>
+          <p>Potencias: <span class="katex-inline">x, x^2, x^3</span></p>
+          <p><span class="katex-inline">\log(x), \sqrt{x}</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="fragment fade-up" style="font-size: 0.6em; text-align: center; margin-top: 0.4em; color: var(--c-orange);">
+      Proceso iterativo: <strong>postular</strong> (¿esta feature impacta?) → <strong>experimentar</strong> (entrenar modelo) → <strong>medir</strong> (evaluar costo) → repetir
+    </div>
+  </section>
+
+  <!-- Feature Engineering en Python -->
+  <section data-transition="fade">
+    <h3>Feature Engineering en Python</h3>
+    <pre style="font-size: 0.75em;"><code class="language-python" data-trim>
+import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    'frontage': [40, 60, 50, 45, 55],
+    'depth':    [100, 80, 120, 90, 110],
+    'cuartos_total': [8, 6, 10, 7, 9],
+    'habitaciones':  [4, 3, 5, 3, 4]
+})
+
+# CREAR nuevas features
+df['area'] = df['frontage'] * df['depth']
+df['banos'] = df['cuartos_total'] - df['habitaciones']
+
+# TRANSFORMAR
+df['log_area'] = np.log(df['area'])
+
+# SELECCIONAR features relevantes
+X = df[['area', 'habitaciones', 'banos']].values
+    </code></pre>
+    <div class="fragment fade-up" style="font-size: 0.6em; margin-top: 0.3em;">
+      <p style="color: var(--c-text-dim);">Herramientas comunes: <strong style="color: var(--c-blue);">NumPy</strong>, <strong style="color: var(--c-green);">Pandas</strong>, sklearn.preprocessing</p>
+      <p style="color: var(--c-yellow); margin-top: 0.2em;">No hay razón para usar solo las features originales — usa las que más convengan al modelo</p>
+    </div>
+  </section>
+
   <!-- Regresión Polinomial: motivación -->
   <section>
     <h3>¿Qué pasa con datos no lineales?</h3>
@@ -3972,6 +4057,46 @@ prediccion = pipe.predict(X_new_scaled)
     </div>
   </section>
 
+  <!-- Capacidad del Modelo -->
+  <section data-transition="fade">
+    <h3>Capacidad del Modelo</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <p><strong style="color: var(--c-blue);">Capacidad</strong> = conjunto de funciones que un modelo puede representar (espacio de hipótesis <span class="katex-inline">\mathcal{H}</span>).</p>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <svg viewBox="0 0 650 240" style="width: 90%; max-width: 620px;">
+          <!-- Axes -->
+          <line x1="80" y1="210" x2="600" y2="210" stroke="#a8a290" stroke-width="1.5"/>
+          <line x1="80" y1="210" x2="80" y2="20" stroke="#a8a290" stroke-width="1.5"/>
+          <!-- Axis labels -->
+          <text x="340" y="238" text-anchor="middle" fill="#ece6d0" font-size="12">Capacidad del modelo →</text>
+          <text x="25" y="120" text-anchor="middle" fill="#ece6d0" font-size="12" transform="rotate(-90,25,120)">Error</text>
+          <!-- Training error (decreasing) -->
+          <path d="M 100,60 C 200,80 350,150 580,190" fill="none" stroke="#58C4DD" stroke-width="2.5"/>
+          <text x="585" y="185" fill="#58C4DD" font-size="10">Training</text>
+          <!-- Test error (U-shaped) -->
+          <path d="M 100,70 C 200,55 300,50 350,55 C 420,70 500,110 580,160" fill="none" stroke="#FC6255" stroke-width="2.5"/>
+          <text x="585" y="155" fill="#FC6255" font-size="10">Test</text>
+          <!-- Optimal zone -->
+          <line x1="310" y1="210" x2="310" y2="30" stroke="#83C167" stroke-width="1.5" stroke-dasharray="5,4"/>
+          <text x="310" y="17" text-anchor="middle" fill="#83C167" font-size="11" font-weight="bold">Óptimo</text>
+          <!-- Bayes error (horizontal) -->
+          <line x1="80" y1="195" x2="600" y2="195" stroke="#FFFF00" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="605" y="198" fill="#FFFF00" font-size="9">Error de Bayes</text>
+          <!-- Zones -->
+          <text x="160" y="185" fill="#FC6255" font-size="10">Underfitting</text>
+          <text x="470" y="135" fill="#FFFF00" font-size="10">Overfitting</text>
+          <!-- Examples -->
+          <text x="120" y="225" fill="#a8a290" font-size="9">grado 1</text>
+          <text x="280" y="225" fill="#a8a290" font-size="9">grado 2-3</text>
+          <text x="500" y="225" fill="#a8a290" font-size="9">grado 15</text>
+        </svg>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.3em; font-size: 0.95em; color: var(--c-text-dim);">
+        <p>Poca capacidad → no puede ajustar los datos (underfitting). Mucha capacidad → memoriza ruido (overfitting).</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Navaja de Occam + preview -->
   <section data-transition="fade">
     <h3>Navaja de Occam y Selección de Modelos</h3>
@@ -4059,6 +4184,1357 @@ prediccion = pipe.predict(X_new_scaled)
   </section>
 </section>
 
+<!-- ██████████████████████████████████████████████████████████████
+     SEMANA 3: CLASIFICACIÓN Y REGRESIÓN LOGÍSTICA
+     ██████████████████████████████████████████████████████████████ -->
+
+<!-- ========== Sección 19: Portada Semana 3 ========== -->
+<section>
+  <section data-transition="zoom">
+    <h2 style="color: var(--c-green);">Semana 3</h2>
+    <h3>Clasificación y Regresión Logística</h3>
+    <ul style="font-size: 0.7em; list-style: none; padding: 0; margin-top: 1em;">
+      <li class="fragment fade-up">📊 Introducción a Clasificación</li>
+      <li class="fragment fade-up">🔍 K-Nearest Neighbors (KNN)</li>
+      <li class="fragment fade-up">📈 Regresión Logística &amp; Sigmoid</li>
+      <li class="fragment fade-up">🎯 Frontera de Decisión</li>
+      <li class="fragment fade-up">💰 Función de Costo Logística</li>
+      <li class="fragment fade-up">⚖️ Regularización</li>
+      <li class="fragment fade-up">🔢 Clasificación Múltiple</li>
+    </ul>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin-top: 1em;">
+      Material adaptado de DeepLearning.AI (CC BY-SA 2.0) y Universidad Galileo
+    </p>
+  </section>
+</section>
+
+<!-- ========== Sección 20: Introducción a Clasificación ========== -->
+<section>
+  <section>
+    <h3>¿Qué es Clasificación?</h3>
+    <div style="display: flex; gap: 2em; align-items: center; margin-top: 1em;">
+      <div style="flex: 1;">
+        <p style="font-size: 0.75em;">Predecir una <strong style="color: var(--c-blue);">categoría discreta</strong>, no un valor continuo.</p>
+        <ul style="font-size: 0.65em;">
+          <li class="fragment fade-up"><span class="katex-inline">y \in \{0, 1\}</span> — Clasificación binaria</li>
+          <li class="fragment fade-up"><span class="katex-inline">y \in \{0, 1, 2, ..., K\}</span> — Multi-clase</li>
+        </ul>
+      </div>
+      <div style="flex: 1;" class="fragment fade-up">
+        <table style="font-size: 0.6em; width: 100%;">
+          <tr style="color: var(--c-blue);"><th>Regresión</th><th>Clasificación</th></tr>
+          <tr><td>Precio de casa</td><td>Spam / No spam</td></tr>
+          <tr><td>Temperatura</td><td>Tumor benigno / maligno</td></tr>
+          <tr><td>Ventas futuras</td><td>Fraude / legítimo</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Ejemplos de Clasificación</h3>
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1em; font-size: 0.65em; margin-top: 0.5em;">
+      <div class="fragment fade-up" style="background: rgba(88,196,221,0.1); padding: 0.8em; border-radius: 8px;">
+        <strong style="color: var(--c-blue);">Email Spam</strong><br>
+        Input: texto del email<br>
+        Output: spam (1) / no spam (0)
+      </div>
+      <div class="fragment fade-up" style="background: rgba(252,98,85,0.1); padding: 0.8em; border-radius: 8px;">
+        <strong style="color: var(--c-red);">Diagnóstico Médico</strong><br>
+        Input: síntomas, exámenes<br>
+        Output: benigno (0) / maligno (1)
+      </div>
+      <div class="fragment fade-up" style="background: rgba(131,193,103,0.1); padding: 0.8em; border-radius: 8px;">
+        <strong style="color: var(--c-green);">Detección de Fraude</strong><br>
+        Input: monto, ubicación, hora<br>
+        Output: legítimo (0) / fraude (1)
+      </div>
+      <div class="fragment fade-up" style="background: rgba(154,114,172,0.1); padding: 0.8em; border-radius: 8px;">
+        <strong style="color: var(--c-purple);">Análisis de Sentimiento</strong><br>
+        Input: texto de reseña<br>
+        Output: negativo (0) / positivo (1)
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>¿Por qué NO usar Regresión Lineal?</h3>
+    <div style="margin-top: 0.5em;">
+      <svg viewBox="0 0 800 300" style="width: 100%; max-width: 750px;">
+        <!-- Left chart: works ok -->
+        <rect x="0" y="0" width="370" height="280" fill="none" stroke="rgba(255,255,255,0.1)" rx="8"/>
+        <text x="185" y="25" text-anchor="middle" fill="#a8a290" font-size="13">Sin outlier: parece funcionar</text>
+        <!-- Axis -->
+        <line x1="50" y1="250" x2="350" y2="250" stroke="#a8a290" stroke-width="1.5"/>
+        <line x1="50" y1="250" x2="50" y2="40" stroke="#a8a290" stroke-width="1.5"/>
+        <!-- Points class 0 -->
+        <circle cx="80" cy="220" r="6" fill="#58C4DD"/><circle cx="110" cy="220" r="6" fill="#58C4DD"/>
+        <circle cx="140" cy="220" r="6" fill="#58C4DD"/><circle cx="160" cy="220" r="6" fill="#58C4DD"/>
+        <!-- Points class 1 -->
+        <circle cx="230" cy="70" r="6" fill="#FC6255"/><circle cx="260" cy="70" r="6" fill="#FC6255"/>
+        <circle cx="290" cy="70" r="6" fill="#FC6255"/><circle cx="310" cy="70" r="6" fill="#FC6255"/>
+        <!-- Line -->
+        <line x1="60" y1="240" x2="340" y2="60" stroke="#83C167" stroke-width="2"/>
+        <!-- Threshold -->
+        <line x1="50" y1="150" x2="350" y2="150" stroke="#FFFF00" stroke-width="1" stroke-dasharray="5,3"/>
+        <text x="355" y="154" fill="#FFFF00" font-size="10">0.5</text>
+        <!-- Vertical at boundary -->
+        <line x1="195" y1="250" x2="195" y2="40" stroke="rgba(255,255,0,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- Right chart: fails with outlier -->
+        <rect x="410" y="0" width="380" height="280" fill="none" stroke="rgba(255,255,255,0.1)" rx="8"/>
+        <text x="600" y="25" text-anchor="middle" fill="#a8a290" font-size="13">Con outlier: umbral se desplaza!</text>
+        <line x1="460" y1="250" x2="770" y2="250" stroke="#a8a290" stroke-width="1.5"/>
+        <line x1="460" y1="250" x2="460" y2="40" stroke="#a8a290" stroke-width="1.5"/>
+        <!-- Points class 0 -->
+        <circle cx="490" cy="220" r="6" fill="#58C4DD"/><circle cx="520" cy="220" r="6" fill="#58C4DD"/>
+        <circle cx="550" cy="220" r="6" fill="#58C4DD"/><circle cx="570" cy="220" r="6" fill="#58C4DD"/>
+        <!-- Points class 1 -->
+        <circle cx="620" cy="70" r="6" fill="#FC6255"/><circle cx="650" cy="70" r="6" fill="#FC6255"/>
+        <circle cx="680" cy="70" r="6" fill="#FC6255"/>
+        <!-- Outlier far right -->
+        <circle cx="750" cy="70" r="7" fill="#FC6255" stroke="#FFFF00" stroke-width="2"/>
+        <text x="750" y="55" text-anchor="middle" fill="#FFFF00" font-size="9">outlier</text>
+        <!-- New line (tilted) -->
+        <line x1="465" y1="235" x2="760" y2="60" stroke="#FC6255" stroke-width="2" stroke-dasharray="4,2"/>
+        <!-- New threshold shifts right -->
+        <line x1="460" y1="150" x2="770" y2="150" stroke="#FFFF00" stroke-width="1" stroke-dasharray="5,3"/>
+        <!-- Old boundary -->
+        <line x1="605" y1="250" x2="605" y2="40" stroke="rgba(131,193,103,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
+        <!-- New boundary (wrong!) -->
+        <line x1="650" y1="250" x2="650" y2="40" stroke="rgba(252,98,85,0.5)" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="650" y="265" text-anchor="middle" fill="#FC6255" font-size="10">nuevo umbral</text>
+      </svg>
+    </div>
+    <p class="fragment fade-up" style="font-size: 0.6em; color: var(--c-yellow); text-align: center; margin-top: 0.3em;">
+      Regresión lineal: el umbral se mueve con outliers → clasificaciones incorrectas
+    </p>
+  </section>
+
+  <section>
+    <h3>Tipos de Clasificadores</h3>
+    <table style="font-size: 0.6em; width: 90%; margin: 0.5em auto;">
+      <tr>
+        <th style="color: var(--c-blue);">Paramétricos</th>
+        <th style="color: var(--c-orange);">No Paramétricos</th>
+      </tr>
+      <tr>
+        <td>Regresión Logística</td>
+        <td>K-Nearest Neighbors (KNN)</td>
+      </tr>
+      <tr>
+        <td>SVM (Support Vector Machine)</td>
+        <td>Árboles de Decisión</td>
+      </tr>
+      <tr>
+        <td>Redes Neuronales</td>
+        <td>Random Forest</td>
+      </tr>
+      <tr>
+        <td><em style="color: var(--c-text-dim);">Aprenden θ fijo</em></td>
+        <td><em style="color: var(--c-text-dim);">Usan datos directamente</em></td>
+      </tr>
+    </table>
+    <p class="fragment fade-up" style="font-size: 0.6em; color: var(--c-text-dim); text-align: center; margin-top: 0.5em;">
+      Esta semana: <strong style="color: var(--c-green);">KNN</strong> (no paramétrico) + <strong style="color: var(--c-blue);">Regresión Logística</strong> (paramétrico)
+    </p>
+  </section>
+
+  <section>
+    <h3>Clasificación Binaria</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>Variable objetivo: <span class="katex-inline">y \in \{0, 1\}</span></p>
+      <div style="display: flex; gap: 2em; margin-top: 0.5em;">
+        <div class="fragment fade-up" style="flex:1; text-align: center;">
+          <p style="color: var(--c-blue); font-size: 1.1em;"><strong>Clase Negativa (0)</strong></p>
+          <p>Benigno, No spam, Legítimo</p>
+        </div>
+        <div class="fragment fade-up" style="flex:1; text-align: center;">
+          <p style="color: var(--c-red); font-size: 1.1em;"><strong>Clase Positiva (1)</strong></p>
+          <p>Maligno, Spam, Fraude</p>
+        </div>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 1em; background: rgba(131,193,103,0.1); padding: 0.8em; border-radius: 8px;">
+        <p><strong style="color: var(--c-green);">Objetivo del clasificador:</strong></p>
+        <p>Aprender una función <span class="katex-inline">f(\vec{x}) \to \{0, 1\}</span> que mapee features a clases</p>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 21: K-Nearest Neighbors ========== -->
+<section>
+  <section>
+    <h3>K-Nearest Neighbors (KNN)</h3>
+    <p style="font-size: 0.75em; color: var(--c-text-dim); font-style: italic; margin-top: 0.5em;">
+      "Dime con quién andas y te diré quién eres"
+    </p>
+    <div class="fragment fade-up" style="margin-top: 1em; font-size: 0.7em;">
+      <p><strong style="color: var(--c-blue);">Idea:</strong> Clasificar un punto nuevo basándose en la clase de sus <em>K vecinos más cercanos</em>.</p>
+      <p style="margin-top: 0.5em;"><strong style="color: var(--c-orange);">Tipo:</strong> No paramétrico — no aprende pesos, usa los datos directamente.</p>
+    </div>
+    <div class="fragment fade-up" style="margin-top: 1em; background: rgba(88,196,221,0.1); padding: 0.8em; border-radius: 8px; font-size: 0.65em;">
+      <strong>No necesita entrenamiento explícito</strong> — el "modelo" son los datos mismos.
+    </div>
+  </section>
+
+  <section>
+    <h3>Algoritmo KNN: Paso a Paso</h3>
+    <ol style="font-size: 0.7em; margin-top: 0.5em;">
+      <li class="fragment fade-up" style="margin-bottom: 0.4em;">
+        <strong style="color: var(--c-blue);">Calcular distancias</strong> entre el punto nuevo y todos los puntos de entrenamiento
+      </li>
+      <li class="fragment fade-up" style="margin-bottom: 0.4em;">
+        <strong style="color: var(--c-orange);">Encontrar los K</strong> puntos más cercanos (vecinos)
+      </li>
+      <li class="fragment fade-up" style="margin-bottom: 0.4em;">
+        <strong style="color: var(--c-green);">Voto mayoritario:</strong> la clase más frecuente entre los K vecinos gana
+      </li>
+    </ol>
+    <div class="fragment fade-up" style="margin-top: 1em; font-size: 0.65em;">
+      <p style="color: var(--c-text-dim);">Distancia Euclidiana:</p>
+      <p class="katex-block">d(\vec{x}, \vec{x}') = \sqrt{\sum_{j=1}^{n}(x_j - x'_j)^2}</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>KNN Interactivo</h3>
+    <p style="font-size: 0.55em; color: var(--c-text-dim);">Click en el canvas para clasificar un punto nuevo</p>
+    <div style="display: flex; align-items: center; gap: 1em; margin-top: 0.3em;">
+      <canvas id="knn-canvas" width="700" height="380" style="border-radius: 8px; cursor: crosshair;"></canvas>
+    </div>
+    <div style="display: flex; align-items: center; gap: 1em; margin-top: 0.5em; font-size: 0.65em;">
+      <label style="color: var(--c-text-dim);">K:</label>
+      <input type="range" id="knn-k-slider" min="1" max="15" value="3" step="2" style="width: 200px;">
+      <span id="knn-k-value" style="color: var(--c-green); font-family: 'Fira Code', monospace;">3</span>
+    </div>
+  </section>
+
+  <section>
+    <h3>Distancias en KNN</h3>
+    <div style="display: flex; gap: 2em; font-size: 0.65em; margin-top: 0.5em;">
+      <div style="flex: 1;" class="fragment fade-up">
+        <h4 style="color: var(--c-blue); font-size: 1em;">Euclidiana (L2)</h4>
+        <p class="katex-block">d = \sqrt{(x_1-x_1')^2 + (x_2-x_2')^2}</p>
+        <p style="color: var(--c-text-dim);">Línea recta entre puntos.<br>Sensible a escala → <strong>normalizar!</strong></p>
+      </div>
+      <div style="flex: 1;" class="fragment fade-up">
+        <h4 style="color: var(--c-orange); font-size: 1em;">Manhattan (L1)</h4>
+        <p class="katex-block">d = |x_1-x_1'| + |x_2-x_2'|</p>
+        <p style="color: var(--c-text-dim);">Distancia "por cuadras".<br>Útil en dimensiones altas.</p>
+      </div>
+    </div>
+    <div class="fragment fade-up" style="margin-top: 1em; background: rgba(255,134,47,0.1); padding: 0.6em; border-radius: 8px; font-size: 0.6em;">
+      <strong style="color: var(--c-orange);">Importante:</strong> Feature scaling es crucial para KNN — features con rangos grandes dominarán la distancia.
+    </div>
+  </section>
+
+  <section>
+    <h3>KNN en Python</h3>
+    <pre><code class="language-python">from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# Datos
+X = [[1,2],[1.5,1.8],[2,2.5],[4,5],[4.5,4.8],[5,5.5]]
+y = [0, 0, 0, 1, 1, 1]
+
+# Escalar features (crucial para KNN!)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Entrenar
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_scaled, y)
+
+# Predecir
+nuevo = scaler.transform([[3, 3.5]])
+print(knn.predict(nuevo))       # [0] o [1]
+print(knn.predict_proba(nuevo)) # probabilidades
+</code></pre>
+  </section>
+
+  <section>
+    <h3>KNN: Ventajas y Desventajas</h3>
+    <div style="display: flex; gap: 1.5em; font-size: 0.65em; margin-top: 0.5em;">
+      <div style="flex: 1;">
+        <h4 style="color: var(--c-green);">Ventajas</h4>
+        <ul>
+          <li class="fragment fade-up">Simple e intuitivo</li>
+          <li class="fragment fade-up">No requiere entrenamiento</li>
+          <li class="fragment fade-up">Funciona con fronteras no lineales</li>
+          <li class="fragment fade-up">Pocos hiperparámetros (K)</li>
+        </ul>
+      </div>
+      <div style="flex: 1;">
+        <h4 style="color: var(--c-red);">Desventajas</h4>
+        <ul>
+          <li class="fragment fade-up">Lento en predicción (O(n))</li>
+          <li class="fragment fade-up">Mucha memoria (guarda todo)</li>
+          <li class="fragment fade-up">Curse of dimensionality</li>
+          <li class="fragment fade-up">Sensible a features irrelevantes</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fragment fade-up" style="margin-top: 1em; font-size: 0.6em; text-align: center; color: var(--c-text-dim);">
+      <strong>Efecto de K:</strong> K pequeño → overfitting | K grande → underfitting
+    </div>
+  </section>
+
+  <section>
+    <h3>KNN en Búsqueda Semántica</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>KNN no solo clasifica — es la base de la <strong style="color: var(--c-blue);">búsqueda por similitud</strong> moderna:</p>
+      <div style="display: flex; gap: 1.5em; margin-top: 0.8em;">
+        <div class="fragment fade-up" style="flex: 1; background: rgba(88,196,221,0.1); padding: 0.7em; border-radius: 8px; font-size: 0.85em;">
+          <strong style="color: var(--c-blue);">Embeddings + KNN</strong><br>
+          <span style="color: var(--c-text-dim);">Texto/imágenes → vectores → buscar los K más cercanos</span>
+        </div>
+        <div class="fragment fade-up" style="flex: 1; background: rgba(131,193,103,0.1); padding: 0.7em; border-radius: 8px; font-size: 0.85em;">
+          <strong style="color: var(--c-green);">Vector Databases</strong><br>
+          <span style="color: var(--c-text-dim);">Pinecone, Weaviate, ChromaDB — KNN a escala</span>
+        </div>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 1em; font-size: 0.85em;">
+        <p style="color: var(--c-text-dim);">Aplicaciones: ChatGPT retrieval, Google search, Spotify recommendations, similar images...</p>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 22: Regresión Logística ========== -->
+<section>
+  <section>
+    <h3>Regresión Logística: Motivación</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>Necesitamos un modelo que prediga <strong style="color: var(--c-blue);">probabilidades</strong>:</p>
+      <ul style="margin-top: 0.5em;">
+        <li class="fragment fade-up">Output debe estar entre 0 y 1</li>
+        <li class="fragment fade-up">Interpretable como <span class="katex-inline">P(y=1|\vec{x})</span></li>
+        <li class="fragment fade-up">Debe aprender parámetros (paramétrico)</li>
+        <li class="fragment fade-up">Debe ser diferenciable (para gradient descent)</li>
+      </ul>
+      <div class="fragment fade-up" style="margin-top: 1em; background: rgba(88,196,221,0.1); padding: 0.7em; border-radius: 8px;">
+        <strong style="color: var(--c-blue);">Solución:</strong> Aplicar la función <em>sigmoid</em> a la salida lineal<br>
+        <span class="katex-inline">f_{w,b}(\vec{x}) = g(\vec{w} \cdot \vec{x} + b)</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>La Función Sigmoid</h3>
+    <div style="font-size: 0.7em;">
+      <p class="katex-block">g(z) = \frac{1}{1 + e^{-z}}</p>
+      <div style="display: flex; gap: 2em; margin-top: 0.5em;">
+        <div style="flex: 1;">
+          <h4 style="color: var(--c-blue); font-size: 0.9em;">Propiedades:</h4>
+          <ul style="font-size: 0.85em;" class="fragment fade-up">
+            <li><span class="katex-inline">g(0) = 0.5</span></li>
+            <li><span class="katex-inline">g(z) \to 1</span> cuando <span class="katex-inline">z \to +\infty</span></li>
+            <li><span class="katex-inline">g(z) \to 0</span> cuando <span class="katex-inline">z \to -\infty</span></li>
+            <li><span class="katex-inline">0 < g(z) < 1</span> siempre</li>
+            <li><span class="katex-inline">g'(z) = g(z)(1 - g(z))</span></li>
+          </ul>
+        </div>
+        <div style="flex: 1;" class="fragment fade-up">
+          <svg viewBox="0 0 300 200" style="width: 100%;">
+            <rect x="0" y="0" width="300" height="200" fill="none"/>
+            <!-- Axes -->
+            <line x1="30" y1="180" x2="280" y2="180" stroke="#a8a290" stroke-width="1.5"/>
+            <line x1="150" y1="10" x2="150" y2="190" stroke="#a8a290" stroke-width="1"/>
+            <!-- Sigmoid curve -->
+            <path d="M 30,170 C 60,170 80,168 100,160 C 120,148 135,130 150,100 C 165,70 180,52 200,40 C 220,32 240,30 280,28" fill="none" stroke="#58C4DD" stroke-width="2.5"/>
+            <!-- Threshold line -->
+            <line x1="30" y1="100" x2="280" y2="100" stroke="#FFFF00" stroke-width="1" stroke-dasharray="4,3"/>
+            <!-- Labels -->
+            <text x="285" y="104" fill="#FFFF00" font-size="10">0.5</text>
+            <text x="285" y="32" fill="#83C167" font-size="10">1</text>
+            <text x="285" y="178" fill="#a8a290" font-size="10">0</text>
+            <text x="150" y="198" fill="#a8a290" font-size="10" text-anchor="middle">z=0</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Sigmoid Interactivo</h3>
+    <p style="font-size: 0.55em; color: var(--c-text-dim);">Ajusta w y b para ver cómo cambia g(w·x + b)</p>
+    <canvas id="sigmoid-canvas" width="750" height="350" style="border-radius: 8px;"></canvas>
+    <div style="display: flex; gap: 2em; margin-top: 0.3em; font-size: 0.6em; justify-content: center;">
+      <div>
+        <label style="color: var(--c-text-dim);">w:</label>
+        <input type="range" id="sigmoid-w-slider" min="-5" max="5" value="1" step="0.1" style="width: 140px;">
+        <span id="sigmoid-w-value" style="color: var(--c-green); font-family: 'Fira Code';">1.0</span>
+      </div>
+      <div>
+        <label style="color: var(--c-text-dim);">b:</label>
+        <input type="range" id="sigmoid-b-slider" min="-5" max="5" value="0" step="0.1" style="width: 140px;">
+        <span id="sigmoid-b-value" style="color: var(--c-green); font-family: 'Fira Code';">0.0</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Modelo de Regresión Logística</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p class="katex-block">f_{\vec{w},b}(\vec{x}) = g(\vec{w} \cdot \vec{x} + b) = \frac{1}{1 + e^{-(\vec{w} \cdot \vec{x} + b)}}</p>
+      <div class="fragment fade-up" style="margin-top: 1em;">
+        <p><strong style="color: var(--c-green);">Interpretación:</strong></p>
+        <p class="katex-block">f(\vec{x}) = P(y = 1 | \vec{x}; \vec{w}, b)</p>
+        <p style="font-size: 0.85em; color: var(--c-text-dim);">
+          "La probabilidad de que y=1 dado x, con parámetros w, b"
+        </p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.8em; background: rgba(255,134,47,0.1); padding: 0.6em; border-radius: 8px;">
+        <strong>Ejemplo:</strong> Si <span class="katex-inline">f(\vec{x}) = 0.7</span><br>
+        → 70% de probabilidad de tumor maligno<br>
+        → <span class="katex-inline">P(y=0) = 1 - 0.7 = 0.3</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Regresión Logística en Python</h3>
+    <pre><code class="language-python">from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+# Datos: tamaño del tumor → maligno?
+X = np.array([[1],[2],[3],[4],[5],[6],[7],[8]]).reshape(-1,1)
+y = np.array([0, 0, 0, 0, 1, 1, 1, 1])
+
+# Escalar
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Entrenar regresión logística
+model = LogisticRegression()
+model.fit(X_scaled, y)
+
+# Predecir
+nuevo = scaler.transform([[4.5]])
+print(model.predict(nuevo))        # [0] o [1]
+print(model.predict_proba(nuevo))  # [[P(0), P(1)]]
+# Parámetros aprendidos
+print(f"w = {model.coef_[0]}, b = {model.intercept_}")
+</code></pre>
+  </section>
+
+  <section>
+    <h3>Regresión Lineal vs Logística</h3>
+    <div style="display: flex; gap: 1em; margin-top: 0.5em;">
+      <div style="flex: 1;">
+        <svg viewBox="0 0 280 200" style="width: 100%;">
+          <text x="140" y="18" text-anchor="middle" fill="#58C4DD" font-size="12" font-weight="bold">Regresión Lineal</text>
+          <line x1="30" y1="180" x2="260" y2="180" stroke="#a8a290" stroke-width="1"/>
+          <line x1="30" y1="180" x2="30" y2="20" stroke="#a8a290" stroke-width="1"/>
+          <!-- Points -->
+          <circle cx="60" cy="160" r="5" fill="#58C4DD"/><circle cx="90" cy="150" r="5" fill="#58C4DD"/>
+          <circle cx="120" cy="140" r="5" fill="#FC6255"/><circle cx="150" cy="110" r="5" fill="#FC6255"/>
+          <circle cx="180" cy="80" r="5" fill="#FC6255"/><circle cx="210" cy="60" r="5" fill="#FC6255"/>
+          <!-- Line goes beyond 0-1 -->
+          <line x1="40" y1="175" x2="250" y2="30" stroke="#83C167" stroke-width="2"/>
+          <text x="255" y="25" fill="#FC6255" font-size="9">> 1 !</text>
+          <text x="50" y="195" fill="#FC6255" font-size="9">&lt; 0 !</text>
+        </svg>
+      </div>
+      <div style="flex: 1;">
+        <svg viewBox="0 0 280 200" style="width: 100%;">
+          <text x="140" y="18" text-anchor="middle" fill="#83C167" font-size="12" font-weight="bold">Regresión Logística</text>
+          <line x1="30" y1="180" x2="260" y2="180" stroke="#a8a290" stroke-width="1"/>
+          <line x1="30" y1="180" x2="30" y2="20" stroke="#a8a290" stroke-width="1"/>
+          <!-- Points -->
+          <circle cx="60" cy="165" r="5" fill="#58C4DD"/><circle cx="90" cy="163" r="5" fill="#58C4DD"/>
+          <circle cx="120" cy="155" r="5" fill="#FC6255"/><circle cx="150" cy="100" r="5" fill="#FC6255"/>
+          <circle cx="180" cy="45" r="5" fill="#FC6255"/><circle cx="210" cy="38" r="5" fill="#FC6255"/>
+          <!-- Sigmoid curve -->
+          <path d="M 40,168 C 70,167 100,165 125,150 C 145,130 155,100 165,80 C 180,55 200,42 250,36" fill="none" stroke="#83C167" stroke-width="2.5"/>
+          <!-- 0 and 1 lines -->
+          <line x1="30" y1="170" x2="260" y2="170" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="30" y1="35" x2="260" y2="35" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="18" y="173" fill="#a8a290" font-size="9">0</text>
+          <text x="18" y="38" fill="#a8a290" font-size="9">1</text>
+        </svg>
+      </div>
+    </div>
+    <table style="font-size: 0.55em; width: 90%; margin: 0.5em auto;">
+      <tr><th></th><th style="color: var(--c-blue);">Lineal</th><th style="color: var(--c-green);">Logística</th></tr>
+      <tr><td>Output</td><td><span class="katex-inline">(-\infty, +\infty)</span></td><td><span class="katex-inline">(0, 1)</span></td></tr>
+      <tr><td>Uso</td><td>Regresión</td><td>Clasificación</td></tr>
+      <tr><td>Función</td><td><span class="katex-inline">f=\vec{w}\cdot\vec{x}+b</span></td><td><span class="katex-inline">f=g(\vec{w}\cdot\vec{x}+b)</span></td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h3>Regresión Logística como Neurona</h3>
+    <p style="font-size: 0.6em; color: var(--c-text-dim);">Conexión con Deep Learning: una neurona con activación sigmoid</p>
+    <svg viewBox="0 0 750 320" style="width: 92%; margin-top: 0.3em;">
+      <defs>
+        <marker id="arrowGreenL" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0,0 8,3 0,6" fill="#83C167"/>
+        </marker>
+        <marker id="arrowOrangeL" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0,0 8,3 0,6" fill="#FF862F"/>
+        </marker>
+        <marker id="arrowBlueL" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0,0 8,3 0,6" fill="#58C4DD"/>
+        </marker>
+      </defs>
+      <!-- Input nodes -->
+      <circle cx="80" cy="60" r="25" fill="none" stroke="#58C4DD" stroke-width="2"/>
+      <text x="80" y="65" text-anchor="middle" fill="#58C4DD" font-size="14">x₁</text>
+      <circle cx="80" cy="140" r="25" fill="none" stroke="#58C4DD" stroke-width="2"/>
+      <text x="80" y="145" text-anchor="middle" fill="#58C4DD" font-size="14">x₂</text>
+      <circle cx="80" cy="220" r="25" fill="none" stroke="#58C4DD" stroke-width="2"/>
+      <text x="80" y="225" text-anchor="middle" fill="#58C4DD" font-size="14">x₃</text>
+      <!-- Dots -->
+      <text x="80" y="270" text-anchor="middle" fill="#a8a290" font-size="18">⋮</text>
+      <circle cx="80" cy="300" r="20" fill="none" stroke="#58C4DD" stroke-width="2"/>
+      <text x="80" y="305" text-anchor="middle" fill="#58C4DD" font-size="14">xₙ</text>
+
+      <!-- Arrows to neuron -->
+      <line x1="105" y1="60" x2="270" y2="140" stroke="#FF862F" stroke-width="1.5" marker-end="url(#arrowOrangeL)"/>
+      <line x1="105" y1="140" x2="270" y2="155" stroke="#FF862F" stroke-width="1.5" marker-end="url(#arrowOrangeL)"/>
+      <line x1="105" y1="220" x2="270" y2="170" stroke="#FF862F" stroke-width="1.5" marker-end="url(#arrowOrangeL)"/>
+      <line x1="100" y1="300" x2="270" y2="185" stroke="#FF862F" stroke-width="1.5" marker-end="url(#arrowOrangeL)"/>
+
+      <!-- Weight labels -->
+      <text x="175" y="88" fill="#FF862F" font-size="11">w₁</text>
+      <text x="185" y="138" fill="#FF862F" font-size="11">w₂</text>
+      <text x="185" y="188" fill="#FF862F" font-size="11">w₃</text>
+      <text x="175" y="248" fill="#FF862F" font-size="11">wₙ</text>
+
+      <!-- Neuron body -->
+      <circle cx="310" cy="160" r="45" fill="rgba(131,193,103,0.15)" stroke="#83C167" stroke-width="2.5"/>
+      <text x="310" y="150" text-anchor="middle" fill="#ece6d0" font-size="11">Σ + σ(z)</text>
+      <text x="310" y="175" text-anchor="middle" fill="#a8a290" font-size="10">sigmoid</text>
+
+      <!-- Bias arrow -->
+      <line x1="310" y1="50" x2="310" y2="112" stroke="#FFFF00" stroke-width="1.5" marker-end="url(#arrowGreenL)"/>
+      <text x="310" y="40" text-anchor="middle" fill="#FFFF00" font-size="12">b</text>
+
+      <!-- Output arrow -->
+      <line x1="355" y1="160" x2="460" y2="160" stroke="#83C167" stroke-width="2" marker-end="url(#arrowGreenL)"/>
+
+      <!-- Output -->
+      <circle cx="500" cy="160" r="30" fill="rgba(88,196,221,0.15)" stroke="#58C4DD" stroke-width="2"/>
+      <text x="500" y="155" text-anchor="middle" fill="#ece6d0" font-size="11">ŷ</text>
+      <text x="500" y="175" text-anchor="middle" fill="#58C4DD" font-size="9">∈ [0,1]</text>
+
+      <!-- Equations -->
+      <text x="580" y="100" fill="#ece6d0" font-size="12" font-style="italic">z = w⃗·x⃗ + b</text>
+      <text x="580" y="130" fill="#83C167" font-size="12" font-style="italic">ŷ = σ(z) = 1/(1+e⁻ᶻ)</text>
+      <text x="580" y="170" fill="#a8a290" font-size="11">σ = sigmoid</text>
+      <text x="580" y="210" fill="#FFFF00" font-size="11">vs Semana 2:</text>
+      <text x="580" y="235" fill="#a8a290" font-size="11">f(z) = z (lineal)</text>
+      <text x="580" y="260" fill="#83C167" font-size="11">f(z) = σ(z) (logística)</text>
+    </svg>
+  </section>
+</section>
+
+<!-- ========== Sección 23: Frontera de Decisión ========== -->
+<section>
+  <section>
+    <h3>Frontera de Decisión</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p><strong style="color: var(--c-yellow);">Regla de decisión:</strong></p>
+      <div style="margin: 0.5em 0;">
+        <p class="katex-block">\hat{y} = \begin{cases} 1 & \text{si } f(\vec{x}) \geq 0.5 \\ 0 & \text{si } f(\vec{x}) < 0.5 \end{cases}</p>
+      </div>
+      <div class="fragment fade-up">
+        <p>Dado que <span class="katex-inline">g(z) \geq 0.5</span> cuando <span class="katex-inline">z \geq 0</span>:</p>
+        <p class="katex-block">\hat{y} = 1 \iff \vec{w} \cdot \vec{x} + b \geq 0</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(255,255,0,0.1); padding: 0.5em; border-radius: 8px;">
+        <strong>Frontera de decisión:</strong> la línea (o superficie) donde <span class="katex-inline">\vec{w} \cdot \vec{x} + b = 0</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Frontera Lineal</h3>
+    <p style="font-size: 0.6em; color: var(--c-text-dim);">Con 2 features: <span class="katex-inline">w_1 x_1 + w_2 x_2 + b = 0</span> es una recta</p>
+    <div style="margin-top: 0.5em;">
+      <svg viewBox="0 0 500 300" style="width: 80%; max-width: 500px;">
+        <rect x="50" y="10" width="400" height="270" fill="rgba(88,196,221,0.05)" rx="5"/>
+        <!-- Class regions -->
+        <polygon points="50,280 50,10 250,10 450,280" fill="rgba(88,196,221,0.08)"/>
+        <polygon points="250,10 450,10 450,280" fill="rgba(252,98,85,0.08)"/>
+        <!-- Boundary -->
+        <line x1="250" y1="10" x2="450" y2="280" stroke="#FFFF00" stroke-width="2.5"/>
+        <!-- Class 0 points -->
+        <circle cx="100" cy="80" r="7" fill="#58C4DD"/><circle cx="130" cy="150" r="7" fill="#58C4DD"/>
+        <circle cx="160" cy="200" r="7" fill="#58C4DD"/><circle cx="200" cy="120" r="7" fill="#58C4DD"/>
+        <circle cx="180" cy="250" r="7" fill="#58C4DD"/><circle cx="120" cy="230" r="7" fill="#58C4DD"/>
+        <!-- Class 1 points -->
+        <circle cx="350" cy="80" r="7" fill="#FC6255"/><circle cx="380" cy="150" r="7" fill="#FC6255"/>
+        <circle cx="400" cy="200" r="7" fill="#FC6255"/><circle cx="370" cy="250" r="7" fill="#FC6255"/>
+        <circle cx="420" cy="120" r="7" fill="#FC6255"/><circle cx="330" cy="180" r="7" fill="#FC6255"/>
+        <!-- Labels -->
+        <text x="130" y="50" fill="#58C4DD" font-size="13" font-weight="bold">ŷ = 0</text>
+        <text x="380" y="50" fill="#FC6255" font-size="13" font-weight="bold">ŷ = 1</text>
+        <text x="350" y="150" fill="#FFFF00" font-size="11" transform="rotate(35,350,150)">w₁x₁+w₂x₂+b=0</text>
+      </svg>
+    </div>
+  </section>
+
+  <section>
+    <h3>Frontera de Decisión Interactiva</h3>
+    <p style="font-size: 0.55em; color: var(--c-text-dim);">Ajusta w₁, w₂, b para mover la frontera</p>
+    <canvas id="decision-boundary-canvas" width="720" height="360" style="border-radius: 8px;"></canvas>
+    <div style="display: flex; gap: 1.2em; margin-top: 0.3em; font-size: 0.55em; justify-content: center; flex-wrap: wrap;">
+      <div>
+        <label style="color: var(--c-text-dim);">w₁:</label>
+        <input type="range" id="db-w1-slider" min="-5" max="5" value="1" step="0.1" style="width: 100px;">
+        <span id="db-w1-value" style="color: var(--c-green); font-family: 'Fira Code';">1.0</span>
+      </div>
+      <div>
+        <label style="color: var(--c-text-dim);">w₂:</label>
+        <input type="range" id="db-w2-slider" min="-5" max="5" value="1" step="0.1" style="width: 100px;">
+        <span id="db-w2-value" style="color: var(--c-green); font-family: 'Fira Code';">1.0</span>
+      </div>
+      <div>
+        <label style="color: var(--c-text-dim);">b:</label>
+        <input type="range" id="db-b-slider" min="-20" max="5" value="-12" step="0.5" style="width: 100px;">
+        <span id="db-b-value" style="color: var(--c-green); font-family: 'Fira Code';">-12.0</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Fronteras No Lineales</h3>
+    <div style="font-size: 0.65em; margin-top: 0.5em;">
+      <p>Con <strong style="color: var(--c-orange);">polynomial features</strong>, la frontera puede ser curva:</p>
+      <div style="display: flex; gap: 1.5em; margin-top: 0.8em;">
+        <div class="fragment fade-up" style="flex: 1; text-align: center;">
+          <svg viewBox="0 0 200 200" style="width: 150px;">
+            <circle cx="100" cy="100" r="90" fill="rgba(88,196,221,0.08)" stroke="none"/>
+            <circle cx="100" cy="100" r="50" fill="none" stroke="#FFFF00" stroke-width="2"/>
+            <circle cx="100" cy="100" r="50" fill="rgba(252,98,85,0.1)"/>
+            <circle cx="80" cy="80" r="5" fill="#FC6255"/><circle cx="110" cy="90" r="5" fill="#FC6255"/>
+            <circle cx="100" cy="110" r="5" fill="#FC6255"/><circle cx="95" cy="95" r="5" fill="#FC6255"/>
+            <circle cx="40" cy="40" r="5" fill="#58C4DD"/><circle cx="160" cy="50" r="5" fill="#58C4DD"/>
+            <circle cx="50" cy="160" r="5" fill="#58C4DD"/><circle cx="170" cy="160" r="5" fill="#58C4DD"/>
+          </svg>
+          <p style="color: var(--c-text-dim);">Círculo:<br><span class="katex-inline">w_1 x_1^2 + w_2 x_2^2 + b = 0</span></p>
+        </div>
+        <div class="fragment fade-up" style="flex: 1; text-align: center;">
+          <svg viewBox="0 0 200 200" style="width: 150px;">
+            <ellipse cx="100" cy="100" rx="70" ry="45" fill="none" stroke="#FFFF00" stroke-width="2"/>
+            <ellipse cx="100" cy="100" rx="70" ry="45" fill="rgba(252,98,85,0.1)"/>
+            <circle cx="100" cy="100" r="4" fill="#FC6255"/><circle cx="80" cy="95" r="4" fill="#FC6255"/>
+            <circle cx="120" cy="105" r="4" fill="#FC6255"/><circle cx="130" cy="95" r="4" fill="#FC6255"/>
+            <circle cx="30" cy="30" r="5" fill="#58C4DD"/><circle cx="170" cy="30" r="5" fill="#58C4DD"/>
+            <circle cx="30" cy="170" r="5" fill="#58C4DD"/><circle cx="170" cy="170" r="5" fill="#58C4DD"/>
+          </svg>
+          <p style="color: var(--c-text-dim);">Elipse:<br><span class="katex-inline">w_1 x_1^2 + w_2 x_2^2 + w_3 x_1 x_2 + b = 0</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Frontera No Lineal: Ejemplo</h3>
+    <div style="font-size: 0.7em;">
+      <p>Con features <span class="katex-inline">\phi(x) = [x_1^2, x_2^2]</span>:</p>
+      <p class="katex-block">f(\vec{x}) = g(w_1 x_1^2 + w_2 x_2^2 + b)</p>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p><strong>Frontera:</strong> <span class="katex-inline">w_1 x_1^2 + w_2 x_2^2 + b = 0</span></p>
+        <p style="color: var(--c-text-dim); margin-top: 0.3em;">Si <span class="katex-inline">w_1 = w_2 = 1, b = -1</span> → círculo de radio 1</p>
+      </div>
+      <pre class="fragment fade-up"><code class="language-python">from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+
+# Pipeline: polynomial features + logistic regression
+model = Pipeline([
+    ('poly', PolynomialFeatures(degree=2)),
+    ('lr', LogisticRegression())
+])
+model.fit(X_train, y_train)
+</code></pre>
+    </div>
+  </section>
+
+  <section>
+    <h3>Deep Learning: Fronteras Complejas</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>Con más capas de neuronas → fronteras <strong style="color: var(--c-green);">arbitrariamente complejas</strong>:</p>
+      <div style="display: flex; gap: 1.5em; margin-top: 1em; align-items: center;">
+        <div class="fragment fade-up" style="text-align: center; flex: 1;">
+          <p style="color: var(--c-text-dim);">1 neurona (logística)</p>
+          <p style="color: var(--c-blue); font-size: 1.2em;">Línea recta</p>
+        </div>
+        <div style="color: var(--c-text-dim); font-size: 1.5em;">→</div>
+        <div class="fragment fade-up" style="text-align: center; flex: 1;">
+          <p style="color: var(--c-text-dim);">Polynomial features</p>
+          <p style="color: var(--c-orange); font-size: 1.2em;">Curvas simples</p>
+        </div>
+        <div style="color: var(--c-text-dim); font-size: 1.5em;">→</div>
+        <div class="fragment fade-up" style="text-align: center; flex: 1;">
+          <p style="color: var(--c-text-dim);">Red neuronal profunda</p>
+          <p style="color: var(--c-green); font-size: 1.2em;">Cualquier forma</p>
+        </div>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 1em; background: rgba(131,193,103,0.1); padding: 0.6em; border-radius: 8px;">
+        <strong style="color: var(--c-green);">Deep Learning</strong> aprende automáticamente las features polinomiales óptimas — no necesitas diseñarlas manualmente.
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 24: Función de Costo Logística ========== -->
+<section>
+  <section>
+    <h3>¿Por qué NO usar MSE?</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>Con regresión lineal usamos: <span class="katex-inline">J = \frac{1}{2m}\sum(f(x^{(i)}) - y^{(i)})^2</span></p>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p><strong style="color: var(--c-red);">Problema:</strong> con sigmoid, MSE es <strong>no convexa</strong>!</p>
+      </div>
+      <div style="display: flex; gap: 2em; margin-top: 0.5em;" class="fragment fade-up">
+        <div style="flex: 1; text-align: center;">
+          <svg viewBox="0 0 200 150" style="width: 180px;">
+            <path d="M 20,130 C 50,100 70,40 90,80 C 110,120 130,30 150,90 C 170,130 180,110 190,120" fill="none" stroke="#FC6255" stroke-width="2.5"/>
+            <text x="100" y="145" text-anchor="middle" fill="#FC6255" font-size="11">No convexa (MSE)</text>
+            <!-- multiple local minima dots -->
+            <circle cx="55" cy="42" r="4" fill="#FFFF00"/>
+            <circle cx="135" cy="32" r="4" fill="#FFFF00"/>
+          </svg>
+          <p style="font-size: 0.8em; color: var(--c-red);">Múltiples mínimos locales</p>
+        </div>
+        <div style="flex: 1; text-align: center;">
+          <svg viewBox="0 0 200 150" style="width: 180px;">
+            <path d="M 20,20 C 60,120 100,140 110,140 C 120,140 160,120 190,20" fill="none" stroke="#83C167" stroke-width="2.5"/>
+            <text x="100" y="145" text-anchor="middle" fill="#83C167" font-size="11">Convexa (Cross-Entropy)</text>
+            <circle cx="107" cy="140" r="4" fill="#FFFF00"/>
+          </svg>
+          <p style="font-size: 0.8em; color: var(--c-green);">Un solo mínimo global</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Cross-Entropy Loss</h3>
+    <div style="font-size: 0.7em; margin-top: 0.3em;">
+      <p><strong style="color: var(--c-blue);">Loss para un ejemplo:</strong></p>
+      <p class="katex-block">L(f(x), y) = \begin{cases} -\log(f(x)) & \text{si } y = 1 \\ -\log(1 - f(x)) & \text{si } y = 0 \end{cases}</p>
+      <div class="fragment fade-up" style="margin-top: 0.8em;">
+        <p><strong style="color: var(--c-green);">Intuición:</strong></p>
+        <ul style="font-size: 0.9em;">
+          <li>Si <span class="katex-inline">y=1</span> y predigo <span class="katex-inline">f(x) \approx 1</span> → loss ≈ 0 ✓</li>
+          <li>Si <span class="katex-inline">y=1</span> y predigo <span class="katex-inline">f(x) \approx 0</span> → loss → ∞ ✗</li>
+          <li>Si <span class="katex-inline">y=0</span> y predigo <span class="katex-inline">f(x) \approx 0</span> → loss ≈ 0 ✓</li>
+          <li>Si <span class="katex-inline">y=0</span> y predigo <span class="katex-inline">f(x) \approx 1</span> → loss → ∞ ✗</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Visualización del Costo</h3>
+    <p style="font-size: 0.55em; color: var(--c-text-dim);">Mueve el slider para ver el costo según la predicción f(x)</p>
+    <canvas id="logistic-cost-canvas" width="750" height="340" style="border-radius: 8px;"></canvas>
+    <div style="display: flex; align-items: center; gap: 1em; margin-top: 0.3em; font-size: 0.6em; justify-content: center;">
+      <label style="color: var(--c-text-dim);">f(x):</label>
+      <input type="range" id="logcost-f-slider" min="0.01" max="0.99" value="0.7" step="0.01" style="width: 250px;">
+      <span id="logcost-f-value" style="color: var(--c-green); font-family: 'Fira Code';">0.70</span>
+    </div>
+  </section>
+
+  <section>
+    <h3>Forma Unificada del Costo</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>Combinamos ambos casos en una sola ecuación:</p>
+      <p class="katex-block">L = -y \cdot \log(f(x)) - (1-y) \cdot \log(1-f(x))</p>
+      <div class="fragment fade-up" style="margin-top: 0.5em; color: var(--c-text-dim); font-size: 0.85em;">
+        <p>• Si y=1: <span class="katex-inline">L = -\log(f(x))</span> ✓</p>
+        <p>• Si y=0: <span class="katex-inline">L = -\log(1-f(x))</span> ✓</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.8em;">
+        <p><strong style="color: var(--c-green);">Función de costo completa:</strong></p>
+        <p class="katex-block">J(\vec{w},b) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)}\log(f(x^{(i)})) + (1-y^{(i)})\log(1-f(x^{(i)}))\right]</p>
+      </div>
+      <p class="fragment fade-up" style="font-size: 0.7em; color: var(--c-text-dim); margin-top: 0.5em;">
+        Esta función es <strong style="color: var(--c-green);">convexa</strong> → gradient descent encuentra el mínimo global.
+        <br><em>Deriva de Maximum Likelihood Estimation (MLE).</em>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Costo Logístico en Python</h3>
+    <pre><code class="language-python">import numpy as np
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+def logistic_cost(X, y, w, b):
+    """Cross-entropy cost function"""
+    m = len(y)
+    f = sigmoid(X @ w + b)
+
+    # Evitar log(0) con clip
+    f = np.clip(f, 1e-7, 1 - 1e-7)
+
+    cost = -1/m * np.sum(
+        y * np.log(f) + (1 - y) * np.log(1 - f)
+    )
+    return cost
+
+# Ejemplo
+X = np.array([[1],[2],[3],[4],[5],[6]])
+y = np.array([0, 0, 0, 1, 1, 1])
+w = np.array([1.0])
+b = -3.0
+
+print(f"J = {logistic_cost(X, y, w, b):.4f}")
+</code></pre>
+  </section>
+</section>
+
+<!-- ========== Sección 25: GD para Regresión Logística ========== -->
+<section>
+  <section>
+    <h3>Gradient Descent para Logística</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>El algoritmo de GD es <strong style="color: var(--c-yellow);">idéntico en estructura</strong> al de regresión lineal:</p>
+      <div style="margin-top: 0.8em;">
+        <p class="katex-block">w_j := w_j - \alpha \frac{\partial J}{\partial w_j}</p>
+        <p class="katex-block">b := b - \alpha \frac{\partial J}{\partial b}</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.8em;">
+        <p><strong style="color: var(--c-blue);">Las derivadas:</strong></p>
+        <p class="katex-block">\frac{\partial J}{\partial w_j} = \frac{1}{m}\sum_{i=1}^{m}(f(x^{(i)}) - y^{(i)}) \cdot x_j^{(i)}</p>
+        <p class="katex-block">\frac{\partial J}{\partial b} = \frac{1}{m}\sum_{i=1}^{m}(f(x^{(i)}) - y^{(i)})</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>¡Misma Fórmula, Distinto f(x)!</h3>
+    <div style="margin-top: 0.5em;">
+      <table style="font-size: 0.6em; width: 95%; margin: 0 auto;">
+        <tr>
+          <th></th>
+          <th style="color: var(--c-blue);">Regresión Lineal</th>
+          <th style="color: var(--c-green);">Regresión Logística</th>
+        </tr>
+        <tr>
+          <td><strong>f(x)</strong></td>
+          <td><span class="katex-inline">\vec{w} \cdot \vec{x} + b</span></td>
+          <td><span class="katex-inline">\frac{1}{1+e^{-(\vec{w} \cdot \vec{x}+b)}}</span></td>
+        </tr>
+        <tr>
+          <td><strong>∂J/∂w_j</strong></td>
+          <td><span class="katex-inline">\frac{1}{m}\sum(f(x^{(i)})-y^{(i)})x_j^{(i)}</span></td>
+          <td><span class="katex-inline">\frac{1}{m}\sum(f(x^{(i)})-y^{(i)})x_j^{(i)}</span></td>
+        </tr>
+        <tr>
+          <td><strong>Costo J</strong></td>
+          <td>MSE</td>
+          <td>Cross-Entropy</td>
+        </tr>
+        <tr>
+          <td><strong>Update</strong></td>
+          <td colspan="2" style="text-align: center; color: var(--c-yellow);"><span class="katex-inline">w_j := w_j - \alpha \cdot \frac{\partial J}{\partial w_j}</span></td>
+        </tr>
+      </table>
+      <p class="fragment fade-up" style="font-size: 0.6em; color: var(--c-green); text-align: center; margin-top: 0.8em;">
+        La fórmula del gradiente luce igual — pero f(x) es diferente, ¡eso lo cambia todo!
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h3>GD Logístico: Implementación</h3>
+    <pre><code class="language-python">import numpy as np
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+def gradient_descent_logistic(X, y, w, b, alpha, iters):
+    m = len(y)
+    J_history = []
+
+    for i in range(iters):
+        # Predicciones
+        f = sigmoid(X @ w + b)
+
+        # Gradientes
+        dw = (1/m) * (X.T @ (f - y))
+        db = (1/m) * np.sum(f - y)
+
+        # Update
+        w = w - alpha * dw
+        b = b - alpha * db
+
+        # Guardar costo
+        f = np.clip(f, 1e-7, 1-1e-7)
+        cost = -1/m * np.sum(y*np.log(f) + (1-y)*np.log(1-f))
+        J_history.append(cost)
+
+    return w, b, J_history
+</code></pre>
+  </section>
+
+  <section>
+    <h3>Tips para GD Logístico</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <div class="fragment fade-up" style="background: rgba(88,196,221,0.1); padding: 0.6em; border-radius: 8px; margin-bottom: 0.5em;">
+        <strong style="color: var(--c-blue);">1. Feature Scaling</strong><br>
+        Igual de importante que en regresión lineal — GD converge más rápido con features normalizadas.
+      </div>
+      <div class="fragment fade-up" style="background: rgba(131,193,103,0.1); padding: 0.6em; border-radius: 8px; margin-bottom: 0.5em;">
+        <strong style="color: var(--c-green);">2. Learning Rate</strong><br>
+        Mismo principio: si J sube → α muy grande. Empezar con α=0.01.
+      </div>
+      <div class="fragment fade-up" style="background: rgba(255,134,47,0.1); padding: 0.6em; border-radius: 8px; margin-bottom: 0.5em;">
+        <strong style="color: var(--c-orange);">3. Convergencia</strong><br>
+        Monitorear J — debe decrecer en cada iteración. Detenerse cuando cambio &lt; ε.
+      </div>
+      <div class="fragment fade-up" style="background: rgba(154,114,172,0.1); padding: 0.6em; border-radius: 8px;">
+        <strong style="color: var(--c-purple);">4. En la práctica</strong><br>
+        Usar <code>sklearn.linear_model.LogisticRegression</code> — usa métodos optimizados (L-BFGS, no GD simple).
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 26: Overfitting y Regularización ========== -->
+<section>
+  <section>
+    <h3>Overfitting en Clasificación</h3>
+    <div style="display: flex; gap: 1em; margin-top: 0.5em; font-size: 0.65em;">
+      <div class="fragment fade-up" style="flex:1; text-align: center;">
+        <svg viewBox="0 0 160 160" style="width: 130px;">
+          <circle cx="80" cy="80" r="70" fill="rgba(88,196,221,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <!-- Simple line (underfit) -->
+          <line x1="20" y1="140" x2="140" y2="20" stroke="#FFFF00" stroke-width="2"/>
+          <circle cx="40" cy="50" r="5" fill="#FC6255"/><circle cx="60" cy="40" r="5" fill="#FC6255"/>
+          <circle cx="80" cy="60" r="5" fill="#FC6255"/><circle cx="50" cy="70" r="5" fill="#FC6255"/>
+          <circle cx="100" cy="120" r="5" fill="#58C4DD"/><circle cx="120" cy="100" r="5" fill="#58C4DD"/>
+          <circle cx="110" cy="130" r="5" fill="#58C4DD"/><circle cx="130" cy="110" r="5" fill="#58C4DD"/>
+          <!-- Misclassified -->
+          <circle cx="40" cy="50" r="8" fill="none" stroke="#FC6255" stroke-width="1.5" stroke-dasharray="3,2"/>
+        </svg>
+        <p style="color: var(--c-red);"><strong>Underfitting</strong></p>
+        <p style="color: var(--c-text-dim);">High bias<br>Frontera demasiado simple</p>
+      </div>
+      <div class="fragment fade-up" style="flex:1; text-align: center;">
+        <svg viewBox="0 0 160 160" style="width: 130px;">
+          <circle cx="80" cy="80" r="70" fill="rgba(88,196,221,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <!-- Good boundary -->
+          <path d="M 30,130 C 50,90 70,70 90,60 C 110,50 130,40 150,30" fill="none" stroke="#FFFF00" stroke-width="2"/>
+          <circle cx="40" cy="50" r="5" fill="#FC6255"/><circle cx="60" cy="40" r="5" fill="#FC6255"/>
+          <circle cx="80" cy="50" r="5" fill="#FC6255"/><circle cx="50" cy="60" r="5" fill="#FC6255"/>
+          <circle cx="100" cy="120" r="5" fill="#58C4DD"/><circle cx="120" cy="100" r="5" fill="#58C4DD"/>
+          <circle cx="110" cy="130" r="5" fill="#58C4DD"/><circle cx="90" cy="110" r="5" fill="#58C4DD"/>
+        </svg>
+        <p style="color: var(--c-green);"><strong>Buen Ajuste</strong></p>
+        <p style="color: var(--c-text-dim);">Balance adecuado<br>Generaliza bien</p>
+      </div>
+      <div class="fragment fade-up" style="flex:1; text-align: center;">
+        <svg viewBox="0 0 160 160" style="width: 130px;">
+          <circle cx="80" cy="80" r="70" fill="rgba(88,196,221,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <!-- Overly complex boundary -->
+          <path d="M 25,140 C 30,120 35,100 45,95 C 55,90 60,80 65,75 C 70,70 75,65 85,63 C 95,61 100,55 105,50 C 110,45 120,42 130,38 C 140,34 145,25 150,20" fill="none" stroke="#FFFF00" stroke-width="2"/>
+          <circle cx="40" cy="50" r="5" fill="#FC6255"/><circle cx="60" cy="40" r="5" fill="#FC6255"/>
+          <circle cx="80" cy="50" r="5" fill="#FC6255"/><circle cx="50" cy="60" r="5" fill="#FC6255"/>
+          <circle cx="70" cy="68" r="5" fill="#FC6255"/>
+          <circle cx="100" cy="120" r="5" fill="#58C4DD"/><circle cx="120" cy="100" r="5" fill="#58C4DD"/>
+          <circle cx="110" cy="130" r="5" fill="#58C4DD"/><circle cx="90" cy="110" r="5" fill="#58C4DD"/>
+          <circle cx="85" cy="80" r="5" fill="#58C4DD"/>
+        </svg>
+        <p style="color: var(--c-yellow);"><strong>Overfitting</strong></p>
+        <p style="color: var(--c-text-dim);">High variance<br>Frontera demasiado compleja</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Bias vs Variance</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <p><strong style="color: var(--c-green);">Descomposición del error:</strong></p>
+      <p class="katex-block">E[\text{Error}] = \text{Bias}^2 + \text{Variance} + \sigma^2_{\text{Bayes}}</p>
+      <div style="display: flex; gap: 1.5em; margin-top: 0.5em;">
+        <div class="fragment fade-up" style="flex: 1;">
+          <p style="color: var(--c-blue);"><strong>Bias (Sesgo)</strong></p>
+          <p style="color: var(--c-text-dim);">Error por suposiciones simplificadoras del modelo. Modelo demasiado simple → no captura el patrón real.</p>
+        </div>
+        <div class="fragment fade-up" style="flex: 1;">
+          <p style="color: var(--c-orange);"><strong>Variance (Varianza)</strong></p>
+          <p style="color: var(--c-text-dim);">Error por sensibilidad a los datos de entrenamiento. Modelo demasiado complejo → cambia mucho con datos distintos.</p>
+        </div>
+        <div class="fragment fade-up" style="flex: 1;">
+          <p style="color: var(--c-yellow);"><strong>Error de Bayes (σ²)</strong></p>
+          <p style="color: var(--c-text-dim);">Ruido irreducible. Ni el modelo perfecto puede eliminarlo.</p>
+        </div>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.6em;">
+        <!-- Target diagrams -->
+        <svg viewBox="0 0 700 140" style="width: 95%;">
+          <!-- Low bias, Low var -->
+          <circle cx="90" cy="70" r="40" fill="none" stroke="#a8a290" stroke-width="1"/>
+          <circle cx="90" cy="70" r="25" fill="none" stroke="#a8a290" stroke-width="0.5"/>
+          <circle cx="90" cy="70" r="10" fill="none" stroke="#a8a290" stroke-width="0.5"/>
+          <circle cx="88" cy="68" r="3" fill="#83C167"/><circle cx="92" cy="72" r="3" fill="#83C167"/>
+          <circle cx="90" cy="66" r="3" fill="#83C167"/><circle cx="91" cy="73" r="3" fill="#83C167"/>
+          <text x="90" y="125" text-anchor="middle" fill="#83C167" font-size="10" font-weight="bold">Low Bias</text>
+          <text x="90" y="138" text-anchor="middle" fill="#83C167" font-size="10" font-weight="bold">Low Variance</text>
+
+          <!-- Low bias, High var -->
+          <circle cx="270" cy="70" r="40" fill="none" stroke="#a8a290" stroke-width="1"/>
+          <circle cx="270" cy="70" r="25" fill="none" stroke="#a8a290" stroke-width="0.5"/>
+          <circle cx="270" cy="70" r="10" fill="none" stroke="#a8a290" stroke-width="0.5"/>
+          <circle cx="250" cy="50" r="3" fill="#FF862F"/><circle cx="290" cy="90" r="3" fill="#FF862F"/>
+          <circle cx="260" cy="88" r="3" fill="#FF862F"/><circle cx="280" cy="52" r="3" fill="#FF862F"/>
+          <text x="270" y="125" text-anchor="middle" fill="#FF862F" font-size="10" font-weight="bold">Low Bias</text>
+          <text x="270" y="138" text-anchor="middle" fill="#FF862F" font-size="10" font-weight="bold">High Variance</text>
+
+          <!-- High bias, Low var -->
+          <circle cx="450" cy="70" r="40" fill="none" stroke="#a8a290" stroke-width="1"/>
+          <circle cx="450" cy="70" r="25" fill="none" stroke="#a8a290" stroke-width="0.5"/>
+          <circle cx="450" cy="70" r="10" fill="none" stroke="#a8a290" stroke-width="0.5"/>
+          <circle cx="468" cy="46" r="3" fill="#58C4DD"/><circle cx="470" cy="48" r="3" fill="#58C4DD"/>
+          <circle cx="472" cy="44" r="3" fill="#58C4DD"/><circle cx="469" cy="50" r="3" fill="#58C4DD"/>
+          <text x="450" y="125" text-anchor="middle" fill="#58C4DD" font-size="10" font-weight="bold">High Bias</text>
+          <text x="450" y="138" text-anchor="middle" fill="#58C4DD" font-size="10" font-weight="bold">Low Variance</text>
+
+          <!-- High bias, High var -->
+          <circle cx="630" cy="70" r="40" fill="none" stroke="#a8a290" stroke-width="1"/>
+          <circle cx="630" cy="70" r="25" fill="none" stroke="#a8a290" stroke-width="0.5"/>
+          <circle cx="630" cy="70" r="10" fill="none" stroke="#a8a290" stroke-width="0.5"/>
+          <circle cx="610" cy="45" r="3" fill="#FC6255"/><circle cx="650" cy="50" r="3" fill="#FC6255"/>
+          <circle cx="615" cy="95" r="3" fill="#FC6255"/><circle cx="648" cy="92" r="3" fill="#FC6255"/>
+          <text x="630" y="125" text-anchor="middle" fill="#FC6255" font-size="10" font-weight="bold">High Bias</text>
+          <text x="630" y="138" text-anchor="middle" fill="#FC6255" font-size="10" font-weight="bold">High Variance</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Estrategias contra Overfitting</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <div class="fragment fade-up" style="background: rgba(88,196,221,0.1); padding: 0.6em; border-radius: 8px; margin-bottom: 0.5em;">
+        <strong style="color: var(--c-blue);">1. Más datos de entrenamiento</strong><br>
+        <span style="color: var(--c-text-dim);">Más ejemplos → modelo generaliza mejor</span>
+      </div>
+      <div class="fragment fade-up" style="background: rgba(255,134,47,0.1); padding: 0.6em; border-radius: 8px; margin-bottom: 0.5em;">
+        <strong style="color: var(--c-orange);">2. Selección de features</strong><br>
+        <span style="color: var(--c-text-dim);">Eliminar features irrelevantes o redundantes</span>
+      </div>
+      <div class="fragment fade-up" style="background: rgba(131,193,103,0.1); padding: 0.6em; border-radius: 8px;">
+        <strong style="color: var(--c-green);">3. Regularización</strong><br>
+        <span style="color: var(--c-text-dim);">Penalizar pesos grandes → modelo más simple (mantener todas las features)</span>
+      </div>
+    </div>
+    <p class="fragment fade-up" style="font-size: 0.6em; color: var(--c-yellow); text-align: center; margin-top: 0.8em;">
+      Regularización: la técnica más poderosa cuando no podemos obtener más datos
+    </p>
+  </section>
+
+  <section>
+    <h3>Regularización: La Idea</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p><strong style="color: var(--c-green);">Intuición:</strong> Si los pesos <span class="katex-inline">w_j</span> son pequeños → el modelo es más "simple"</p>
+      <div class="fragment fade-up" style="margin-top: 0.8em;">
+        <p><strong>Agregar penalización al costo:</strong></p>
+        <p class="katex-block">J_{reg}(\vec{w},b) = J(\vec{w},b) + \frac{\lambda}{2m}\sum_{j=1}^{n} w_j^2</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <ul style="font-size: 0.85em;">
+          <li><span class="katex-inline">\lambda</span> = parámetro de regularización (hiperparámetro)</li>
+          <li><span class="katex-inline">\lambda = 0</span> → sin regularización (puede overfit)</li>
+          <li><span class="katex-inline">\lambda</span> grande → pesos ≈ 0 (puede underfit)</li>
+          <li><strong>No se penaliza b</strong> (solo los w_j)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Efecto de λ: Widget</h3>
+    <p style="font-size: 0.55em; color: var(--c-text-dim);">Observa cómo λ suaviza la frontera de decisión</p>
+    <canvas id="regularization-canvas" width="700" height="360" style="border-radius: 8px;"></canvas>
+    <div style="display: flex; align-items: center; gap: 1em; margin-top: 0.3em; font-size: 0.6em; justify-content: center;">
+      <label style="color: var(--c-text-dim);">λ:</label>
+      <input type="range" id="reg-lambda-slider" min="0" max="10" value="0.1" step="0.05" style="width: 250px;">
+      <span id="reg-lambda-value" style="color: var(--c-green); font-family: 'Fira Code';">0.10</span>
+    </div>
+  </section>
+
+  <section>
+    <h3>GD con Regularización</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p><strong>Update para w_j:</strong></p>
+      <p class="katex-block">w_j := w_j\left(1 - \alpha\frac{\lambda}{m}\right) - \alpha\frac{1}{m}\sum_{i=1}^{m}(f(x^{(i)})-y^{(i)})x_j^{(i)}</p>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p><strong>Update para b (sin regularización):</strong></p>
+        <p class="katex-block">b := b - \alpha\frac{1}{m}\sum_{i=1}^{m}(f(x^{(i)})-y^{(i)})</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(255,255,0,0.1); padding: 0.5em; border-radius: 8px;">
+        <p><strong style="color: var(--c-yellow);">Nota:</strong> El factor <span class="katex-inline">(1 - \alpha\frac{\lambda}{m})</span> "encoge" w_j ligeramente en cada paso.</p>
+        <p style="color: var(--c-text-dim);">Por eso regularización L2 también se llama <em>weight decay</em>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Regularización en Python</h3>
+    <pre><code class="language-python">from sklearn.linear_model import LogisticRegression
+
+# Sin regularización (C muy grande)
+model_no_reg = LogisticRegression(C=1e6, max_iter=1000)
+model_no_reg.fit(X_train, y_train)
+
+# Con regularización L2 (C = 1/λ)
+model_reg = LogisticRegression(C=1.0, max_iter=1000)  # λ=1
+model_reg.fit(X_train, y_train)
+
+# Regularización fuerte
+model_strong = LogisticRegression(C=0.01, max_iter=1000)  # λ=100
+model_strong.fit(X_train, y_train)
+
+print(f"Sin reg - ||w||² = {np.sum(model_no_reg.coef_**2):.2f}")
+print(f"Con reg - ||w||² = {np.sum(model_reg.coef_**2):.2f}")
+print(f"Fuerte  - ||w||² = {np.sum(model_strong.coef_**2):.2f}")
+
+# También para regresión lineal:
+from sklearn.linear_model import Ridge, Lasso
+# Ridge = L2, Lasso = L1
+ridge = Ridge(alpha=1.0)  # alpha = λ
+</code></pre>
+  </section>
+</section>
+
+<!-- ========== Sección 27: Clasificación Múltiple ========== -->
+<section>
+  <section>
+    <h3>Clasificación con Más de 2 Clases</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>Hasta ahora: binaria (<span class="katex-inline">y \in \{0, 1\}</span>). ¿Y si hay K clases?</p>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8em; margin-top: 0.8em;">
+        <div class="fragment fade-up" style="background: rgba(88,196,221,0.1); padding: 0.6em; border-radius: 8px; text-align: center;">
+          <strong style="color: var(--c-blue);">Dígitos</strong><br>
+          <span style="font-size: 0.85em;">0, 1, 2, ..., 9</span><br>
+          <span style="color: var(--c-text-dim);">K = 10</span>
+        </div>
+        <div class="fragment fade-up" style="background: rgba(252,98,85,0.1); padding: 0.6em; border-radius: 8px; text-align: center;">
+          <strong style="color: var(--c-red);">Diagnóstico</strong><br>
+          <span style="font-size: 0.85em;">Sano, Leve, Grave</span><br>
+          <span style="color: var(--c-text-dim);">K = 3</span>
+        </div>
+        <div class="fragment fade-up" style="background: rgba(131,193,103,0.1); padding: 0.6em; border-radius: 8px; text-align: center;">
+          <strong style="color: var(--c-green);">Animales</strong><br>
+          <span style="font-size: 0.85em;">Gato, Perro, Ave</span><br>
+          <span style="color: var(--c-text-dim);">K = 3</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>One-vs-All (One-vs-Rest)</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <p><strong style="color: var(--c-orange);">Idea:</strong> Entrenar K clasificadores binarios, uno por clase.</p>
+      <div style="display: flex; gap: 1em; margin-top: 0.8em;">
+        <div class="fragment fade-up" style="flex: 1; text-align: center;">
+          <svg viewBox="0 0 120 120" style="width: 100px;">
+            <circle cx="30" cy="40" r="8" fill="#FC6255"/><circle cx="45" cy="50" r="8" fill="#FC6255"/>
+            <circle cx="80" cy="30" r="8" fill="#a8a290"/><circle cx="90" cy="45" r="8" fill="#a8a290"/>
+            <circle cx="50" cy="90" r="8" fill="#a8a290"/><circle cx="65" cy="95" r="8" fill="#a8a290"/>
+          </svg>
+          <p>Clase 1 vs resto</p>
+        </div>
+        <div class="fragment fade-up" style="flex: 1; text-align: center;">
+          <svg viewBox="0 0 120 120" style="width: 100px;">
+            <circle cx="30" cy="40" r="8" fill="#a8a290"/><circle cx="45" cy="50" r="8" fill="#a8a290"/>
+            <circle cx="80" cy="30" r="8" fill="#58C4DD"/><circle cx="90" cy="45" r="8" fill="#58C4DD"/>
+            <circle cx="50" cy="90" r="8" fill="#a8a290"/><circle cx="65" cy="95" r="8" fill="#a8a290"/>
+          </svg>
+          <p>Clase 2 vs resto</p>
+        </div>
+        <div class="fragment fade-up" style="flex: 1; text-align: center;">
+          <svg viewBox="0 0 120 120" style="width: 100px;">
+            <circle cx="30" cy="40" r="8" fill="#a8a290"/><circle cx="45" cy="50" r="8" fill="#a8a290"/>
+            <circle cx="80" cy="30" r="8" fill="#a8a290"/><circle cx="90" cy="45" r="8" fill="#a8a290"/>
+            <circle cx="50" cy="90" r="8" fill="#83C167"/><circle cx="65" cy="95" r="8" fill="#83C167"/>
+          </svg>
+          <p>Clase 3 vs resto</p>
+        </div>
+      </div>
+      <p class="fragment fade-up" style="margin-top: 0.5em; color: var(--c-yellow);">
+        Predicción: elegir la clase con mayor <span class="katex-inline">P(y=k|\vec{x})</span>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Función Softmax</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>Generalización de sigmoid a K clases:</p>
+      <p class="katex-block">P(y = k | \vec{x}) = \frac{e^{z_k}}{\sum_{j=1}^{K} e^{z_j}}</p>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p>donde <span class="katex-inline">z_k = \vec{w}_k \cdot \vec{x} + b_k</span> para cada clase k.</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p><strong style="color: var(--c-green);">Propiedades:</strong></p>
+        <ul style="font-size: 0.85em;">
+          <li>Todas las probabilidades suman 1: <span class="katex-inline">\sum_k P(y=k) = 1</span></li>
+          <li>Cada <span class="katex-inline">P(y=k) \in (0, 1)</span></li>
+          <li>Si K=2, softmax = sigmoid</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Cross-Entropy Multi-clase</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p><strong style="color: var(--c-blue);">Función de costo:</strong></p>
+      <p class="katex-block">J = -\frac{1}{m}\sum_{i=1}^{m}\sum_{k=1}^{K} y_k^{(i)} \log(\hat{y}_k^{(i)})</p>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p>Con <strong>One-Hot Encoding:</strong> <span class="katex-inline">y = [0, 0, 1, 0, ...]</span></p>
+        <p style="color: var(--c-text-dim); font-size: 0.85em;">
+          Solo la clase verdadera contribuye al costo (las demás son 0).
+        </p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(131,193,103,0.1); padding: 0.5em; border-radius: 8px;">
+        <p><strong style="color: var(--c-green);">Ejemplo:</strong> Si clase real = 2, y = [0, 0, 1, 0]</p>
+        <p>J = -log(ŷ₂) → penaliza si la probabilidad de clase 2 es baja</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Multi-clase en Python</h3>
+    <pre><code class="language-python">from sklearn.linear_model import LogisticRegression
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+
+# Dataset Iris: 3 clases de flores
+iris = load_iris()
+X_train, X_test, y_train, y_test = train_test_split(
+    iris.data, iris.target, test_size=0.3, random_state=42
+)
+
+# One-vs-Rest
+model_ovr = LogisticRegression(multi_class='ovr', max_iter=200)
+model_ovr.fit(X_train, y_train)
+print(f"OvR Accuracy: {model_ovr.score(X_test, y_test):.3f}")
+
+# Softmax (multinomial)
+model_soft = LogisticRegression(
+    multi_class='multinomial', max_iter=200
+)
+model_soft.fit(X_train, y_train)
+print(f"Softmax Accuracy: {model_soft.score(X_test, y_test):.3f}")
+
+# Probabilidades por clase
+print(model_soft.predict_proba(X_test[:3]))
+</code></pre>
+  </section>
+
+  <section>
+    <h3>Conexión con Deep Learning</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>La <strong style="color: var(--c-green);">última capa</strong> de una red neuronal de clasificación usa softmax:</p>
+      <div style="margin-top: 0.8em;">
+        <svg viewBox="0 0 700 180" style="width: 95%;">
+          <!-- Input -->
+          <rect x="10" y="60" width="80" height="60" rx="5" fill="rgba(88,196,221,0.2)" stroke="#58C4DD"/>
+          <text x="50" y="95" text-anchor="middle" fill="#ece6d0" font-size="11">Input</text>
+          <!-- Hidden layers -->
+          <rect x="130" y="40" width="80" height="100" rx="5" fill="rgba(154,114,172,0.2)" stroke="#9A72AC"/>
+          <text x="170" y="85" text-anchor="middle" fill="#ece6d0" font-size="10">Hidden</text>
+          <text x="170" y="100" text-anchor="middle" fill="#ece6d0" font-size="10">Layers</text>
+          <rect x="250" y="40" width="80" height="100" rx="5" fill="rgba(154,114,172,0.2)" stroke="#9A72AC"/>
+          <text x="290" y="95" text-anchor="middle" fill="#ece6d0" font-size="10">...</text>
+          <!-- Softmax layer -->
+          <rect x="370" y="30" width="100" height="120" rx="5" fill="rgba(131,193,103,0.2)" stroke="#83C167" stroke-width="2"/>
+          <text x="420" y="75" text-anchor="middle" fill="#83C167" font-size="11" font-weight="bold">Softmax</text>
+          <text x="420" y="95" text-anchor="middle" fill="#ece6d0" font-size="10">K outputs</text>
+          <text x="420" y="115" text-anchor="middle" fill="#a8a290" font-size="9">Σ = 1.0</text>
+          <!-- Output probabilities -->
+          <text x="520" y="50" fill="#ece6d0" font-size="10">P(gato) = 0.7</text>
+          <text x="520" y="75" fill="#ece6d0" font-size="10">P(perro) = 0.2</text>
+          <text x="520" y="100" fill="#ece6d0" font-size="10">P(ave) = 0.1</text>
+          <!-- Arrows -->
+          <line x1="90" y1="90" x2="130" y2="90" stroke="#a8a290" stroke-width="1.5" marker-end="url(#arrowGreenL)"/>
+          <line x1="210" y1="90" x2="250" y2="90" stroke="#a8a290" stroke-width="1.5"/>
+          <line x1="330" y1="90" x2="370" y2="90" stroke="#a8a290" stroke-width="1.5"/>
+          <line x1="470" y1="50" x2="515" y2="50" stroke="#83C167" stroke-width="1.5"/>
+          <line x1="470" y1="90" x2="515" y2="75" stroke="#83C167" stroke-width="1.5"/>
+          <line x1="470" y1="130" x2="515" y2="100" stroke="#83C167" stroke-width="1.5"/>
+          <!-- Loss -->
+          <text x="600" y="140" fill="#FFFF00" font-size="11">Loss = Cross-Entropy</text>
+        </svg>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(131,193,103,0.1); padding: 0.5em; border-radius: 8px;">
+        Regresión logística = red neuronal de <strong>1 capa</strong> con activación sigmoid/softmax.
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 28: Resumen Semana 3 ========== -->
+<section>
+  <section>
+    <h3>Resumen: Semana 3</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6em;">
+        <div style="background: rgba(88,196,221,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-blue);">Clasificación</strong>
+          <ul style="margin: 0.3em 0 0 1em; padding: 0;">
+            <li>Predecir categorías discretas</li>
+            <li>Binaria: y ∈ {0, 1}</li>
+            <li>Multi-clase: K categorías</li>
+          </ul>
+        </div>
+        <div style="background: rgba(255,134,47,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-orange);">KNN</strong>
+          <ul style="margin: 0.3em 0 0 1em; padding: 0;">
+            <li>No paramétrico, usa datos directamente</li>
+            <li>K vecinos + voto mayoritario</li>
+            <li>Simple pero O(n) en predicción</li>
+          </ul>
+        </div>
+        <div style="background: rgba(131,193,103,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-green);">Regresión Logística</strong>
+          <ul style="margin: 0.3em 0 0 1em; padding: 0;">
+            <li>Sigmoid: g(z) = 1/(1+e⁻ᶻ)</li>
+            <li>Output = P(y=1|x)</li>
+            <li>Cross-Entropy loss (convexa)</li>
+          </ul>
+        </div>
+        <div style="background: rgba(154,114,172,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-purple);">Regularización</strong>
+          <ul style="margin: 0.3em 0 0 1em; padding: 0;">
+            <li>Penalizar pesos grandes</li>
+            <li>J_reg = J + λ/(2m)·Σw²</li>
+            <li>λ controla complejidad</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="fragment fade-up" style="margin-top: 0.6em;">
+      <p style="font-size: 0.6em; color: var(--c-green); text-align: center;">
+        Próxima semana: <strong>Redes Neuronales</strong> — múltiples capas, activaciones, backpropagation
+      </p>
+      <p style="font-size: 0.5em; color: var(--c-text-dim); text-align: center;">
+        Notebooks: <code>05_Logistic_Regression.ipynb</code>
+      </p>
+    </div>
+    <p style="font-size: 0.45em; color: var(--c-text-dim); text-align: center; margin-top: 0.5em;">
+      Material adaptado de DeepLearning.AI (CC BY-SA 2.0) y Universidad Galileo
+    </p>
+  </section>
+</section>
+
 </div><!-- .slides -->
 </div><!-- .reveal -->
 
@@ -4085,6 +5561,11 @@ prediccion = pipe.predict(X_new_scaled)
 <script src="js/widgets/vectorization-widget.js"></script>
 <script src="js/widgets/feature-scaling-widget.js"></script>
 <script src="js/widgets/polynomial-regression-widget.js"></script>
+<script src="js/widgets/knn-widget.js"></script>
+<script src="js/widgets/sigmoid-widget.js"></script>
+<script src="js/widgets/decision-boundary-widget.js"></script>
+<script src="js/widgets/logistic-cost-widget.js"></script>
+<script src="js/widgets/regularization-widget.js"></script>
 
 <script>
 // ============================================================
@@ -4149,6 +5630,23 @@ const HOUSING = {
   nonlinear: {
     x: [1, 2, 3, 4, 5, 6, 7],
     y: [1, 4.5, 9, 16, 24, 37, 50]
+  }
+};
+
+// ============================================================
+// Classification Data (Semana 3)
+// ============================================================
+const CLASSIFICATION = {
+  binary: {
+    class0: [[1,2],[1.5,1.8],[2,2.5],[1.2,2.2],[1.8,1.5],[0.8,1.9],[1.4,2.8],[2.1,1.7],[1.6,2.3],[0.9,1.4]],
+    class1: [[4,5],[4.5,4.8],[5,5.5],[4.2,5.2],[4.8,4.5],[3.8,4.9],[4.4,5.8],[5.1,4.7],[4.6,5.1],[3.9,4.2]],
+    labels: ['Benigno', 'Maligno']
+  },
+  multiclass: {
+    class0: [[1,1],[1.5,1.2],[0.8,1.5],[1.2,0.8],[1.3,1.4]],
+    class1: [[4,1],[4.5,1.5],[3.8,0.8],[4.2,1.2],[4.0,0.9]],
+    class2: [[2.5,4],[3,4.5],[2.2,3.8],[2.8,4.2],[2.6,3.6]],
+    labels: ['Clase A', 'Clase B', 'Clase C']
   }
 };
 
@@ -4761,6 +6259,37 @@ Reveal.on('slidechanged', function(event) {
     if (typeof initPolynomialWidget === 'function') {
       initPolynomialWidget(HOUSING.nonlinear);
       widgetsInitialized.polynomial = true;
+    }
+  }
+  // Semana 3 widgets
+  if (slide.querySelector('#knn-canvas') && !widgetsInitialized.knn) {
+    if (typeof initKNNWidget === 'function') {
+      initKNNWidget(CLASSIFICATION.binary);
+      widgetsInitialized.knn = true;
+    }
+  }
+  if (slide.querySelector('#sigmoid-canvas') && !widgetsInitialized.sigmoid) {
+    if (typeof initSigmoidWidget === 'function') {
+      initSigmoidWidget();
+      widgetsInitialized.sigmoid = true;
+    }
+  }
+  if (slide.querySelector('#decision-boundary-canvas') && !widgetsInitialized.decBoundary) {
+    if (typeof initDecisionBoundaryWidget === 'function') {
+      initDecisionBoundaryWidget(CLASSIFICATION.binary);
+      widgetsInitialized.decBoundary = true;
+    }
+  }
+  if (slide.querySelector('#logistic-cost-canvas') && !widgetsInitialized.logCost) {
+    if (typeof initLogisticCostWidget === 'function') {
+      initLogisticCostWidget();
+      widgetsInitialized.logCost = true;
+    }
+  }
+  if (slide.querySelector('#regularization-canvas') && !widgetsInitialized.regularization) {
+    if (typeof initRegularizationWidget === 'function') {
+      initRegularizationWidget(CLASSIFICATION.binary);
+      widgetsInitialized.regularization = true;
     }
   }
 });
