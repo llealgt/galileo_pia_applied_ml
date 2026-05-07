@@ -702,3 +702,149 @@ function initComprehensiveWidget(data) {
     updateInfo(curW, curB);
   });
 }
+
+// ============================================================
+// Mode 6: Plane Regression 3D
+// Shows 2-feature regression as a 3D plane (rotatable)
+// Uses size + bedrooms → price from HOUSING.multi
+// ============================================================
+function initPlaneRegressionWidget(data) {
+  const container = document.getElementById('plane-regression-plotly');
+  if (!container) return;
+
+  // Extract 2 features: size (col 0) and bedrooms (col 1) → price
+  const X = data.X;
+  const y = data.y;
+  const x1 = X.map(r => r[0]); // size (1000 sqft)
+  const x2 = X.map(r => r[1]); // bedrooms
+
+  // Simple least squares for 2 features + bias
+  // f(x1,x2) = w1*x1 + w2*x2 + b
+  const m = x1.length;
+  let sx1 = 0, sx2 = 0, sy = 0, sx1x1 = 0, sx2x2 = 0, sx1x2 = 0, sx1y = 0, sx2y = 0;
+  for (let i = 0; i < m; i++) {
+    sx1 += x1[i]; sx2 += x2[i]; sy += y[i];
+    sx1x1 += x1[i]*x1[i]; sx2x2 += x2[i]*x2[i]; sx1x2 += x1[i]*x2[i];
+    sx1y += x1[i]*y[i]; sx2y += x2[i]*y[i];
+  }
+  // Solve 3x3 normal equation: [m, sx1, sx2; sx1, sx1x1, sx1x2; sx2, sx1x2, sx2x2] * [b,w1,w2]^T = [sy,sx1y,sx2y]^T
+  // Use Cramer's rule for 3x3
+  const A = [
+    [m, sx1, sx2],
+    [sx1, sx1x1, sx1x2],
+    [sx2, sx1x2, sx2x2]
+  ];
+  const B = [sy, sx1y, sx2y];
+  function det3(M) {
+    return M[0][0]*(M[1][1]*M[2][2]-M[1][2]*M[2][1])
+         - M[0][1]*(M[1][0]*M[2][2]-M[1][2]*M[2][0])
+         + M[0][2]*(M[1][0]*M[2][1]-M[1][1]*M[2][0]);
+  }
+  function replaceCol(M, col, v) {
+    return M.map((row, i) => row.map((val, j) => j === col ? v[i] : val));
+  }
+  const D = det3(A);
+  const b = det3(replaceCol(A, 0, B)) / D;
+  const w1 = det3(replaceCol(A, 1, B)) / D;
+  const w2 = det3(replaceCol(A, 2, B)) / D;
+
+  // Generate plane surface
+  const x1Min = 0.5, x1Max = 3.0;
+  const x2Min = 1, x2Max = 6;
+  const N = 20;
+  const x1Vals = [], x2Vals = [];
+  for (let i = 0; i <= N; i++) {
+    x1Vals.push(x1Min + (x1Max - x1Min) * i / N);
+    x2Vals.push(x2Min + (x2Max - x2Min) * i / N);
+  }
+  const zPlane = [];
+  for (let j = 0; j <= N; j++) {
+    const row = [];
+    for (let i = 0; i <= N; i++) {
+      row.push(w1 * x1Vals[i] + w2 * x2Vals[j] + b);
+    }
+    zPlane.push(row);
+  }
+
+  // Data points
+  const points = {
+    x: x1, y: x2, z: y,
+    type: 'scatter3d',
+    mode: 'markers',
+    marker: {
+      size: 7,
+      color: '#FFFF00',
+      line: { color: '#FF862F', width: 1 },
+      opacity: 1
+    },
+    name: 'Datos',
+    hovertemplate: 'Tamaño: %{x:.2f}<br>Habitaciones: %{y}<br>Precio: $%{z}k<extra></extra>'
+  };
+
+  // Vertical lines from points to plane (residuals)
+  const residualLines = {
+    x: [], y: [], z: [],
+    type: 'scatter3d',
+    mode: 'lines',
+    line: { color: 'rgba(252,98,85,0.5)', width: 2 },
+    name: 'Residuos',
+    hoverinfo: 'skip',
+    showlegend: false
+  };
+  for (let i = 0; i < m; i++) {
+    const pred = w1 * x1[i] + w2 * x2[i] + b;
+    residualLines.x.push(x1[i], x1[i], null);
+    residualLines.y.push(x2[i], x2[i], null);
+    residualLines.z.push(y[i], pred, null);
+  }
+
+  // Plane surface
+  const surface = {
+    x: x1Vals, y: x2Vals, z: zPlane,
+    type: 'surface',
+    colorscale: [[0, 'rgba(88,196,221,0.6)'], [1, 'rgba(88,196,221,0.6)']],
+    showscale: false,
+    opacity: 0.55,
+    name: 'Plano: f(x₁,x₂)',
+    hovertemplate: 'f(%{x:.1f}, %{y:.0f}) = $%{z:.0f}k<extra></extra>',
+    contours: {
+      x: { show: true, color: 'rgba(88,196,221,0.2)', width: 1 },
+      y: { show: true, color: 'rgba(88,196,221,0.2)', width: 1 },
+      z: { show: false }
+    },
+    lighting: { ambient: 0.7, diffuse: 0.5, specular: 0.1 }
+  };
+
+  const layout = {
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    scene: {
+      xaxis: {
+        title: { text: 'Tamaño (1000 sqft)', font: { color: '#58C4DD', size: 11 } },
+        color: '#a8a290', gridcolor: 'rgba(255,255,255,0.08)',
+        zerolinecolor: 'rgba(255,255,255,0.1)'
+      },
+      yaxis: {
+        title: { text: 'Habitaciones', font: { color: '#FF862F', size: 11 } },
+        color: '#a8a290', gridcolor: 'rgba(255,255,255,0.08)',
+        zerolinecolor: 'rgba(255,255,255,0.1)'
+      },
+      zaxis: {
+        title: { text: 'Precio ($k)', font: { color: '#83C167', size: 11 } },
+        color: '#a8a290', gridcolor: 'rgba(255,255,255,0.08)',
+        zerolinecolor: 'rgba(255,255,255,0.1)'
+      },
+      bgcolor: '#0d0d1a',
+      camera: { eye: { x: 1.8, y: -1.6, z: 0.9 }, up: { x: 0, y: 0, z: 1 } },
+      aspectratio: { x: 1, y: 0.8, z: 0.7 }
+    },
+    margin: { l: 0, r: 0, t: 0, b: 0 },
+    font: { family: 'Fira Code, monospace', color: '#a8a290', size: 10 },
+    showlegend: false
+  };
+
+  Plotly.newPlot(container, [surface, residualLines, points], layout, {
+    responsive: true,
+    displayModeBar: false
+  });
+}

@@ -66,24 +66,25 @@
         <h4 style="color: var(--c-orange); font-size: 0.75em; margin-bottom: 0.3em;">Semana 2</h4>
         <a class="toc-item" onclick="Reveal.slide(12, 0)"><span class="toc-num">12</span>Portada Semana 2</a>
         <a class="toc-item" onclick="Reveal.slide(13, 0)"><span class="toc-num">13</span>Regresión Múltiple</a>
-        <a class="toc-item" onclick="Reveal.slide(14, 0)"><span class="toc-num">14</span>Vectorización</a>
-        <a class="toc-item" onclick="Reveal.slide(15, 0)"><span class="toc-num">15</span>GD Multivariable</a>
-        <a class="toc-item" onclick="Reveal.slide(16, 0)"><span class="toc-num">16</span>Feature Scaling</a>
-        <a class="toc-item" onclick="Reveal.slide(17, 0)"><span class="toc-num">17</span>Feature Engineering + Polinomial</a>
-        <a class="toc-item" onclick="Reveal.slide(18, 0)"><span class="toc-num">18</span>Resumen Semana 2</a>
+        <a class="toc-item" onclick="Reveal.slide(14, 0)"><span class="toc-num">14</span>Función de Costo (nD)</a>
+        <a class="toc-item" onclick="Reveal.slide(15, 0)"><span class="toc-num">15</span>Vectorización</a>
+        <a class="toc-item" onclick="Reveal.slide(16, 0)"><span class="toc-num">16</span>GD Multivariable</a>
+        <a class="toc-item" onclick="Reveal.slide(17, 0)"><span class="toc-num">17</span>Feature Scaling</a>
+        <a class="toc-item" onclick="Reveal.slide(18, 0)"><span class="toc-num">18</span>Feature Engineering + Polinomial</a>
+        <a class="toc-item" onclick="Reveal.slide(19, 0)"><span class="toc-num">19</span>Resumen Semana 2</a>
       </div>
       <div class="toc-column">
         <h4 style="color: var(--c-green); font-size: 0.75em; margin-bottom: 0.3em;">Semana 3</h4>
-        <a class="toc-item" onclick="Reveal.slide(19, 0)"><span class="toc-num">19</span>Portada Semana 3</a>
-        <a class="toc-item" onclick="Reveal.slide(20, 0)"><span class="toc-num">20</span>Intro Clasificación</a>
-        <a class="toc-item" onclick="Reveal.slide(21, 0)"><span class="toc-num">21</span>K-Nearest Neighbors</a>
-        <a class="toc-item" onclick="Reveal.slide(22, 0)"><span class="toc-num">22</span>Regresión Logística</a>
-        <a class="toc-item" onclick="Reveal.slide(23, 0)"><span class="toc-num">23</span>Frontera de Decisión</a>
-        <a class="toc-item" onclick="Reveal.slide(24, 0)"><span class="toc-num">24</span>Costo Logístico</a>
-        <a class="toc-item" onclick="Reveal.slide(25, 0)"><span class="toc-num">25</span>GD Logístico</a>
-        <a class="toc-item" onclick="Reveal.slide(26, 0)"><span class="toc-num">26</span>Regularización</a>
-        <a class="toc-item" onclick="Reveal.slide(27, 0)"><span class="toc-num">27</span>Clasificación Múltiple</a>
-        <a class="toc-item" onclick="Reveal.slide(28, 0)"><span class="toc-num">28</span>Resumen Semana 3</a>
+        <a class="toc-item" onclick="Reveal.slide(20, 0)"><span class="toc-num">20</span>Portada Semana 3</a>
+        <a class="toc-item" onclick="Reveal.slide(21, 0)"><span class="toc-num">21</span>Intro Clasificación</a>
+        <a class="toc-item" onclick="Reveal.slide(22, 0)"><span class="toc-num">22</span>K-Nearest Neighbors</a>
+        <a class="toc-item" onclick="Reveal.slide(23, 0)"><span class="toc-num">23</span>Regresión Logística</a>
+        <a class="toc-item" onclick="Reveal.slide(24, 0)"><span class="toc-num">24</span>Frontera de Decisión</a>
+        <a class="toc-item" onclick="Reveal.slide(25, 0)"><span class="toc-num">25</span>Costo Logístico</a>
+        <a class="toc-item" onclick="Reveal.slide(26, 0)"><span class="toc-num">26</span>GD Logístico</a>
+        <a class="toc-item" onclick="Reveal.slide(27, 0)"><span class="toc-num">27</span>Regularización</a>
+        <a class="toc-item" onclick="Reveal.slide(28, 0)"><span class="toc-num">28</span>Clasificación Múltiple</a>
+        <a class="toc-item" onclick="Reveal.slide(29, 0)"><span class="toc-num">29</span>Resumen Semana 3</a>
       </div>
     </div>
     <p style="font-size: 0.5em; color: var(--c-text-dim); margin-top: 0.5em; text-align: center;">Click en cualquier sección para navegar directamente</p>
@@ -3310,6 +3311,23 @@ b = b - alpha * dj_db
     </div>
   </section>
 
+  <!-- De Línea a Plano: widget 3D -->
+  <section>
+    <h3>De Línea a Plano</h3>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Con 2 features, el modelo es un <span style="color: #58C4DD;">plano</span> en 3D</p>
+    <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+      <div id="plane-regression-plotly" style="width: 620px; height: 400px;"></div>
+      <div style="font-size: 0.55em; color: var(--c-text-dim); max-width: 180px; text-align: left;">
+        <p style="color: #ece6d0; font-weight: bold; margin-bottom: 8px;">Modelo:</p>
+        <p class="katex-block" style="font-size: 0.95em;">f(\vec{x}) = w_1 x_1 + w_2 x_2 + b</p>
+        <p style="margin-top: 12px;"><span style="color: #FFFF00;">●</span> Datos reales</p>
+        <p><span style="color: #58C4DD;">■</span> Plano de regresión</p>
+        <p><span style="color: #FC6255;">|</span> Residuos</p>
+        <p style="margin-top: 12px; font-size: 0.9em; color: #a8a290;">Arrastra para rotar</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Ejemplo sklearn -->
   <section>
     <h3>Ejemplo: sklearn con Múltiples Features</h3>
@@ -3385,76 +3403,125 @@ theta, _, _, _ = np.linalg.lstsq(X_b, y, rcond=None)
     </div>
   </section>
 
-  <!-- Conexión con Deep Learning: múltiples variables -->
-  <section data-transition="fade">
-    <h2>Regresión Múltiple como Neurona</h2>
-    <div style="display: flex; gap: 1em; align-items: center;">
-      <div style="flex: 1.2; text-align: center;">
-        <svg viewBox="0 0 500 340" style="width: 100%; max-width: 500px;" xmlns="http://www.w3.org/2000/svg">
-          <!-- Arrow markers -->
-          <defs>
-            <marker id="arrowOrangeM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="#FF862F"/>
-            </marker>
-            <marker id="arrowYellowM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="#FFFF00"/>
-            </marker>
-            <marker id="arrowWhiteM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="#ece6d0"/>
-            </marker>
-          </defs>
-          <!-- Input nodes -->
-          <circle cx="60" cy="60" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
-          <text x="60" y="66" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">x₁</text>
-          <circle cx="60" cy="130" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
-          <text x="60" y="136" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">x₂</text>
-          <circle cx="60" cy="200" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
-          <text x="60" y="206" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">x₃</text>
-          <!-- Dots -->
-          <text x="60" y="248" text-anchor="middle" fill="#a8a290" font-size="20" font-family="Fira Code, monospace">⋮</text>
-          <circle cx="60" cy="280" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
-          <text x="60" y="286" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">xₙ</text>
-          <!-- Neuron node -->
-          <circle cx="280" cy="170" r="42" fill="rgba(131,193,103,0.15)" stroke="#83C167" stroke-width="2.5"/>
-          <text x="280" y="164" text-anchor="middle" fill="#83C167" font-size="16" font-family="Fira Code, monospace">Σ</text>
-          <text x="280" y="184" text-anchor="middle" fill="#a8a290" font-size="10" font-family="Fira Code, monospace">f(z)=z</text>
-          <!-- Weight arrows -->
-          <line x1="88" y1="68" x2="236" y2="155" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
-          <text x="145" y="96" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">w₁</text>
-          <line x1="88" y1="133" x2="236" y2="163" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
-          <text x="155" y="138" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">w₂</text>
-          <line x1="88" y1="197" x2="236" y2="175" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
-          <text x="155" y="196" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">w₃</text>
-          <line x1="88" y1="273" x2="236" y2="188" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
-          <text x="140" y="258" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">wₙ</text>
-          <!-- Bias -->
-          <circle cx="280" cy="50" r="22" fill="none" stroke="#FFFF00" stroke-width="1.5"/>
-          <text x="280" y="56" text-anchor="middle" fill="#FFFF00" font-size="16" font-family="Fira Code, monospace" font-weight="bold">b</text>
-          <line x1="280" y1="72" x2="280" y2="126" stroke="#FFFF00" stroke-width="1.5" marker-end="url(#arrowYellowM)"/>
-          <!-- Output -->
-          <line x1="324" y1="170" x2="400" y2="170" stroke="#ece6d0" stroke-width="2" marker-end="url(#arrowWhiteM)"/>
-          <text x="448" y="164" text-anchor="middle" fill="#ece6d0" font-size="13" font-family="Fira Code, monospace">ŷ =</text>
-          <text x="448" y="184" text-anchor="middle" fill="#ece6d0" font-size="13" font-family="Fira Code, monospace">w⃗·x⃗ + b</text>
-          <!-- Labels -->
-          <text x="60" y="318" text-anchor="middle" fill="#a8a290" font-size="9" font-family="Fira Code, monospace">n entradas</text>
-          <text x="280" y="226" text-anchor="middle" fill="#a8a290" font-size="9" font-family="Fira Code, monospace">"neurona"</text>
-          <text x="448" y="206" text-anchor="middle" fill="#a8a290" font-size="9" font-family="Fira Code, monospace">salida</text>
-        </svg>
+</section>
+
+<!-- ========== Sección 13: Función de Costo (Múltiples Variables) ========== -->
+<section>
+  <section class="section-title">
+    <h2>Función de Costo</h2>
+    <h3 style="color: var(--c-orange); font-size: 0.9em;">para Múltiples Variables</h3>
+  </section>
+
+  <section>
+    <h3>Función de Costo: Múltiples Variables</h3>
+    <div style="font-size: 0.7em;">
+      <p style="color: var(--c-text-dim);">Recordatorio de Semana 1 (1 variable):</p>
+      <div class="math-box" style="font-size: 0.85em; opacity: 0.7;">
+        <span class="katex-block">J(w,b) = \frac{1}{2m} \sum_{i=1}^{m} (f_{w,b}(x^{(i)}) - y^{(i)})^2</span>
       </div>
-      <div style="flex: 1; font-size: 0.6em;">
-        <ul style="line-height: 1.8;">
-          <li class="fragment fade-up">Misma neurona, pero ahora con <strong style="color: var(--c-blue);">n entradas</strong> en vez de 1</li>
-          <li class="fragment fade-up">Cada feature <span class="katex-inline">x_j</span> tiene su propio peso <strong style="color: var(--c-orange);">w<sub>j</sub></strong></li>
-          <li class="fragment fade-up">La neurona calcula <span class="katex-inline">\vec{w} \cdot \vec{x} + b</span> — el <strong style="color: var(--c-yellow);">producto punto</strong></li>
-          <li class="fragment fade-up" style="color: var(--c-green);">Agregar más capas de neuronas → <strong>red neuronal profunda</strong> (deep learning)</li>
-        </ul>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p style="color: var(--c-green);">Extensión a <strong>n features</strong>:</p>
+        <div class="math-box" style="font-size: 0.9em; border-color: rgba(131,193,103,0.4);">
+          <span class="katex-block">J(\vec{w},b) = \frac{1}{2m} \sum_{i=1}^{m} \left( f_{\vec{w},b}(\vec{x}^{(i)}) - y^{(i)} \right)^2</span>
+        </div>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.3em;">
+        <p>donde <span class="katex-inline">f_{\vec{w},b}(\vec{x}) = \vec{w} \cdot \vec{x} + b = w_1 x_1 + w_2 x_2 + \cdots + w_n x_n + b</span></p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.3em; background: rgba(255,255,0,0.08); padding: 0.4em; border-radius: 6px; font-size: 0.85em;">
+        <strong style="color: var(--c-yellow);">Misma fórmula MSE</strong> — solo cambia que ahora <span class="katex-inline">f</span> depende de <strong>n</strong> features en vez de 1.
       </div>
     </div>
   </section>
 
+  <section>
+    <h3>La Superficie de Costo en nD</h3>
+    <div style="display: flex; gap: 1.5em; font-size: 0.65em; margin-top: 0.5em;">
+      <div class="fragment fade-up" style="flex: 1; text-align: center;">
+        <svg viewBox="0 0 200 170" style="width: 160px;">
+          <!-- 3D surface sketch -->
+          <ellipse cx="100" cy="130" rx="80" ry="30" fill="none" stroke="#a8a290" stroke-width="1"/>
+          <path d="M 20,130 C 40,60 80,30 100,25 C 120,30 160,60 180,130" fill="none" stroke="#58C4DD" stroke-width="2"/>
+          <circle cx="100" cy="25" r="4" fill="#FFFF00"/>
+          <text x="100" y="165" text-anchor="middle" fill="#a8a290" font-size="10">J(w,b)</text>
+        </svg>
+        <p style="color: var(--c-blue);"><strong>1 feature</strong></p>
+        <p style="color: var(--c-text-dim);">Superficie 3D<br>J(w, b) — podemos visualizar</p>
+      </div>
+      <div class="fragment fade-up" style="flex: 1; text-align: center;">
+        <svg viewBox="0 0 200 170" style="width: 160px;">
+          <!-- Contour plot sketch -->
+          <ellipse cx="100" cy="85" rx="80" ry="60" fill="none" stroke="rgba(88,196,221,0.3)" stroke-width="1"/>
+          <ellipse cx="100" cy="85" rx="55" ry="40" fill="none" stroke="rgba(88,196,221,0.4)" stroke-width="1"/>
+          <ellipse cx="100" cy="85" rx="30" ry="20" fill="none" stroke="rgba(88,196,221,0.6)" stroke-width="1.5"/>
+          <ellipse cx="100" cy="85" rx="10" ry="7" fill="none" stroke="#58C4DD" stroke-width="2"/>
+          <circle cx="100" cy="85" r="3" fill="#FFFF00"/>
+          <text x="100" y="165" text-anchor="middle" fill="#a8a290" font-size="10">Contour plot</text>
+        </svg>
+        <p style="color: var(--c-orange);"><strong>2 features</strong></p>
+        <p style="color: var(--c-text-dim);">Contornos de J(w₁, w₂, b)<br>Elipses concéntricas</p>
+      </div>
+      <div class="fragment fade-up" style="flex: 1; text-align: center;">
+        <svg viewBox="0 0 200 170" style="width: 160px;">
+          <text x="100" y="60" text-anchor="middle" fill="#a8a290" font-size="40">?</text>
+          <text x="100" y="100" text-anchor="middle" fill="#a8a290" font-size="11">J(w₁,...,wₙ,b)</text>
+          <text x="100" y="125" text-anchor="middle" fill="#a8a290" font-size="11">(n+2) dimensiones</text>
+          <text x="100" y="165" text-anchor="middle" fill="#a8a290" font-size="10">No visualizable</text>
+        </svg>
+        <p style="color: var(--c-green);"><strong>n features</strong></p>
+        <p style="color: var(--c-text-dim);">No podemos ver, pero sigue<br>siendo <strong style="color: var(--c-green);">convexa</strong> → GD funciona</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Costo Multivariable en Python</h3>
+    <pre><code class="language-python">import numpy as np
+from sklearn.metrics import mean_squared_error
+
+# Datos: X shape (m, n), y shape (m,)
+X = np.array([[2104,5,1,45],[1416,3,2,40],
+              [1534,3,2,30],[852,2,1,36]])
+y = np.array([460, 232, 315, 178])
+
+# Implementación manual
+def compute_cost(X, y, w, b):
+    m = len(y)
+    f = X @ w + b            # predicciones (vectorizado)
+    cost = (1/(2*m)) * np.sum((f - y)**2)
+    return cost
+
+w = np.zeros(X.shape[1])  # n pesos iniciales
+b = 0.0
+print(f"Costo inicial: {compute_cost(X, y, w, b):.2f}")
+
+# Con sklearn (después de entrenar)
+from sklearn.linear_model import LinearRegression
+model = LinearRegression().fit(X, y)
+y_pred = model.predict(X)
+print(f"MSE sklearn: {mean_squared_error(y, y_pred):.2f}")
+</code></pre>
+  </section>
+
+  <section>
+    <h3>De J al Gradiente</h3>
+    <div style="font-size: 0.7em; margin-top: 0.5em;">
+      <p>El objetivo: encontrar <span class="katex-inline">\vec{w}, b</span> que <strong style="color: var(--c-green);">minimicen</strong> <span class="katex-inline">J(\vec{w}, b)</span></p>
+      <div class="fragment fade-up" style="margin-top: 0.8em;">
+        <p class="katex-block">\min_{\vec{w},b} J(\vec{w},b)</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.8em;">
+        <p>Para eso necesitamos las <strong style="color: var(--c-orange);">derivadas parciales</strong>:</p>
+        <p class="katex-block">\frac{\partial J}{\partial w_j} \quad \text{para cada } j = 1, \ldots, n \quad \text{y} \quad \frac{\partial J}{\partial b}</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.8em; background: rgba(88,196,221,0.1); padding: 0.5em; border-radius: 8px;">
+        <p style="color: var(--c-blue);">Primero veamos <strong>vectorización</strong> para hacer estos cálculos eficientemente, luego aplicamos <strong>Gradient Descent</strong>.</p>
+      </div>
+    </div>
+  </section>
 </section>
 
-<!-- ========== Sección 13: Vectorización ========== -->
+<!-- ========== Sección 15: Vectorización ========== -->
 <section>
   <section class="section-title">
     <h2>Vectorización</h2>
@@ -3568,7 +3635,7 @@ b = b - alpha * db
   </section>
 </section>
 
-<!-- ========== Sección 14: Gradient Descent para Múltiples Variables ========== -->
+<!-- ========== Sección 16: Gradient Descent para Múltiples Variables ========== -->
 <section>
   <section class="section-title">
     <h2>Gradient Descent</h2>
@@ -3667,7 +3734,7 @@ b = b - alpha * db
   </section>
 </section>
 
-<!-- ========== Sección 15: Feature Scaling ========== -->
+<!-- ========== Sección 17: Feature Scaling ========== -->
 <section>
   <section class="section-title">
     <h2>Feature Scaling</h2>
@@ -3809,7 +3876,7 @@ print(scaler.scale_)   # desv. est.
   </section>
 </section>
 
-<!-- ========== Sección 16: Feature Engineering + Regresión Polinomial ========== -->
+<!-- ========== Sección 18: Feature Engineering + Regresión Polinomial ========== -->
 <section>
   <section class="section-title">
     <h2>Feature Engineering</h2>
@@ -4127,7 +4194,7 @@ prediccion = pipe.predict(X_new_scaled)
   </section>
 </section>
 
-<!-- ========== Sección 17: Resumen Semana 2 ========== -->
+<!-- ========== Sección 19: Resumen Semana 2 ========== -->
 <section>
   <section class="section-title">
     <h2>Resumen: Semana 2</h2>
@@ -4182,13 +4249,78 @@ prediccion = pipe.predict(X_new_scaled)
       Material adaptado de DeepLearning.AI (CC BY-SA 2.0) y Universidad Galileo
     </p>
   </section>
+
+  <!-- Conexión con Deep Learning: cierre de Semana 2 -->
+  <section data-transition="fade">
+    <h3>Mirando Adelante: Regresión Lineal como Neurona</h3>
+    <div style="display: flex; gap: 1em; align-items: center;">
+      <div style="flex: 1.2; text-align: center;">
+        <svg viewBox="0 0 500 340" style="width: 100%; max-width: 500px;" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrowOrangeM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#FF862F"/>
+            </marker>
+            <marker id="arrowYellowM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#FFFF00"/>
+            </marker>
+            <marker id="arrowWhiteM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#ece6d0"/>
+            </marker>
+          </defs>
+          <!-- Input nodes -->
+          <circle cx="60" cy="60" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
+          <text x="60" y="66" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">x₁</text>
+          <circle cx="60" cy="130" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
+          <text x="60" y="136" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">x₂</text>
+          <circle cx="60" cy="200" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
+          <text x="60" y="206" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">x₃</text>
+          <text x="60" y="248" text-anchor="middle" fill="#a8a290" font-size="20" font-family="Fira Code, monospace">⋮</text>
+          <circle cx="60" cy="280" r="26" fill="none" stroke="#58C4DD" stroke-width="2"/>
+          <text x="60" y="286" text-anchor="middle" fill="#58C4DD" font-size="16" font-family="Fira Code, monospace" font-weight="bold">xₙ</text>
+          <!-- Neuron node -->
+          <circle cx="280" cy="170" r="42" fill="rgba(131,193,103,0.15)" stroke="#83C167" stroke-width="2.5"/>
+          <text x="280" y="164" text-anchor="middle" fill="#83C167" font-size="16" font-family="Fira Code, monospace">Σ</text>
+          <text x="280" y="184" text-anchor="middle" fill="#a8a290" font-size="10" font-family="Fira Code, monospace">f(z)=z</text>
+          <!-- Weight arrows -->
+          <line x1="88" y1="68" x2="236" y2="155" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
+          <text x="145" y="96" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">w₁</text>
+          <line x1="88" y1="133" x2="236" y2="163" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
+          <text x="155" y="138" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">w₂</text>
+          <line x1="88" y1="197" x2="236" y2="175" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
+          <text x="155" y="196" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">w₃</text>
+          <line x1="88" y1="273" x2="236" y2="188" stroke="#FF862F" stroke-width="1.8" marker-end="url(#arrowOrangeM)"/>
+          <text x="140" y="258" text-anchor="middle" fill="#FF862F" font-size="13" font-family="Fira Code, monospace" font-weight="bold">wₙ</text>
+          <!-- Bias -->
+          <circle cx="280" cy="50" r="22" fill="none" stroke="#FFFF00" stroke-width="1.5"/>
+          <text x="280" y="56" text-anchor="middle" fill="#FFFF00" font-size="16" font-family="Fira Code, monospace" font-weight="bold">b</text>
+          <line x1="280" y1="72" x2="280" y2="126" stroke="#FFFF00" stroke-width="1.5" marker-end="url(#arrowYellowM)"/>
+          <!-- Output -->
+          <line x1="324" y1="170" x2="400" y2="170" stroke="#ece6d0" stroke-width="2" marker-end="url(#arrowWhiteM)"/>
+          <text x="448" y="164" text-anchor="middle" fill="#ece6d0" font-size="13" font-family="Fira Code, monospace">ŷ =</text>
+          <text x="448" y="184" text-anchor="middle" fill="#ece6d0" font-size="13" font-family="Fira Code, monospace">w⃗·x⃗ + b</text>
+          <text x="60" y="318" text-anchor="middle" fill="#a8a290" font-size="9" font-family="Fira Code, monospace">n entradas</text>
+          <text x="280" y="226" text-anchor="middle" fill="#a8a290" font-size="9" font-family="Fira Code, monospace">"neurona"</text>
+          <text x="448" y="206" text-anchor="middle" fill="#a8a290" font-size="9" font-family="Fira Code, monospace">salida</text>
+        </svg>
+      </div>
+      <div style="flex: 1; font-size: 0.6em;">
+        <ul style="line-height: 1.8;">
+          <li class="fragment fade-up">Todo lo que aprendimos esta semana es <strong style="color: var(--c-green);">una sola neurona</strong> con n entradas</li>
+          <li class="fragment fade-up">Cada feature <span class="katex-inline">x_j</span> tiene su peso <strong style="color: var(--c-orange);">w<sub>j</sub></strong>, la neurona calcula <span class="katex-inline">\vec{w} \cdot \vec{x} + b</span></li>
+          <li class="fragment fade-up">Activación lineal: <span class="katex-inline">f(z) = z</span></li>
+          <li class="fragment fade-up" style="color: var(--c-blue);">Próxima semana: cambiar la activación a <strong>sigmoid</strong> → regresión logística</li>
+          <li class="fragment fade-up" style="color: var(--c-green);">Agregar más capas de neuronas → <strong>red neuronal profunda</strong> (deep learning)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 </section>
 
 <!-- ██████████████████████████████████████████████████████████████
      SEMANA 3: CLASIFICACIÓN Y REGRESIÓN LOGÍSTICA
      ██████████████████████████████████████████████████████████████ -->
 
-<!-- ========== Sección 19: Portada Semana 3 ========== -->
+<!-- ========== Sección 20: Portada Semana 3 ========== -->
 <section>
   <section data-transition="zoom">
     <h2 style="color: var(--c-green);">Semana 3</h2>
@@ -4208,7 +4340,7 @@ prediccion = pipe.predict(X_new_scaled)
   </section>
 </section>
 
-<!-- ========== Sección 20: Introducción a Clasificación ========== -->
+<!-- ========== Sección 21: Introducción a Clasificación ========== -->
 <section>
   <section>
     <h3>¿Qué es Clasificación?</h3>
@@ -4362,7 +4494,7 @@ prediccion = pipe.predict(X_new_scaled)
   </section>
 </section>
 
-<!-- ========== Sección 21: K-Nearest Neighbors ========== -->
+<!-- ========== Sección 22: K-Nearest Neighbors ========== -->
 <section>
   <section>
     <h3>K-Nearest Neighbors (KNN)</h3>
@@ -4426,6 +4558,65 @@ prediccion = pipe.predict(X_new_scaled)
     </div>
     <div class="fragment fade-up" style="margin-top: 1em; background: rgba(255,134,47,0.1); padding: 0.6em; border-radius: 8px; font-size: 0.6em;">
       <strong style="color: var(--c-orange);">Importante:</strong> Feature scaling es crucial para KNN — features con rangos grandes dominarán la distancia.
+    </div>
+  </section>
+
+  <!-- Visualización distancias -->
+  <section>
+    <h3>Euclidiana vs Manhattan: Visualización</h3>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 2em; margin-top: 0.3em;">
+      <svg width="400" height="340" viewBox="0 0 400 340" style="font-family: 'Fira Code', monospace;">
+        <!-- Grid -->
+        <g stroke="rgba(255,255,255,0.1)" stroke-width="1">
+          <line x1="60" y1="20" x2="60" y2="280"/><line x1="120" y1="20" x2="120" y2="280"/>
+          <line x1="180" y1="20" x2="180" y2="280"/><line x1="240" y1="20" x2="240" y2="280"/>
+          <line x1="300" y1="20" x2="300" y2="280"/><line x1="360" y1="20" x2="360" y2="280"/>
+          <line x1="60" y1="280" x2="360" y2="280"/><line x1="60" y1="220" x2="360" y2="220"/>
+          <line x1="60" y1="160" x2="360" y2="160"/><line x1="60" y1="100" x2="360" y2="100"/>
+          <line x1="60" y1="40" x2="360" y2="40"/>
+        </g>
+        <!-- Axes -->
+        <line x1="60" y1="280" x2="360" y2="280" stroke="#a8a290" stroke-width="1.5"/>
+        <line x1="60" y1="280" x2="60" y2="20" stroke="#a8a290" stroke-width="1.5"/>
+        <!-- Axis labels -->
+        <text x="60" y="298" fill="#a8a290" font-size="10" text-anchor="middle">0</text>
+        <text x="120" y="298" fill="#a8a290" font-size="10" text-anchor="middle">1</text>
+        <text x="180" y="298" fill="#a8a290" font-size="10" text-anchor="middle">2</text>
+        <text x="240" y="298" fill="#a8a290" font-size="10" text-anchor="middle">3</text>
+        <text x="300" y="298" fill="#a8a290" font-size="10" text-anchor="middle">4</text>
+        <text x="360" y="298" fill="#a8a290" font-size="10" text-anchor="middle">5</text>
+        <text x="50" y="284" fill="#a8a290" font-size="10" text-anchor="end">0</text>
+        <text x="50" y="224" fill="#a8a290" font-size="10" text-anchor="end">1</text>
+        <text x="50" y="164" fill="#a8a290" font-size="10" text-anchor="end">2</text>
+        <text x="50" y="104" fill="#a8a290" font-size="10" text-anchor="end">3</text>
+        <text x="50" y="44" fill="#a8a290" font-size="10" text-anchor="end">4</text>
+        <text x="210" y="318" fill="#ece6d0" font-size="11" text-anchor="middle">x₁</text>
+        <text x="30" y="155" fill="#ece6d0" font-size="11" text-anchor="middle">x₂</text>
+        <!-- Manhattan path (A(1,1) → B(5,4)): right 4, then up 3 -->
+        <path d="M 120 220 L 360 220 L 360 40" fill="none" stroke="#FF862F" stroke-width="3" stroke-dasharray="8,5" opacity="0.9"/>
+        <!-- Euclidean line (diagonal A→B) -->
+        <line x1="120" y1="220" x2="360" y2="40" stroke="#58C4DD" stroke-width="3" opacity="0.9"/>
+        <!-- Point A (1,1) -->
+        <circle cx="120" cy="220" r="8" fill="#FFFF00" stroke="#1b1b2f" stroke-width="2"/>
+        <text x="108" y="245" fill="#FFFF00" font-size="12" font-weight="bold" text-anchor="middle">A(1,1)</text>
+        <!-- Point B (5,4) -->
+        <circle cx="360" cy="40" r="8" fill="#FFFF00" stroke="#1b1b2f" stroke-width="2"/>
+        <text x="360" y="65" fill="#FFFF00" font-size="12" font-weight="bold" text-anchor="middle">B(5,4)</text>
+        <!-- Euclidean label -->
+        <text x="220" y="110" fill="#58C4DD" font-size="12" font-weight="bold" transform="rotate(-36.87, 220, 110)">L2 = 5.0</text>
+        <!-- Manhattan label -->
+        <text x="240" y="240" fill="#FF862F" font-size="12" font-weight="bold">L1 = 4+3 = 7</text>
+      </svg>
+      <div style="font-size: 0.6em; text-align: left; max-width: 220px;">
+        <p style="color: #58C4DD; font-weight: bold; margin-bottom: 0.4em;">━ Euclidiana (L2)</p>
+        <p style="color: var(--c-text-dim); margin-bottom: 1em;">Camino más corto:<br>"en línea recta"</p>
+        <p style="color: #FF862F; font-weight: bold; margin-bottom: 0.4em;">┅ Manhattan (L1)</p>
+        <p style="color: var(--c-text-dim); margin-bottom: 1em;">Camino por cuadras:<br>"como un taxi"</p>
+        <div style="margin-top: 1.2em; padding: 0.5em; background: rgba(88,196,221,0.1); border-radius: 6px;">
+          <p style="color: #ece6d0; font-size: 0.9em;">L1 ≥ L2 siempre</p>
+          <p style="color: #a8a290; font-size: 0.85em; margin-top: 4px;">Solo son iguales si el<br>camino es eje-alineado</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -4502,7 +4693,7 @@ print(knn.predict_proba(nuevo)) # probabilidades
   </section>
 </section>
 
-<!-- ========== Sección 22: Regresión Logística ========== -->
+<!-- ========== Sección 23: Regresión Logística ========== -->
 <section>
   <section>
     <h3>Regresión Logística: Motivación</h3>
@@ -4733,7 +4924,7 @@ print(f"w = {model.coef_[0]}, b = {model.intercept_}")
   </section>
 </section>
 
-<!-- ========== Sección 23: Frontera de Decisión ========== -->
+<!-- ========== Sección 24: Frontera de Decisión ========== -->
 <section>
   <section>
     <h3>Frontera de Decisión</h3>
@@ -4884,7 +5075,7 @@ model.fit(X_train, y_train)
   </section>
 </section>
 
-<!-- ========== Sección 24: Función de Costo Logística ========== -->
+<!-- ========== Sección 25: Función de Costo Logística ========== -->
 <section>
   <section>
     <h3>¿Por qué NO usar MSE?</h3>
@@ -4995,7 +5186,7 @@ print(f"J = {logistic_cost(X, y, w, b):.4f}")
   </section>
 </section>
 
-<!-- ========== Sección 25: GD para Regresión Logística ========== -->
+<!-- ========== Sección 26: GD para Regresión Logística ========== -->
 <section>
   <section>
     <h3>Gradient Descent para Logística</h3>
@@ -5103,7 +5294,7 @@ def gradient_descent_logistic(X, y, w, b, alpha, iters):
   </section>
 </section>
 
-<!-- ========== Sección 26: Overfitting y Regularización ========== -->
+<!-- ========== Sección 27: Overfitting y Regularización ========== -->
 <section>
   <section>
     <h3>Overfitting en Clasificación</h3>
@@ -5311,7 +5502,7 @@ ridge = Ridge(alpha=1.0)  # alpha = λ
   </section>
 </section>
 
-<!-- ========== Sección 27: Clasificación Múltiple ========== -->
+<!-- ========== Sección 28: Clasificación Múltiple ========== -->
 <section>
   <section>
     <h3>Clasificación con Más de 2 Clases</h3>
@@ -5481,7 +5672,7 @@ print(model_soft.predict_proba(X_test[:3]))
   </section>
 </section>
 
-<!-- ========== Sección 28: Resumen Semana 3 ========== -->
+<!-- ========== Sección 29: Resumen Semana 3 ========== -->
 <section>
   <section>
     <h3>Resumen: Semana 3</h3>
@@ -6253,6 +6444,12 @@ Reveal.on('slidechanged', function(event) {
     if (typeof initFeatureScalingWidget === 'function') {
       initFeatureScalingWidget();
       widgetsInitialized.featureScaling = true;
+    }
+  }
+  if (slide.querySelector('#plane-regression-plotly') && !widgetsInitialized.planeReg) {
+    if (typeof initPlaneRegressionWidget === 'function') {
+      initPlaneRegressionWidget(HOUSING.multi);
+      widgetsInitialized.planeReg = true;
     }
   }
   if (slide.querySelector('#polynomial-canvas') && !widgetsInitialized.polynomial) {
