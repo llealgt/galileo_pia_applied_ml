@@ -86,6 +86,16 @@
         <a class="toc-item" onclick="Reveal.slide(28, 0)"><span class="toc-num">28</span>Clasificación Múltiple</a>
         <a class="toc-item" onclick="Reveal.slide(29, 0)"><span class="toc-num">29</span>Resumen Semana 3</a>
       </div>
+      <div class="toc-column">
+        <h4 style="color: var(--c-purple); font-size: 0.75em; margin-bottom: 0.3em;">Semana 4</h4>
+        <a class="toc-item" onclick="Reveal.slide(30, 0)"><span class="toc-num">30</span>Portada Semana 4</a>
+        <a class="toc-item" onclick="Reveal.slide(31, 0)"><span class="toc-num">31</span>Árboles de Decisión</a>
+        <a class="toc-item" onclick="Reveal.slide(32, 0)"><span class="toc-num">32</span>Regression Trees</a>
+        <a class="toc-item" onclick="Reveal.slide(33, 0)"><span class="toc-num">33</span>Ensembles y Bootstrap</a>
+        <a class="toc-item" onclick="Reveal.slide(34, 0)"><span class="toc-num">34</span>Random Forest</a>
+        <a class="toc-item" onclick="Reveal.slide(35, 0)"><span class="toc-num">35</span>XGBoost</a>
+        <a class="toc-item" onclick="Reveal.slide(36, 0)"><span class="toc-num">36</span>Resumen Semana 4</a>
+      </div>
     </div>
     <p style="font-size: 0.5em; color: var(--c-text-dim); margin-top: 0.5em; text-align: center;">Click en cualquier sección para navegar directamente</p>
   </section>
@@ -4971,6 +4981,38 @@ print(f"w = {model.coef_[0]}, b = {model.intercept_}")
   </section>
 
   <section>
+    <h3>Thresholds de Clasificación</h3>
+    <div style="font-size: 0.65em; margin-top: 0.5em;">
+      <p>El umbral <span class="katex-inline">0.5</span> <strong style="color: var(--c-yellow);">no siempre es óptimo</strong></p>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(88,196,221,0.1); padding: 0.5em; border-radius: 8px;">
+        <strong style="color: var(--c-blue);">Diagnóstico médico</strong> — umbral bajo (0.3)<br>
+        <span style="color: var(--c-text-dim);">No perder positivos → mayor <strong style="color: var(--c-orange);">Recall</strong></span><br>
+        <span style="font-size: 0.85em; color: var(--c-text-dim);">Preferimos falsos positivos antes que falsos negativos</span>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(252,98,85,0.1); padding: 0.5em; border-radius: 8px;">
+        <strong style="color: var(--c-red);">Filtro de spam</strong> — umbral alto (0.8)<br>
+        <span style="color: var(--c-text-dim);">Evitar falsos positivos → mayor <strong style="color: var(--c-blue);">Precision</strong></span><br>
+        <span style="font-size: 0.85em; color: var(--c-text-dim);">No queremos clasificar un email legítimo como spam</span>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(255,255,0,0.08); padding: 0.5em; border-radius: 8px;">
+        <p class="katex-block">\text{Precision} = \frac{TP}{TP + FP} \qquad \text{Recall} = \frac{TP}{TP + FN}</p>
+        <p style="color: var(--c-text-dim); font-size: 0.85em; text-align: center;">Bajar threshold → más positivos → ↑Recall ↓Precision</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Threshold Interactivo</h3>
+    <p style="font-size: 0.55em; color: var(--c-text-dim);">Mueve el umbral y observa cómo cambian las métricas y la frontera</p>
+    <canvas id="threshold-canvas" width="750" height="380" style="border-radius: 8px;"></canvas>
+    <div style="display: flex; align-items: center; gap: 1em; margin-top: 0.3em; font-size: 0.6em; justify-content: center;">
+      <label style="color: var(--c-text-dim);">Threshold:</label>
+      <input type="range" id="threshold-slider" min="0.05" max="0.95" value="0.5" step="0.01" style="width: 280px;">
+      <span id="threshold-value" style="color: var(--c-yellow); font-family: 'Fira Code';">0.50</span>
+    </div>
+  </section>
+
+  <section>
     <h3>Frontera de Decisión Interactiva</h3>
     <p style="font-size: 0.55em; color: var(--c-text-dim);">Ajusta w₁, w₂, b para mover la frontera</p>
     <canvas id="decision-boundary-canvas" width="720" height="360" style="border-radius: 8px;"></canvas>
@@ -4989,6 +5031,37 @@ print(f"w = {model.coef_[0]}, b = {model.intercept_}")
         <label style="color: var(--c-text-dim);">b:</label>
         <input type="range" id="db-b-slider" min="-20" max="5" value="-12" step="0.5" style="width: 100px;">
         <span id="db-b-value" style="color: var(--c-green); font-family: 'Fira Code';">-12.0</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Frontera de Decisión en 3D</h3>
+    <p style="font-size: 0.55em; color: var(--c-text-dim);">
+      La superficie <span class="katex-inline">\sigma(w_1 x_1 + w_2 x_2 + b)</span> y el plano de threshold <span class="katex-inline">z = 0.5</span>
+    </p>
+    <div id="decision-boundary-3d-plotly" style="width: 100%; height: 460px; border-radius: 8px;"></div>
+    <div style="display: flex; gap: 1.2em; margin-top: 0.3em; font-size: 0.55em; justify-content: center; flex-wrap: wrap; align-items: center;">
+      <div>
+        <label style="color: var(--c-text-dim);">w₁:</label>
+        <input type="range" id="db3d-w1-slider" min="-5" max="5" value="1" step="0.1" style="width: 100px;">
+        <span id="db3d-w1-value" style="color: var(--c-green); font-family: 'Fira Code';">1.0</span>
+      </div>
+      <div>
+        <label style="color: var(--c-text-dim);">w₂:</label>
+        <input type="range" id="db3d-w2-slider" min="-5" max="5" value="1" step="0.1" style="width: 100px;">
+        <span id="db3d-w2-value" style="color: var(--c-green); font-family: 'Fira Code';">1.0</span>
+      </div>
+      <div>
+        <label style="color: var(--c-text-dim);">b:</label>
+        <input type="range" id="db3d-b-slider" min="-20" max="5" value="-12" step="0.5" style="width: 100px;">
+        <span id="db3d-b-value" style="color: var(--c-green); font-family: 'Fira Code';">-12.0</span>
+      </div>
+      <div>
+        <label style="color: var(--c-text-dim);">
+          <input type="checkbox" id="db3d-thresh-check" checked style="vertical-align: middle;">
+          Plano threshold
+        </label>
       </div>
     </div>
   </section>
@@ -5448,6 +5521,102 @@ def gradient_descent_logistic(X, y, w, b, alpha, iters):
   </section>
 
   <section>
+    <h3>Regularización en Regresión Lineal</h3>
+    <div style="font-size: 0.65em; margin-top: 0.5em;">
+      <p>La misma idea aplica a <strong style="color: var(--c-blue);">regresión lineal</strong>:</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; margin-top: 0.5em;">
+        <div class="fragment fade-up" style="background: rgba(88,196,221,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-blue);">Ridge (L2)</strong>
+          <p class="katex-block">J_{\text{ridge}} = J + \lambda\sum_{j=1}^{n} w_j^2</p>
+          <p style="color: var(--c-text-dim); font-size: 0.85em;">Encoge <em>todos</em> los pesos proporcionalmente</p>
+        </div>
+        <div class="fragment fade-up" style="background: rgba(131,193,103,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-green);">Lasso (L1)</strong>
+          <p class="katex-block">J_{\text{lasso}} = J + \lambda\sum_{j=1}^{n} |w_j|</p>
+          <p style="color: var(--c-text-dim); font-size: 0.85em;">Algunos pesos → <strong>exactamente 0</strong> (feature selection)</p>
+        </div>
+      </div>
+      <pre class="fragment fade-up" style="margin-top: 0.5em;"><code class="language-python">from sklearn.linear_model import Ridge, Lasso, ElasticNet
+
+ridge = Ridge(alpha=1.0).fit(X_train, y_train)
+lasso = Lasso(alpha=0.1).fit(X_train, y_train)  # sparse weights
+elastic = ElasticNet(alpha=0.1, l1_ratio=0.5).fit(X_train, y_train)</code></pre>
+    </div>
+  </section>
+
+  <section>
+    <h3>L1 vs L2: Visualización</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5em; margin-top: 0.3em;">
+      <div>
+        <svg viewBox="0 0 220 220" style="width: 100%;">
+          <text x="110" y="18" text-anchor="middle" fill="#58C4DD" font-size="13" font-weight="bold">L2 (Ridge)</text>
+          <!-- Contours -->
+          <ellipse cx="150" cy="60" rx="80" ry="45" fill="none" stroke="rgba(255,255,0,0.2)" stroke-width="1"/>
+          <ellipse cx="150" cy="60" rx="60" ry="33" fill="none" stroke="rgba(255,255,0,0.3)" stroke-width="1"/>
+          <ellipse cx="150" cy="60" rx="40" ry="22" fill="none" stroke="rgba(255,255,0,0.4)" stroke-width="1"/>
+          <!-- L2 constraint: circle -->
+          <circle cx="110" cy="110" r="55" fill="rgba(88,196,221,0.1)" stroke="#58C4DD" stroke-width="2"/>
+          <!-- Optimal point -->
+          <circle cx="138" cy="72" r="5" fill="#FFFF00"/>
+          <text x="148" y="68" fill="#FFFF00" font-size="10">w*</text>
+          <!-- Axes -->
+          <line x1="30" y1="110" x2="210" y2="110" stroke="#a8a290" stroke-width="1"/>
+          <line x1="110" y1="200" x2="110" y2="25" stroke="#a8a290" stroke-width="1"/>
+          <text x="205" y="125" fill="#a8a290" font-size="10">w₁</text>
+          <text x="115" y="32" fill="#a8a290" font-size="10">w₂</text>
+        </svg>
+        <p style="font-size: 0.5em; color: var(--c-text-dim); text-align: center;">Restricción circular: todos los w se encogen</p>
+      </div>
+      <div>
+        <svg viewBox="0 0 220 220" style="width: 100%;">
+          <text x="110" y="18" text-anchor="middle" fill="#83C167" font-size="13" font-weight="bold">L1 (Lasso)</text>
+          <!-- Contours -->
+          <ellipse cx="150" cy="60" rx="80" ry="45" fill="none" stroke="rgba(255,255,0,0.2)" stroke-width="1"/>
+          <ellipse cx="150" cy="60" rx="60" ry="33" fill="none" stroke="rgba(255,255,0,0.3)" stroke-width="1"/>
+          <ellipse cx="150" cy="60" rx="40" ry="22" fill="none" stroke="rgba(255,255,0,0.4)" stroke-width="1"/>
+          <!-- L1 constraint: diamond -->
+          <polygon points="110,55 165,110 110,165 55,110" fill="rgba(131,193,103,0.1)" stroke="#83C167" stroke-width="2"/>
+          <!-- Optimal point on vertex -->
+          <circle cx="165" cy="110" r="5" fill="#FFFF00"/>
+          <text x="170" y="106" fill="#FFFF00" font-size="10">w*</text>
+          <!-- Axes -->
+          <line x1="30" y1="110" x2="210" y2="110" stroke="#a8a290" stroke-width="1"/>
+          <line x1="110" y1="200" x2="110" y2="25" stroke="#a8a290" stroke-width="1"/>
+          <text x="205" y="125" fill="#a8a290" font-size="10">w₁</text>
+          <text x="115" y="32" fill="#a8a290" font-size="10">w₂</text>
+        </svg>
+        <p style="font-size: 0.5em; color: var(--c-text-dim); text-align: center;">Restricción diamante: w₂ = 0 (feature selection)</p>
+      </div>
+    </div>
+    <table class="fragment fade-up" style="font-size: 0.5em; margin: 0.3em auto; border-collapse: collapse; width: 85%;">
+      <tr style="border-bottom: 1px solid rgba(168,162,144,0.3);">
+        <th style="padding: 0.3em; color: var(--c-text-dim);"></th>
+        <th style="padding: 0.3em; color: var(--c-blue);">L2 (Ridge)</th>
+        <th style="padding: 0.3em; color: var(--c-green);">L1 (Lasso)</th>
+        <th style="padding: 0.3em; color: var(--c-purple);">ElasticNet</th>
+      </tr>
+      <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+        <td style="padding: 0.3em; color: var(--c-text-dim);">Pesos</td>
+        <td style="padding: 0.3em;">Todos pequeños</td>
+        <td style="padding: 0.3em;">Algunos = 0</td>
+        <td style="padding: 0.3em;">Combinación</td>
+      </tr>
+      <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+        <td style="padding: 0.3em; color: var(--c-text-dim);">Feature selection</td>
+        <td style="padding: 0.3em;">No</td>
+        <td style="padding: 0.3em;">Sí</td>
+        <td style="padding: 0.3em;">Sí</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.3em; color: var(--c-text-dim);">Fórmula</td>
+        <td style="padding: 0.3em;"><span class="katex-inline">\sum w_j^2</span></td>
+        <td style="padding: 0.3em;"><span class="katex-inline">\sum |w_j|</span></td>
+        <td style="padding: 0.3em;"><span class="katex-inline">\alpha L1 + (1-\alpha) L2</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
     <h3>Efecto de λ: Widget</h3>
     <p style="font-size: 0.55em; color: var(--c-text-dim);">Observa cómo λ suaviza la frontera de decisión</p>
     <canvas id="regularization-canvas" width="700" height="360" style="border-radius: 8px;"></canvas>
@@ -5631,6 +5800,76 @@ print(model_soft.predict_proba(X_test[:3]))
   </section>
 
   <section>
+    <h3>Cross-Entropy en Frameworks</h3>
+    <div style="font-size: 0.6em; margin-top: 0.3em;">
+      <table style="border-collapse: collapse; width: 100%; font-size: 0.95em;">
+        <tr style="border-bottom: 2px solid rgba(168,162,144,0.3);">
+          <th style="padding: 0.4em; color: var(--c-text-dim);"></th>
+          <th style="padding: 0.4em; color: var(--c-green);">sklearn</th>
+          <th style="padding: 0.4em; color: var(--c-orange);">Keras / TF</th>
+          <th style="padding: 0.4em; color: var(--c-red);">PyTorch</th>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+          <td style="padding: 0.4em; color: var(--c-text-dim);">Loss</td>
+          <td style="padding: 0.4em;"><code>log_loss()</code></td>
+          <td style="padding: 0.4em;"><code>SparseCategorical<br>Crossentropy</code></td>
+          <td style="padding: 0.4em;"><code>CrossEntropyLoss()</code></td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+          <td style="padding: 0.4em; color: var(--c-text-dim);">Input</td>
+          <td style="padding: 0.4em;">Probabilidades</td>
+          <td style="padding: 0.4em;"><code>from_logits=True</code></td>
+          <td style="padding: 0.4em;">Logits raw</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.4em; color: var(--c-text-dim);">Softmax</td>
+          <td style="padding: 0.4em;">Manual</td>
+          <td style="padding: 0.4em;">Incluido si logits</td>
+          <td style="padding: 0.4em;">Incluido siempre</td>
+        </tr>
+      </table>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(252,98,85,0.1); padding: 0.5em; border-radius: 8px;">
+        <strong style="color: var(--c-red);">PyTorch:</strong> <code>CrossEntropyLoss()</code> = <code>LogSoftmax</code> + <code>NLLLoss</code> internamente
+        <br><span style="color: var(--c-text-dim); font-size: 0.9em;">⚠️ NO aplicar softmax antes — el loss ya lo hace</span>
+      </div>
+      <pre class="fragment fade-up" style="margin-top: 0.5em;"><code class="language-python"># PyTorch
+loss_fn = torch.nn.CrossEntropyLoss()
+logits = model(X)         # raw scores, sin softmax
+loss = loss_fn(logits, y) # y son índices enteros
+
+# Keras
+model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(
+    from_logits=True  # estabilidad numérica
+))</code></pre>
+    </div>
+  </section>
+
+  <section>
+    <h3>Softmax: Estabilidad Numérica</h3>
+    <div style="font-size: 0.65em; margin-top: 0.5em;">
+      <div style="background: rgba(252,98,85,0.1); padding: 0.5em; border-radius: 8px;">
+        <strong style="color: var(--c-red);">Problema:</strong> <span class="katex-inline">e^z</span> overflow cuando z es grande
+        <p class="katex-block">\text{softmax}(z_j) = \frac{e^{z_j}}{\sum_k e^{z_k}} \quad \leftarrow e^{1000} = \text{Inf!}</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(131,193,103,0.1); padding: 0.5em; border-radius: 8px;">
+        <strong style="color: var(--c-green);">Solución:</strong> restar <span class="katex-inline">\max(\vec{z})</span> antes de exponenciar
+        <p class="katex-block">\text{softmax}(z_j) = \frac{e^{z_j - \max(\vec{z})}}{\sum_k e^{z_k - \max(\vec{z})}}</p>
+        <p style="color: var(--c-text-dim); font-size: 0.9em;">El resultado es idéntico (se cancela) pero numéricamente estable</p>
+      </div>
+      <pre class="fragment fade-up" style="margin-top: 0.5em;"><code class="language-python"># ❌ Naive — puede dar overflow
+def softmax_naive(z):
+    return np.exp(z) / np.sum(np.exp(z))
+
+# ✅ Estable — siempre funciona
+def softmax_stable(z):
+    z_shifted = z - np.max(z)
+    return np.exp(z_shifted) / np.sum(np.exp(z_shifted))
+
+# En Keras: from_logits=True hace esto automáticamente</code></pre>
+    </div>
+  </section>
+
+  <section>
     <h3>Conexión con Deep Learning</h3>
     <div style="font-size: 0.7em; margin-top: 0.5em;">
       <p>La <strong style="color: var(--c-green);">última capa</strong> de una red neuronal de clasificación usa softmax:</p>
@@ -5714,10 +5953,859 @@ print(model_soft.predict_proba(X_test[:3]))
     </div>
     <div class="fragment fade-up" style="margin-top: 0.6em;">
       <p style="font-size: 0.6em; color: var(--c-green); text-align: center;">
-        Próxima semana: <strong>Redes Neuronales</strong> — múltiples capas, activaciones, backpropagation
+        Próxima semana: <strong>Árboles de Decisión y Ensembles</strong> — decision trees, random forest, XGBoost
       </p>
       <p style="font-size: 0.5em; color: var(--c-text-dim); text-align: center;">
         Notebooks: <code>05_Logistic_Regression.ipynb</code>
+      </p>
+    </div>
+    <p style="font-size: 0.45em; color: var(--c-text-dim); text-align: center; margin-top: 0.5em;">
+      Material adaptado de DeepLearning.AI (CC BY-SA 2.0) y Universidad Galileo
+    </p>
+  </section>
+</section>
+
+<!-- ================================================================
+     SEMANA 4 — Árboles de Decisión y Ensembles
+     ================================================================ -->
+
+<!-- ========== Sección 30: Portada Semana 4 ========== -->
+<section>
+  <section data-transition="zoom">
+    <h2 style="color: var(--c-purple);">Semana 4</h2>
+    <h3 style="color: var(--c-text); margin-top: 0.3em;">Árboles de Decisión y Ensembles</h3>
+    <div style="font-size: 0.6em; margin-top: 1em; color: var(--c-text-dim);">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5em; max-width: 600px; margin: 0 auto;">
+        <p>🌳 Decision Trees</p>
+        <p>📊 Regression Trees</p>
+        <p>🎯 Ensembles y Bootstrap</p>
+        <p>🌲 Random Forest</p>
+        <p>🚀 Gradient Boosting / XGBoost</p>
+        <p>📋 Resumen</p>
+      </div>
+    </div>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin-top: 1.5em;">
+      Material adaptado de DeepLearning.AI (CC BY-SA 2.0) y Universidad Galileo
+    </p>
+  </section>
+</section>
+
+<!-- ========== Sección 31: Árboles de Decisión ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-purple);">Árboles de Decisión</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Un modelo interpretable basado en preguntas secuenciales</p>
+  </section>
+
+  <section>
+    <h3>¿Qué es un Árbol de Decisión?</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+        <div>
+          <svg viewBox="0 0 320 280" style="width: 100%;">
+            <!-- Root node -->
+            <rect x="100" y="10" width="120" height="35" rx="8" fill="rgba(154,114,172,0.3)" stroke="#9A72AC" stroke-width="2"/>
+            <text x="160" y="33" text-anchor="middle" fill="#ece6d0" font-size="12">Ingreso > 50k?</text>
+            <!-- Left branch -->
+            <line x1="130" y1="45" x2="70" y2="90" stroke="#a8a290" stroke-width="1.5"/>
+            <text x="85" y="70" fill="#83C167" font-size="10">Sí</text>
+            <rect x="15" y="90" width="110" height="35" rx="8" fill="rgba(88,196,221,0.2)" stroke="#58C4DD" stroke-width="1.5"/>
+            <text x="70" y="113" text-anchor="middle" fill="#ece6d0" font-size="11">Deuda > 20k?</text>
+            <!-- Right branch -->
+            <line x1="190" y1="45" x2="250" y2="90" stroke="#a8a290" stroke-width="1.5"/>
+            <text x="225" y="70" fill="#FC6255" font-size="10">No</text>
+            <rect x="200" y="90" width="100" height="35" rx="8" fill="rgba(252,98,85,0.15)" stroke="#FC6255" stroke-width="1.5"/>
+            <text x="250" y="113" text-anchor="middle" fill="#FC6255" font-size="11">❌ Rechazar</text>
+            <!-- Left-Left -->
+            <line x1="45" y1="125" x2="25" y2="170" stroke="#a8a290" stroke-width="1.5"/>
+            <text x="20" y="155" fill="#83C167" font-size="10">Sí</text>
+            <rect x="0" y="170" width="55" height="30" rx="5" fill="rgba(252,98,85,0.15)" stroke="#FC6255" stroke-width="1"/>
+            <text x="27" y="190" text-anchor="middle" fill="#FC6255" font-size="10">❌</text>
+            <!-- Left-Right -->
+            <line x1="95" y1="125" x2="110" y2="170" stroke="#a8a290" stroke-width="1.5"/>
+            <text x="115" y="155" fill="#FC6255" font-size="10">No</text>
+            <rect x="80" y="170" width="55" height="30" rx="5" fill="rgba(131,193,103,0.15)" stroke="#83C167" stroke-width="1"/>
+            <text x="107" y="190" text-anchor="middle" fill="#83C167" font-size="10">✅</text>
+            <!-- Legend -->
+            <text x="0" y="230" fill="#9A72AC" font-size="10" font-weight="bold">Root node</text>
+            <text x="0" y="245" fill="#58C4DD" font-size="10">Internal nodes = preguntas</text>
+            <text x="0" y="260" fill="#83C167" font-size="10">Leaf nodes = decisiones</text>
+          </svg>
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+          <p><strong style="color: var(--c-purple);">Anatomía:</strong></p>
+          <ul style="font-size: 0.9em; margin-top: 0.5em;">
+            <li class="fragment fade-up"><strong>Root node:</strong> primera pregunta</li>
+            <li class="fragment fade-up"><strong>Internal nodes:</strong> preguntas intermedias</li>
+            <li class="fragment fade-up"><strong>Leaf nodes:</strong> predicción final</li>
+            <li class="fragment fade-up"><strong>Branches:</strong> respuestas (sí/no)</li>
+          </ul>
+          <p class="fragment fade-up" style="margin-top: 0.8em; color: var(--c-yellow); font-size: 0.9em;">
+            Cada nodo divide el espacio con una pregunta sobre <em>una</em> feature
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Ejemplo: ¿Es un Gato?</h3>
+    <div style="font-size: 0.6em;">
+      <img src="img/Copia_de_Clase_14_1_Desicion_Trees_Buenas_Practicas_y_tips_slide05_img01.png"
+           alt="Decision tree ejemplo clasificación gato"
+           style="max-height: 420px; border-radius: 8px; border: 1px solid rgba(168,162,144,0.2);">
+      <p style="color: var(--c-text-dim); margin-top: 0.3em;">
+        Cada nodo usa <strong>una feature</strong> para dividir los datos. Las hojas dan la predicción final.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Construyendo un Árbol</h3>
+    <div style="font-size: 0.65em; margin-top: 0.5em;">
+      <p><strong style="color: var(--c-purple);">Algoritmo recursivo:</strong></p>
+      <div style="background: rgba(154,114,172,0.1); padding: 0.8em; border-radius: 8px; margin-top: 0.5em;">
+        <ol style="margin-left: 1em;">
+          <li class="fragment fade-up" style="margin-bottom: 0.4em;">
+            <strong style="color: var(--c-yellow);">Elegir la mejor feature</strong> para dividir (la que más "purifica" los grupos)
+          </li>
+          <li class="fragment fade-up" style="margin-bottom: 0.4em;">
+            <strong style="color: var(--c-blue);">Dividir</strong> los datos según esa feature
+          </li>
+          <li class="fragment fade-up" style="margin-bottom: 0.4em;">
+            <strong style="color: var(--c-green);">Recursión:</strong> repetir para cada subgrupo
+          </li>
+          <li class="fragment fade-up" style="margin-bottom: 0.4em;">
+            <strong style="color: var(--c-red);">Parar</strong> cuando:
+            <ul style="margin-top: 0.2em;">
+              <li>Todos los ejemplos son de la misma clase</li>
+              <li>Se alcanzó la profundidad máxima (<code>max_depth</code>)</li>
+              <li>Muy pocos ejemplos (<code>min_samples_split</code>)</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <p class="fragment fade-up" style="margin-top: 0.5em; color: var(--c-text-dim);">
+        Pregunta clave: ¿cómo elegir la "mejor" feature? → <strong style="color: var(--c-yellow);">Information Gain</strong>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Entropía</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <p>Mide la <strong style="color: var(--c-yellow);">impureza</strong> de un conjunto:</p>
+      <p class="katex-block">H(S) = -\sum_{i=1}^{K} p_i \log_2(p_i)</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; margin-top: 0.5em;">
+        <div>
+          <svg viewBox="0 0 250 180" style="width: 100%;">
+            <!-- Axes -->
+            <line x1="35" y1="150" x2="235" y2="150" stroke="#a8a290" stroke-width="1"/>
+            <line x1="35" y1="150" x2="35" y2="15" stroke="#a8a290" stroke-width="1"/>
+            <text x="135" y="175" text-anchor="middle" fill="#a8a290" font-size="11">p₁ (probabilidad clase 1)</text>
+            <text x="15" y="85" fill="#a8a290" font-size="11" transform="rotate(-90,15,85)">H</text>
+            <!-- Curve: H(p) = -p*log2(p) - (1-p)*log2(1-p) -->
+            <polyline points="35,150 55,108 75,76 95,54 115,40 135,35 155,40 175,54 195,76 215,108 235,150"
+                      fill="none" stroke="#FFFF00" stroke-width="2.5"/>
+            <!-- Labels -->
+            <text x="35" y="165" fill="#a8a290" font-size="9">0</text>
+            <text x="130" y="165" fill="#a8a290" font-size="9">0.5</text>
+            <text x="228" y="165" fill="#a8a290" font-size="9">1</text>
+            <text x="22" y="38" fill="#a8a290" font-size="9">1</text>
+            <!-- Max point -->
+            <circle cx="135" cy="35" r="4" fill="#FC6255"/>
+            <text x="145" y="30" fill="#FC6255" font-size="10">máx</text>
+          </svg>
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+          <div class="fragment fade-up" style="background: rgba(131,193,103,0.1); padding: 0.4em; border-radius: 6px; margin-bottom: 0.4em;">
+            <span class="katex-inline">H = 0</span> → todos de una clase (puro)
+          </div>
+          <div class="fragment fade-up" style="background: rgba(252,98,85,0.1); padding: 0.4em; border-radius: 6px; margin-bottom: 0.4em;">
+            <span class="katex-inline">H = 1</span> → 50/50 (máxima impureza)
+          </div>
+          <div class="fragment fade-up" style="background: rgba(255,255,0,0.08); padding: 0.4em; border-radius: 6px;">
+            <strong>Ejemplo:</strong> 5 gatos, 5 perros<br>
+            <span class="katex-inline">H = -0.5\log_2(0.5) - 0.5\log_2(0.5) = 1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Information Gain</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <p><strong style="color: var(--c-blue);">Reducción de entropía</strong> al dividir por una feature:</p>
+      <p class="katex-block">\text{IG} = H(\text{parent}) - \sum_{k} \frac{|S_k|}{|S|} H(S_k)</p>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(88,196,221,0.1); padding: 0.6em; border-radius: 8px;">
+        <p><strong>Ejemplo:</strong> 10 animales (5 gatos, 5 perros)</p>
+        <p><span class="katex-inline">H(\text{parent}) = 1.0</span></p>
+        <p style="margin-top: 0.3em;">Si dividimos por "orejas puntiagudas":</p>
+        <ul style="margin-top: 0.3em;">
+          <li>Sí: 4 gatos, 1 perro → <span class="katex-inline">H = 0.72</span></li>
+          <li>No: 1 gato, 4 perros → <span class="katex-inline">H = 0.72</span></li>
+        </ul>
+        <p style="margin-top: 0.3em;"><span class="katex-inline">\text{IG} = 1.0 - (0.5 \times 0.72 + 0.5 \times 0.72) = 0.28</span></p>
+      </div>
+      <p class="fragment fade-up" style="margin-top: 0.5em; color: var(--c-yellow);">
+        Elegimos la feature con <strong>mayor Information Gain</strong> en cada nodo
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Índice Gini</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <p>Alternativa a la entropía, <strong style="color: var(--c-green);">usada por sklearn por defecto:</strong></p>
+      <p class="katex-block">\text{Gini}(S) = 1 - \sum_{i=1}^{K} p_i^2</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; margin-top: 0.5em;">
+        <div style="background: rgba(88,196,221,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-blue);">Entropía</strong>
+          <ul style="font-size: 0.9em; margin-top: 0.3em;">
+            <li>Rango: [0, log₂(K)]</li>
+            <li>Usa logaritmos</li>
+            <li>Ligeramente más "sensible"</li>
+          </ul>
+        </div>
+        <div style="background: rgba(131,193,103,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-green);">Gini</strong>
+          <ul style="font-size: 0.9em; margin-top: 0.3em;">
+            <li>Rango: [0, 0.5] (binario)</li>
+            <li>Más rápido (sin log)</li>
+            <li>sklearn default</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(255,255,0,0.08); padding: 0.5em; border-radius: 8px;">
+        <strong>En la práctica:</strong> la diferencia entre Gini y Entropía es mínima. Ambos producen árboles muy similares.
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Fronteras de Decisión en Árboles</h3>
+    <div style="font-size: 0.6em;">
+      <p style="color: var(--c-text-dim); margin-bottom: 0.3em;">Los árboles crean regiones <strong style="color: var(--c-yellow);">rectangulares</strong> alineadas con los ejes</p>
+      <img src="img/Copia_de_Clase_14_1_Desicion_Trees_Buenas_Practicas_y_tips_slide10_img01.png"
+           alt="Fronteras de decisión rectangulares"
+           style="max-height: 300px; border-radius: 8px; border: 1px solid rgba(168,162,144,0.2);">
+      <p class="fragment fade-up" style="margin-top: 0.5em; color: var(--c-text-dim);">
+        Cada split es una línea horizontal o vertical → <strong>no puede crear fronteras diagonales</strong>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Decision Tree Interactivo</h3>
+    <p style="font-size: 0.55em; color: var(--c-text-dim);">Ajusta la profundidad máxima y observa las regiones de decisión</p>
+    <canvas id="decision-tree-canvas" width="600" height="380" style="border-radius: 8px;"></canvas>
+    <div style="display: flex; gap: 1.5em; margin-top: 0.3em; font-size: 0.55em; justify-content: center; align-items: center;">
+      <div>
+        <label style="color: var(--c-text-dim);">max_depth:</label>
+        <input type="range" id="dt-depth-slider" min="1" max="5" value="2" step="1" style="width: 150px;">
+        <span id="dt-depth-value" style="color: var(--c-purple); font-family: 'Fira Code';">2</span>
+      </div>
+      <div>
+        <label style="color: var(--c-text-dim);">Criterio:</label>
+        <select id="dt-metric-select" style="background: #232340; color: #ece6d0; border: 1px solid #a8a290; border-radius: 4px; padding: 2px 6px; font-family: 'Fira Code'; font-size: 1em;">
+          <option value="gini">Gini</option>
+          <option value="entropy">Entropía</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Decision Tree en Python</h3>
+    <pre><code class="language-python">from sklearn.tree import DecisionTreeClassifier, plot_tree
+import matplotlib.pyplot as plt
+
+# Crear y entrenar
+tree = DecisionTreeClassifier(
+    max_depth=3,           # limitar profundidad
+    min_samples_split=5,   # mín. ejemplos para dividir
+    criterion='gini'       # o 'entropy'
+)
+tree.fit(X_train, y_train)
+print(f"Accuracy: {tree.score(X_test, y_test):.3f}")
+
+# Visualizar el árbol
+plt.figure(figsize=(12, 6))
+plot_tree(tree, feature_names=['x1', 'x2'],
+          class_names=['A', 'B'], filled=True)
+plt.show()</code></pre>
+  </section>
+
+  <section>
+    <h3>Ventajas y Desventajas</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em;">
+        <div style="background: rgba(131,193,103,0.1); padding: 0.6em; border-radius: 8px;">
+          <strong style="color: var(--c-green);">Ventajas ✅</strong>
+          <ul style="font-size: 0.9em; margin-top: 0.3em;">
+            <li class="fragment fade-up">Altamente interpretable</li>
+            <li class="fragment fade-up">No requiere feature scaling</li>
+            <li class="fragment fade-up">Maneja datos numéricos y categóricos</li>
+            <li class="fragment fade-up">Captura relaciones no lineales</li>
+            <li class="fragment fade-up">Rápido de entrenar</li>
+          </ul>
+        </div>
+        <div style="background: rgba(252,98,85,0.1); padding: 0.6em; border-radius: 8px;">
+          <strong style="color: var(--c-red);">Desventajas ❌</strong>
+          <ul style="font-size: 0.9em; margin-top: 0.3em;">
+            <li class="fragment fade-up"><strong>Overfitting fácil</strong> (sin poda)</li>
+            <li class="fragment fade-up">Inestable: cambio pequeño en datos → árbol diferente</li>
+            <li class="fragment fade-up">Fronteras axis-aligned</li>
+            <li class="fragment fade-up">Sesgo hacia features con muchos valores</li>
+            <li class="fragment fade-up">No extrapola bien</li>
+          </ul>
+        </div>
+      </div>
+      <p class="fragment fade-up" style="margin-top: 0.5em; color: var(--c-yellow); text-align: center;">
+        Solución al overfitting e inestabilidad → <strong>Ensembles</strong>
+      </p>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 32: Regression Trees ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-purple);">Regression Trees</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Árboles para problemas de regresión</p>
+  </section>
+
+  <section>
+    <h3>Árboles para Regresión</h3>
+    <div style="font-size: 0.65em; margin-top: 0.5em;">
+      <p>En lugar de votar por una clase, la hoja predice el <strong style="color: var(--c-blue);">promedio</strong> de los ejemplos:</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; margin-top: 0.5em;">
+        <div style="background: rgba(88,196,221,0.1); padding: 0.6em; border-radius: 8px;">
+          <strong style="color: var(--c-blue);">Clasificación</strong>
+          <ul style="font-size: 0.9em; margin-top: 0.3em;">
+            <li>Leaf = clase mayoritaria</li>
+            <li>Split por Information Gain</li>
+            <li>Métrica: Gini / Entropía</li>
+          </ul>
+        </div>
+        <div style="background: rgba(131,193,103,0.1); padding: 0.6em; border-radius: 8px;">
+          <strong style="color: var(--c-green);">Regresión</strong>
+          <ul style="font-size: 0.9em; margin-top: 0.3em;">
+            <li>Leaf = <span class="katex-inline">\bar{y}</span> promedio</li>
+            <li>Split por Variance Reduction</li>
+            <li>Métrica: MSE / MAE</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p><strong style="color: var(--c-yellow);">Variance Reduction:</strong></p>
+        <p class="katex-block">\text{VR} = \text{Var}(\text{parent}) - \sum_k \frac{|S_k|}{|S|} \text{Var}(S_k)</p>
+        <p style="color: var(--c-text-dim); font-size: 0.9em;">Elegimos el split que más reduce la varianza de y</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Regression Tree en Python</h3>
+    <pre><code class="language-python">from sklearn.tree import DecisionTreeRegressor
+
+# Crear y entrenar
+reg_tree = DecisionTreeRegressor(
+    max_depth=4,
+    min_samples_leaf=5
+)
+reg_tree.fit(X_train, y_train)
+
+# Predicciones
+y_pred = reg_tree.predict(X_test)
+print(f"MSE: {mean_squared_error(y_test, y_pred):.2f}")
+print(f"R²:  {r2_score(y_test, y_pred):.3f}")
+
+# Predicción = promedio de los ejemplos en la hoja
+# → produce predicciones "escalonadas" (no continuas)</code></pre>
+    <p class="fragment fade-up" style="font-size: 0.55em; color: var(--c-text-dim); margin-top: 0.3em;">
+      La predicción es constante por regiones → piecewise constant function
+    </p>
+  </section>
+</section>
+
+<!-- ========== Sección 33: Ensembles y Bootstrap ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-purple);">Ensembles y Bootstrap</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Combinando modelos débiles para crear uno fuerte</p>
+  </section>
+
+  <section>
+    <h3>El Problema de un Solo Árbol</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5em;">
+        <div>
+          <img src="img/Copia_de_Clase_14_2_Random_Forests_Buenas_Practicas_Ensembles_slide03_img01.png"
+               alt="Árbol inestable"
+               style="max-height: 280px; border-radius: 8px; border: 1px solid rgba(168,162,144,0.2);">
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+          <p style="color: var(--c-red);"><strong>Problema:</strong> un solo árbol es <em>inestable</em></p>
+          <ul style="margin-top: 0.5em; font-size: 0.9em;">
+            <li class="fragment fade-up">Cambio pequeño en datos → árbol <strong>completamente diferente</strong></li>
+            <li class="fragment fade-up">Alta varianza</li>
+            <li class="fragment fade-up">Sensible a outliers</li>
+            <li class="fragment fade-up">Overfitting fácil</li>
+          </ul>
+          <p class="fragment fade-up" style="margin-top: 0.8em; color: var(--c-yellow);">
+            Solución: ¡usar <strong>muchos</strong> árboles!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>La Idea de Ensembles</h3>
+    <div style="font-size: 0.65em; margin-top: 0.5em;">
+      <div style="background: rgba(154,114,172,0.1); padding: 0.8em; border-radius: 8px;">
+        <p style="text-align: center; font-size: 1.1em;">
+          <strong style="color: var(--c-purple);">Muchos modelos "débiles"</strong>
+          → <strong style="color: var(--c-green);">Un modelo "fuerte"</strong>
+        </p>
+      </div>
+      <div style="margin-top: 0.8em;">
+        <svg viewBox="0 0 600 120" style="width: 90%; display: block; margin: 0 auto;">
+          <!-- Individual trees -->
+          <rect x="10" y="20" width="60" height="40" rx="5" fill="rgba(88,196,221,0.2)" stroke="#58C4DD"/>
+          <text x="40" y="45" text-anchor="middle" fill="#58C4DD" font-size="10">Árbol 1</text>
+          <rect x="90" y="20" width="60" height="40" rx="5" fill="rgba(88,196,221,0.2)" stroke="#58C4DD"/>
+          <text x="120" y="45" text-anchor="middle" fill="#58C4DD" font-size="10">Árbol 2</text>
+          <rect x="170" y="20" width="60" height="40" rx="5" fill="rgba(88,196,221,0.2)" stroke="#58C4DD"/>
+          <text x="200" y="45" text-anchor="middle" fill="#58C4DD" font-size="10">Árbol 3</text>
+          <text x="260" y="45" fill="#a8a290" font-size="16">···</text>
+          <rect x="290" y="20" width="60" height="40" rx="5" fill="rgba(88,196,221,0.2)" stroke="#58C4DD"/>
+          <text x="320" y="45" text-anchor="middle" fill="#58C4DD" font-size="10">Árbol B</text>
+          <!-- Arrows down -->
+          <line x1="40" y1="60" x2="200" y2="90" stroke="#a8a290" stroke-width="1"/>
+          <line x1="120" y1="60" x2="200" y2="90" stroke="#a8a290" stroke-width="1"/>
+          <line x1="200" y1="60" x2="200" y2="90" stroke="#a8a290" stroke-width="1"/>
+          <line x1="320" y1="60" x2="200" y2="90" stroke="#a8a290" stroke-width="1"/>
+          <!-- Aggregation -->
+          <rect x="160" y="85" width="80" height="30" rx="8" fill="rgba(131,193,103,0.3)" stroke="#83C167" stroke-width="2"/>
+          <text x="200" y="105" text-anchor="middle" fill="#83C167" font-size="11" font-weight="bold">Voto</text>
+          <!-- Arrow to result -->
+          <line x1="240" y1="100" x2="350" y2="100" stroke="#FFFF00" stroke-width="2" marker-end="url(#arrowhead)"/>
+          <!-- Result -->
+          <rect x="360" y="85" width="120" height="30" rx="8" fill="rgba(255,255,0,0.15)" stroke="#FFFF00" stroke-width="2"/>
+          <text x="420" y="105" text-anchor="middle" fill="#FFFF00" font-size="11">Predicción final</text>
+        </svg>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p><strong>Tipos de ensemble:</strong></p>
+        <ul style="font-size: 0.9em; margin-top: 0.3em;">
+          <li><strong style="color: var(--c-blue);">Bagging:</strong> entrenar en paralelo, agregar → <em>Random Forest</em></li>
+          <li><strong style="color: var(--c-orange);">Boosting:</strong> entrenar secuencialmente, corrigiendo errores → <em>XGBoost</em></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Muestreo con Reemplazo (Bootstrap)</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <p><strong style="color: var(--c-yellow);">Sampling with replacement:</strong> tomar N ejemplos al azar, <em>pudiendo repetir</em></p>
+      <div style="margin-top: 0.5em;">
+        <svg viewBox="0 0 550 160" style="width: 90%; display: block; margin: 0 auto;">
+          <!-- Original dataset -->
+          <text x="80" y="15" text-anchor="middle" fill="#ece6d0" font-size="11" font-weight="bold">Dataset original</text>
+          <rect x="10" y="22" width="140" height="30" rx="5" fill="rgba(88,196,221,0.15)" stroke="#58C4DD"/>
+          <circle cx="30" cy="37" r="8" fill="#58C4DD"/><text x="30" y="41" text-anchor="middle" fill="#1b1b2f" font-size="9">1</text>
+          <circle cx="50" cy="37" r="8" fill="#FC6255"/><text x="50" y="41" text-anchor="middle" fill="#1b1b2f" font-size="9">2</text>
+          <circle cx="70" cy="37" r="8" fill="#83C167"/><text x="70" y="41" text-anchor="middle" fill="#1b1b2f" font-size="9">3</text>
+          <circle cx="90" cy="37" r="8" fill="#FF862F"/><text x="90" y="41" text-anchor="middle" fill="#1b1b2f" font-size="9">4</text>
+          <circle cx="110" cy="37" r="8" fill="#9A72AC"/><text x="110" y="41" text-anchor="middle" fill="#1b1b2f" font-size="9">5</text>
+          <circle cx="130" cy="37" r="8" fill="#FFFF00"/><text x="130" y="41" text-anchor="middle" fill="#1b1b2f" font-size="9">6</text>
+          <!-- Arrow -->
+          <text x="80" y="72" text-anchor="middle" fill="#a8a290" font-size="10">↓ muestreo con reemplazo ↓</text>
+          <!-- Bootstrap samples -->
+          <text x="90" y="95" fill="#ece6d0" font-size="10">Muestra 1:</text>
+          <circle cx="165" cy="91" r="7" fill="#FC6255"/><text x="165" y="95" text-anchor="middle" fill="#1b1b2f" font-size="8">2</text>
+          <circle cx="183" cy="91" r="7" fill="#58C4DD"/><text x="183" y="95" text-anchor="middle" fill="#1b1b2f" font-size="8">1</text>
+          <circle cx="201" cy="91" r="7" fill="#58C4DD"/><text x="201" y="95" text-anchor="middle" fill="#1b1b2f" font-size="8">1</text>
+          <circle cx="219" cy="91" r="7" fill="#9A72AC"/><text x="219" y="95" text-anchor="middle" fill="#1b1b2f" font-size="8">5</text>
+          <circle cx="237" cy="91" r="7" fill="#83C167"/><text x="237" y="95" text-anchor="middle" fill="#1b1b2f" font-size="8">3</text>
+          <circle cx="255" cy="91" r="7" fill="#FC6255"/><text x="255" y="95" text-anchor="middle" fill="#1b1b2f" font-size="8">2</text>
+          <text x="280" y="95" fill="#a8a290" font-size="9">(1 repetido, 4,6 ausentes)</text>
+
+          <text x="90" y="120" fill="#ece6d0" font-size="10">Muestra 2:</text>
+          <circle cx="165" cy="116" r="7" fill="#FF862F"/><text x="165" y="120" text-anchor="middle" fill="#1b1b2f" font-size="8">4</text>
+          <circle cx="183" cy="116" r="7" fill="#FFFF00"/><text x="183" y="120" text-anchor="middle" fill="#1b1b2f" font-size="8">6</text>
+          <circle cx="201" cy="116" r="7" fill="#83C167"/><text x="201" y="120" text-anchor="middle" fill="#1b1b2f" font-size="8">3</text>
+          <circle cx="219" cy="116" r="7" fill="#FFFF00"/><text x="219" y="120" text-anchor="middle" fill="#1b1b2f" font-size="8">6</text>
+          <circle cx="237" cy="116" r="7" fill="#58C4DD"/><text x="237" y="120" text-anchor="middle" fill="#1b1b2f" font-size="8">1</text>
+          <circle cx="255" cy="116" r="7" fill="#FF862F"/><text x="255" y="120" text-anchor="middle" fill="#1b1b2f" font-size="8">4</text>
+          <text x="280" y="120" fill="#a8a290" font-size="9">(4,6 repetidos)</text>
+
+          <text x="90" y="148" fill="#a8a290" font-size="10">...</text>
+        </svg>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.3em; background: rgba(255,255,0,0.08); padding: 0.4em; border-radius: 6px;">
+        <strong>Resultado:</strong> cada muestra bootstrap usa ~63.2% de los datos originales.
+        El ~36.8% restante = <strong style="color: var(--c-orange);">Out-of-Bag (OOB)</strong> → validación gratis!
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Bagging</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <p><strong style="color: var(--c-blue);">B</strong>ootstrap <strong style="color: var(--c-blue);">Agg</strong>regat<strong style="color: var(--c-blue);">ing</strong></p>
+      <div style="background: rgba(88,196,221,0.1); padding: 0.6em; border-radius: 8px; margin-top: 0.5em;">
+        <ol style="margin-left: 1em;">
+          <li>Crear <strong>B</strong> muestras bootstrap del dataset</li>
+          <li>Entrenar un árbol en cada muestra (independientemente)</li>
+          <li>Agregar predicciones:
+            <ul style="margin-top: 0.2em;">
+              <li><strong>Clasificación:</strong> voto mayoritario</li>
+              <li><strong>Regresión:</strong> promedio</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em;">
+        <p><strong style="color: var(--c-green);">¿Por qué funciona?</strong></p>
+        <ul style="font-size: 0.9em;">
+          <li><strong>Reduce varianza</strong> sin aumentar bias</li>
+          <li>Cada árbol ve datos diferentes → errores se <em>cancelan</em></li>
+          <li>Ley de los Grandes Números: el promedio converge al valor real</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 34: Random Forest ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-purple);">Random Forest</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Bagging + aleatoriedad en features</p>
+  </section>
+
+  <section>
+    <h3>Random Forest = Bagging + Features Aleatorias</h3>
+    <div style="font-size: 0.65em; margin-top: 0.5em;">
+      <p>Bagging normal: todos los árboles pueden usar <em>todas</em> las features → árboles correlacionados</p>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(131,193,103,0.1); padding: 0.6em; border-radius: 8px;">
+        <p><strong style="color: var(--c-green);">Random Forest agrega:</strong></p>
+        <p style="margin-top: 0.3em;">En cada nodo, elegir <span class="katex-inline">k = \sqrt{n}</span> features al azar antes de buscar el mejor split</p>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(255,255,0,0.08); padding: 0.5em; border-radius: 8px;">
+        <p><strong style="color: var(--c-yellow);">Algoritmo:</strong></p>
+        <ol style="margin-left: 1em; margin-top: 0.3em;">
+          <li>Para <code>t = 1, ..., n_estimators</code>:</li>
+          <li style="margin-left: 1em;">Crear muestra bootstrap</li>
+          <li style="margin-left: 1em;">Entrenar árbol, pero en <strong>cada nodo</strong>:</li>
+          <li style="margin-left: 2em;">Seleccionar <span class="katex-inline">k</span> features al azar</li>
+          <li style="margin-left: 2em;">Encontrar el mejor split solo entre esas <span class="katex-inline">k</span></li>
+          <li>Agregar: voto mayoritario / promedio</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Random Forest Interactivo</h3>
+    <p style="font-size: 0.55em; color: var(--c-text-dim);">Observa cómo más árboles suavizan las fronteras de decisión</p>
+    <canvas id="random-forest-canvas" width="780" height="400" style="border-radius: 8px;"></canvas>
+    <div style="display: flex; align-items: center; gap: 1em; margin-top: 0.3em; font-size: 0.55em; justify-content: center;">
+      <label style="color: var(--c-text-dim);">n_estimators:</label>
+      <input type="range" id="rf-n-slider" min="1" max="9" value="3" step="1" style="width: 200px;">
+      <span id="rf-n-value" style="color: var(--c-purple); font-family: 'Fira Code';">3</span>
+    </div>
+  </section>
+
+  <section>
+    <h3>Random Forest en Python</h3>
+    <pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+
+# Clasificación
+rf_clf = RandomForestClassifier(
+    n_estimators=100,     # número de árboles
+    max_depth=5,          # profundidad máxima
+    max_features='sqrt',  # √n features por nodo
+    random_state=42
+)
+rf_clf.fit(X_train, y_train)
+print(f"Accuracy: {rf_clf.score(X_test, y_test):.3f}")
+
+# Feature importance
+for name, imp in zip(feature_names, rf_clf.feature_importances_):
+    print(f"  {name}: {imp:.3f}")
+
+# Regresión
+rf_reg = RandomForestRegressor(n_estimators=100)
+rf_reg.fit(X_train, y_train)</code></pre>
+  </section>
+
+  <section>
+    <h3>Hiperparámetros Clave</h3>
+    <div style="font-size: 0.6em; margin-top: 0.3em;">
+      <table style="border-collapse: collapse; width: 100%;">
+        <tr style="border-bottom: 2px solid rgba(168,162,144,0.3);">
+          <th style="padding: 0.4em; color: var(--c-purple);">Parámetro</th>
+          <th style="padding: 0.4em; color: var(--c-text-dim);">Default</th>
+          <th style="padding: 0.4em; color: var(--c-text-dim);">Efecto</th>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+          <td style="padding: 0.4em;"><code>n_estimators</code></td>
+          <td style="padding: 0.4em;">100</td>
+          <td style="padding: 0.4em;">Más árboles = mejor (pero más lento)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+          <td style="padding: 0.4em;"><code>max_depth</code></td>
+          <td style="padding: 0.4em;">None</td>
+          <td style="padding: 0.4em;">Limitar para evitar overfitting</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+          <td style="padding: 0.4em;"><code>max_features</code></td>
+          <td style="padding: 0.4em;">'sqrt'</td>
+          <td style="padding: 0.4em;">√n features por nodo (decorrelacionar)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+          <td style="padding: 0.4em;"><code>min_samples_split</code></td>
+          <td style="padding: 0.4em;">2</td>
+          <td style="padding: 0.4em;">Mín. ejemplos para dividir un nodo</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.4em;"><code>oob_score</code></td>
+          <td style="padding: 0.4em;">False</td>
+          <td style="padding: 0.4em;">Usar OOB como validación automática</td>
+        </tr>
+      </table>
+      <p class="fragment fade-up" style="margin-top: 0.5em; color: var(--c-yellow); text-align: center;">
+        Más árboles <strong>nunca</strong> causa overfitting (solo es más lento)
+      </p>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 35: Gradient Boosting y XGBoost ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-purple);">Gradient Boosting y XGBoost</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Ensembles secuenciales que aprenden de los errores</p>
+  </section>
+
+  <section>
+    <h3>Boosting: La Intuición</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <p>En vez de entrenar en paralelo, entrenar <strong style="color: var(--c-orange);">secuencialmente</strong>:</p>
+      <div style="margin-top: 0.5em;">
+        <svg viewBox="0 0 600 140" style="width: 90%; display: block; margin: 0 auto;">
+          <!-- Tree 1 -->
+          <rect x="10" y="20" width="80" height="40" rx="5" fill="rgba(88,196,221,0.2)" stroke="#58C4DD" stroke-width="1.5"/>
+          <text x="50" y="45" text-anchor="middle" fill="#58C4DD" font-size="10">Árbol 1</text>
+          <!-- Arrow with errors -->
+          <line x1="90" y1="40" x2="140" y2="40" stroke="#FC6255" stroke-width="1.5"/>
+          <text x="115" y="35" text-anchor="middle" fill="#FC6255" font-size="8">errores</text>
+          <!-- Tree 2 -->
+          <rect x="140" y="20" width="80" height="40" rx="5" fill="rgba(131,193,103,0.2)" stroke="#83C167" stroke-width="1.5"/>
+          <text x="180" y="45" text-anchor="middle" fill="#83C167" font-size="10">Árbol 2</text>
+          <!-- Arrow -->
+          <line x1="220" y1="40" x2="270" y2="40" stroke="#FC6255" stroke-width="1.5"/>
+          <text x="245" y="35" text-anchor="middle" fill="#FC6255" font-size="8">errores</text>
+          <!-- Tree 3 -->
+          <rect x="270" y="20" width="80" height="40" rx="5" fill="rgba(255,134,47,0.2)" stroke="#FF862F" stroke-width="1.5"/>
+          <text x="310" y="45" text-anchor="middle" fill="#FF862F" font-size="10">Árbol 3</text>
+          <!-- Dots -->
+          <text x="370" y="45" fill="#a8a290" font-size="14">···</text>
+          <!-- Sum -->
+          <rect x="400" y="10" width="180" height="55" rx="8" fill="rgba(255,255,0,0.1)" stroke="#FFFF00" stroke-width="2"/>
+          <text x="490" y="35" text-anchor="middle" fill="#FFFF00" font-size="10">F(x) = Σ αₜ · hₜ(x)</text>
+          <text x="490" y="52" text-anchor="middle" fill="#a8a290" font-size="9">suma ponderada</text>
+          <!-- Labels below -->
+          <text x="50" y="80" text-anchor="middle" fill="#58C4DD" font-size="9">Entrena en</text>
+          <text x="50" y="92" text-anchor="middle" fill="#58C4DD" font-size="9">datos originales</text>
+          <text x="180" y="80" text-anchor="middle" fill="#83C167" font-size="9">Entrena en</text>
+          <text x="180" y="92" text-anchor="middle" fill="#83C167" font-size="9">residuos de T1</text>
+          <text x="310" y="80" text-anchor="middle" fill="#FF862F" font-size="9">Entrena en</text>
+          <text x="310" y="92" text-anchor="middle" fill="#FF862F" font-size="9">residuos de T1+T2</text>
+        </svg>
+      </div>
+      <div class="fragment fade-up" style="margin-top: 0.5em; background: rgba(255,134,47,0.1); padding: 0.5em; border-radius: 8px;">
+        <strong style="color: var(--c-orange);">Cada nuevo árbol corrige los errores del anterior</strong>
+        <ul style="margin-top: 0.3em; font-size: 0.9em;">
+          <li>Árboles pequeños (weak learners, depth 3-6)</li>
+          <li><strong>Shrinkage:</strong> multiplicar por learning_rate (0.01-0.3) para no sobreajustar</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Gradient Boosting</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <p>Formalización: entrenar árboles sobre los <strong style="color: var(--c-yellow);">residuos</strong> (gradientes negativos del loss):</p>
+      <div style="background: rgba(88,196,221,0.1); padding: 0.6em; border-radius: 8px; margin-top: 0.5em;">
+        <p class="katex-block">F_0(x) = \bar{y}</p>
+        <p>Para <span class="katex-inline">t = 1, ..., T</span>:</p>
+        <ol style="margin-left: 1em; margin-top: 0.3em;">
+          <li>Calcular residuos: <span class="katex-inline">r_i = y_i - F_{t-1}(x_i)</span></li>
+          <li>Entrenar árbol <span class="katex-inline">h_t</span> sobre los residuos</li>
+          <li>Actualizar: <span class="katex-inline">F_t(x) = F_{t-1}(x) + \eta \cdot h_t(x)</span></li>
+        </ol>
+        <p style="margin-top: 0.3em; color: var(--c-text-dim);"><span class="katex-inline">\eta</span> = learning rate (shrinkage)</p>
+      </div>
+      <pre class="fragment fade-up" style="margin-top: 0.5em;"><code class="language-python">from sklearn.ensemble import GradientBoostingClassifier
+
+gb = GradientBoostingClassifier(
+    n_estimators=200, learning_rate=0.1,
+    max_depth=3, random_state=42
+)
+gb.fit(X_train, y_train)</code></pre>
+    </div>
+  </section>
+
+  <section>
+    <h3>XGBoost</h3>
+    <div style="font-size: 0.65em; margin-top: 0.3em;">
+      <p><strong style="color: var(--c-green);">eXtreme Gradient Boosting</strong> — la implementación más popular y optimizada:</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; margin-top: 0.5em;">
+        <div style="background: rgba(131,193,103,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-green);">Optimizaciones:</strong>
+          <ul style="font-size: 0.9em; margin-top: 0.3em;">
+            <li>Paralelización</li>
+            <li>Regularización L1 y L2</li>
+            <li>Manejo de missing values</li>
+            <li>Poda inteligente (pre + post)</li>
+            <li>Cache-aware access</li>
+          </ul>
+        </div>
+        <div style="background: rgba(255,255,0,0.08); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-yellow);">En la práctica:</strong>
+          <ul style="font-size: 0.9em; margin-top: 0.3em;">
+            <li>Dominante en Kaggle</li>
+            <li>Estado del arte para tabular</li>
+            <li>Early stopping incluido</li>
+            <li>GPU support</li>
+            <li>LightGBM como alternativa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>XGBoost en Python</h3>
+    <pre><code class="language-python">from xgboost import XGBClassifier, XGBRegressor
+
+# Clasificación
+xgb = XGBClassifier(
+    n_estimators=200,
+    learning_rate=0.1,
+    max_depth=4,
+    reg_lambda=1.0,       # regularización L2
+    reg_alpha=0.0,        # regularización L1
+    eval_metric='logloss'
+)
+
+# Early stopping (para en overfitting)
+xgb.fit(X_train, y_train,
+        eval_set=[(X_val, y_val)],
+        verbose=False)
+
+print(f"Accuracy: {xgb.score(X_test, y_test):.3f}")
+print(f"Best iteration: {xgb.best_iteration}")</code></pre>
+  </section>
+
+  <section>
+    <h3>Árboles vs Redes Neuronales</h3>
+    <div style="font-size: 0.6em; margin-top: 0.3em;">
+      <table style="border-collapse: collapse; width: 100%;">
+        <tr style="border-bottom: 2px solid rgba(168,162,144,0.3);">
+          <th style="padding: 0.4em; color: var(--c-text-dim);"></th>
+          <th style="padding: 0.4em; color: var(--c-green);">Árboles / Ensembles</th>
+          <th style="padding: 0.4em; color: var(--c-blue);">Redes Neuronales</th>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+          <td style="padding: 0.4em; color: var(--c-text-dim);">Datos tabulares</td>
+          <td style="padding: 0.4em; color: var(--c-green);">✅ Mejor opción</td>
+          <td style="padding: 0.4em; color: var(--c-text-dim);">Funciona, no es ideal</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+          <td style="padding: 0.4em; color: var(--c-text-dim);">Imágenes / Audio / Texto</td>
+          <td style="padding: 0.4em; color: var(--c-text-dim);">No aplica</td>
+          <td style="padding: 0.4em; color: var(--c-blue);">✅ Mejor opción</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+          <td style="padding: 0.4em; color: var(--c-text-dim);">Interpretabilidad</td>
+          <td style="padding: 0.4em; color: var(--c-green);">Alta (feature importance)</td>
+          <td style="padding: 0.4em; color: var(--c-text-dim);">Baja (black box)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+          <td style="padding: 0.4em; color: var(--c-text-dim);">Feature Engineering</td>
+          <td style="padding: 0.4em;">Poco necesario</td>
+          <td style="padding: 0.4em;">Aprende features</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(168,162,144,0.15);">
+          <td style="padding: 0.4em; color: var(--c-text-dim);">Transfer Learning</td>
+          <td style="padding: 0.4em; color: var(--c-text-dim);">No aplica</td>
+          <td style="padding: 0.4em; color: var(--c-blue);">Muy potente</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.4em; color: var(--c-text-dim);">Velocidad de entrenamiento</td>
+          <td style="padding: 0.4em; color: var(--c-green);">Rápido</td>
+          <td style="padding: 0.4em;">Lento (GPU)</td>
+        </tr>
+      </table>
+      <p class="fragment fade-up" style="margin-top: 0.5em; color: var(--c-yellow); text-align: center;">
+        Regla de oro: datos tabulares → <strong>XGBoost</strong>. Datos no estructurados → <strong>Deep Learning</strong>.
+      </p>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 36: Resumen Semana 4 ========== -->
+<section>
+  <section>
+    <h3>Resumen Semana 4</h3>
+    <div style="font-size: 0.6em; margin-top: 0.5em;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em;">
+        <div style="background: rgba(88,196,221,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-blue);">Decision Trees</strong>
+          <ul style="margin: 0.3em 0 0 1em; padding: 0; font-size: 0.9em;">
+            <li>Splits recursivos por features</li>
+            <li>Entropía / Gini → Information Gain</li>
+            <li>Interpretable pero inestable</li>
+          </ul>
+        </div>
+        <div style="background: rgba(131,193,103,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-green);">Ensembles</strong>
+          <ul style="margin: 0.3em 0 0 1em; padding: 0; font-size: 0.9em;">
+            <li>Bootstrap sampling</li>
+            <li>Bagging: paralelo, reduce varianza</li>
+            <li>Boosting: secuencial, reduce bias</li>
+          </ul>
+        </div>
+        <div style="background: rgba(154,114,172,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-purple);">Random Forest</strong>
+          <ul style="margin: 0.3em 0 0 1em; padding: 0; font-size: 0.9em;">
+            <li>Bagging + random features (√n)</li>
+            <li>Robusto, poco tuning</li>
+            <li>Feature importance gratis</li>
+          </ul>
+        </div>
+        <div style="background: rgba(255,134,47,0.1); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-orange);">XGBoost</strong>
+          <ul style="margin: 0.3em 0 0 1em; padding: 0; font-size: 0.9em;">
+            <li>Gradient boosting optimizado</li>
+            <li>Regularización + early stopping</li>
+            <li>Estado del arte en tabular</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="fragment fade-up" style="margin-top: 0.6em;">
+      <p style="font-size: 0.6em; color: var(--c-purple); text-align: center;">
+        Próxima semana: <strong>Redes Neuronales</strong> — múltiples capas, activaciones, backpropagation
       </p>
     </div>
     <p style="font-size: 0.45em; color: var(--c-text-dim); text-align: center; margin-top: 0.5em;">
@@ -5755,8 +6843,12 @@ print(model_soft.predict_proba(X_test[:3]))
 <script src="js/widgets/knn-widget.js"></script>
 <script src="js/widgets/sigmoid-widget.js"></script>
 <script src="js/widgets/decision-boundary-widget.js"></script>
+<script src="js/widgets/decision-boundary-3d-widget.js"></script>
 <script src="js/widgets/logistic-cost-widget.js"></script>
 <script src="js/widgets/regularization-widget.js"></script>
+<script src="js/widgets/threshold-widget.js"></script>
+<script src="js/widgets/decision-tree-widget.js"></script>
+<script src="js/widgets/random-forest-widget.js"></script>
 
 <script>
 // ============================================================
@@ -6477,6 +7569,12 @@ Reveal.on('slidechanged', function(event) {
       widgetsInitialized.decBoundary = true;
     }
   }
+  if (slide.querySelector('#decision-boundary-3d-plotly') && !widgetsInitialized.decBoundary3d) {
+    if (typeof initDecisionBoundary3DWidget === 'function') {
+      initDecisionBoundary3DWidget(CLASSIFICATION.binary);
+      widgetsInitialized.decBoundary3d = true;
+    }
+  }
   if (slide.querySelector('#logistic-cost-canvas') && !widgetsInitialized.logCost) {
     if (typeof initLogisticCostWidget === 'function') {
       initLogisticCostWidget();
@@ -6487,6 +7585,27 @@ Reveal.on('slidechanged', function(event) {
     if (typeof initRegularizationWidget === 'function') {
       initRegularizationWidget(CLASSIFICATION.binary);
       widgetsInitialized.regularization = true;
+    }
+  }
+  // Threshold widget
+  if (slide.querySelector('#threshold-canvas') && !widgetsInitialized.threshold) {
+    if (typeof initThresholdWidget === 'function') {
+      initThresholdWidget(CLASSIFICATION.binary);
+      widgetsInitialized.threshold = true;
+    }
+  }
+  // Decision Tree widget
+  if (slide.querySelector('#decision-tree-canvas') && !widgetsInitialized.decTree) {
+    if (typeof initDecisionTreeWidget === 'function') {
+      initDecisionTreeWidget();
+      widgetsInitialized.decTree = true;
+    }
+  }
+  // Random Forest widget
+  if (slide.querySelector('#random-forest-canvas') && !widgetsInitialized.randomForest) {
+    if (typeof initRandomForestWidget === 'function') {
+      initRandomForestWidget();
+      widgetsInitialized.randomForest = true;
     }
   }
 });
