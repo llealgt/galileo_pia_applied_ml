@@ -7175,24 +7175,54 @@ def softmax_stable(z):
   </section>
 
   <section>
-    <h3>Decision Tree en Python</h3>
-    <pre><code class="language-python">from sklearn.tree import DecisionTreeClassifier, plot_tree
-import matplotlib.pyplot as plt
+    <h3>Decision Tree en Python — Pipeline Completo</h3>
+    <pre style="font-size: 0.85em;"><code class="language-python">from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor, plot_tree
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.metrics import classification_report, confusion_matrix
+import matplotlib.pyplot as plt, numpy as np
 
-# Crear y entrenar
+# 1. Cargar datos: 30 features clínicas, target = benigno/maligno
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, test_size=0.2,
+    random_state=42, stratify=data.target
+)
+
+# 2. Definir y entrenar el modelo
 tree = DecisionTreeClassifier(
-    max_depth=3,           # limitar profundidad
-    min_samples_split=5,   # mín. ejemplos para dividir
-    criterion='gini'       # o 'entropy'
+    max_depth=4,              # profundidad máxima → control de overfitting
+    min_samples_leaf=5,       # mín ejemplos por hoja
+    criterion='gini',         # o 'entropy'
+    random_state=42
 )
 tree.fit(X_train, y_train)
-print(f"Accuracy: {tree.score(X_test, y_test):.3f}")
 
-# Visualizar el árbol
-plt.figure(figsize=(12, 6))
-plot_tree(tree, feature_names=['x1', 'x2'],
-          class_names=['A', 'B'], filled=True)
-plt.show()</code></pre>
+# 3. Evaluación
+print(f"Train acc: {tree.score(X_train, y_train):.3f}")
+print(f"Test acc:  {tree.score(X_test, y_test):.3f}")     # ~0.947
+print(classification_report(y_test, tree.predict(X_test),
+                            target_names=data.target_names))
+print("Confusion matrix:\n", confusion_matrix(y_test, tree.predict(X_test)))
+
+# 4. Cross-validation 5-fold (más robusto que un solo split)
+cv = cross_val_score(tree, data.data, data.target, cv=5)
+print(f"CV: {cv.mean():.3f} ± {cv.std():.3f}")
+
+# 5. Feature importance — top 3
+top = np.argsort(tree.feature_importances_)[-3:][::-1]
+for i in top:
+    print(f"  {data.feature_names[i]}: {tree.feature_importances_[i]:.3f}")
+
+# 6. Visualizar el árbol (primeros 2 niveles para legibilidad)
+plt.figure(figsize=(14, 7))
+plot_tree(tree, max_depth=2, filled=True,
+          feature_names=data.feature_names,
+          class_names=data.target_names)
+plt.show()
+
+# Versión de regresión — misma API
+# reg = DecisionTreeRegressor(max_depth=4).fit(X_train, y_train)</code></pre>
   </section>
 
   <section>
@@ -7551,26 +7581,54 @@ print(f"R²:  {r2_score(y_test, y_pred):.3f}")
   </section>
 
   <section>
-    <h3>Random Forest en Python</h3>
-    <pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+    <h3>Random Forest en Python — Pipeline Completo</h3>
+    <pre style="font-size: 0.85em;"><code class="language-python">from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.metrics import classification_report, confusion_matrix
+import numpy as np, matplotlib.pyplot as plt
 
-# Clasificación
-rf_clf = RandomForestClassifier(
-    n_estimators=100,     # número de árboles
-    max_depth=5,          # profundidad máxima
-    max_features='sqrt',  # √n features por nodo
+# 1. Datos
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, test_size=0.2,
+    random_state=42, stratify=data.target
+)
+
+# 2. Entrenar bosque de 200 árboles
+rf = RandomForestClassifier(
+    n_estimators=200,         # más árboles → mejor (hasta cierto punto)
+    max_depth=None,           # cada árbol crece hasta puro
+    max_features='sqrt',      # √n features candidatas por split (decorrelación)
+    min_samples_leaf=2,
+    bootstrap=True,
+    oob_score=True,           # validación out-of-bag GRATIS (sin gastar test)
+    n_jobs=-1,                # paralelizar en todos los cores
     random_state=42
 )
-rf_clf.fit(X_train, y_train)
-print(f"Accuracy: {rf_clf.score(X_test, y_test):.3f}")
+rf.fit(X_train, y_train)
 
-# Feature importance
-for name, imp in zip(feature_names, rf_clf.feature_importances_):
-    print(f"  {name}: {imp:.3f}")
+# 3. Evaluación
+print(f"OOB score: {rf.oob_score_:.3f}")                  # validación interna
+print(f"Test acc:  {rf.score(X_test, y_test):.3f}")        # ~0.965
+print(classification_report(y_test, rf.predict(X_test),
+                            target_names=data.target_names))
 
-# Regresión
-rf_reg = RandomForestRegressor(n_estimators=100)
-rf_reg.fit(X_train, y_train)</code></pre>
+# 4. Cross-validation (más caro porque entrena K bosques)
+cv = cross_val_score(rf, data.data, data.target, cv=5, n_jobs=-1)
+print(f"CV: {cv.mean():.3f} ± {cv.std():.3f}")
+
+# 5. Feature importance — top 5
+idx = np.argsort(rf.feature_importances_)[-5:][::-1]
+plt.barh([data.feature_names[i] for i in idx[::-1]],
+         [rf.feature_importances_[i] for i in idx[::-1]])
+plt.title('Top 5 features (Random Forest)'); plt.tight_layout(); plt.show()
+
+# 6. Probabilidades (no solo clases) — útil para thresholds/ROC
+y_proba = rf.predict_proba(X_test)  # shape (m, 2)
+
+# Versión de regresión
+# rf_reg = RandomForestRegressor(n_estimators=200, n_jobs=-1).fit(X_train, y_train)</code></pre>
   </section>
 
   <section>
@@ -7620,6 +7678,106 @@ rf_reg.fit(X_train, y_train)</code></pre>
   <section>
     <h2 style="color: var(--c-purple);">Gradient Boosting y XGBoost</h2>
     <p style="font-size: 0.65em; color: var(--c-text-dim);">Ensembles secuenciales que aprenden de los errores</p>
+  </section>
+
+  <section>
+    <h3>Bagging vs Boosting</h3>
+    <div style="font-size: 0.5em; margin-top: 0.2em;">
+      <p>Dos estrategias de ensemble fundamentalmente distintas según <strong>cómo se entrenan los árboles</strong>:</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; margin-top: 0.4em;">
+        <!-- LEFT: Bagging -->
+        <div style="background: rgba(88,196,221,0.10); padding: 0.5em; border-radius: 8px; border: 2px solid var(--c-blue);">
+          <h4 style="color: var(--c-blue); text-align: center; margin: 0;">Bagging — <em>Paralelo</em></h4>
+          <svg viewBox="0 0 280 210" style="width: 100%;">
+            <rect x="100" y="2" width="80" height="22" rx="4" fill="rgba(255,255,255,0.1)" stroke="#a8a290"/>
+            <text x="140" y="17" text-anchor="middle" fill="#ece6d0" font-size="10">Dataset</text>
+            <line x1="140" y1="24" x2="50" y2="50" stroke="#a8a290" stroke-width="1" stroke-dasharray="2,2"/>
+            <line x1="140" y1="24" x2="140" y2="50" stroke="#a8a290" stroke-width="1" stroke-dasharray="2,2"/>
+            <line x1="140" y1="24" x2="230" y2="50" stroke="#a8a290" stroke-width="1" stroke-dasharray="2,2"/>
+            <rect x="20" y="50" width="60" height="18" rx="3" fill="rgba(88,196,221,0.18)" stroke="#58C4DD"/>
+            <text x="50" y="63" text-anchor="middle" fill="#58C4DD" font-size="9">bootstrap 1</text>
+            <rect x="110" y="50" width="60" height="18" rx="3" fill="rgba(88,196,221,0.18)" stroke="#58C4DD"/>
+            <text x="140" y="63" text-anchor="middle" fill="#58C4DD" font-size="9">bootstrap 2</text>
+            <rect x="200" y="50" width="60" height="18" rx="3" fill="rgba(88,196,221,0.18)" stroke="#58C4DD"/>
+            <text x="230" y="63" text-anchor="middle" fill="#58C4DD" font-size="9">bootstrap 3</text>
+            <text x="140" y="84" text-anchor="middle" fill="#FFFF00" font-size="10" font-weight="bold">↓ ↓ ↓ entrena en PARALELO ↓ ↓ ↓</text>
+            <rect x="20" y="92" width="60" height="30" rx="4" fill="rgba(88,196,221,0.32)" stroke="#58C4DD" stroke-width="1.5"/>
+            <text x="50" y="112" text-anchor="middle" fill="#58C4DD" font-size="11">Árbol 1</text>
+            <rect x="110" y="92" width="60" height="30" rx="4" fill="rgba(88,196,221,0.32)" stroke="#58C4DD" stroke-width="1.5"/>
+            <text x="140" y="112" text-anchor="middle" fill="#58C4DD" font-size="11">Árbol 2</text>
+            <rect x="200" y="92" width="60" height="30" rx="4" fill="rgba(88,196,221,0.32)" stroke="#58C4DD" stroke-width="1.5"/>
+            <text x="230" y="112" text-anchor="middle" fill="#58C4DD" font-size="11">Árbol 3</text>
+            <line x1="50" y1="122" x2="140" y2="150" stroke="#a8a290" stroke-width="1"/>
+            <line x1="140" y1="122" x2="140" y2="150" stroke="#a8a290" stroke-width="1"/>
+            <line x1="230" y1="122" x2="140" y2="150" stroke="#a8a290" stroke-width="1"/>
+            <rect x="80" y="150" width="120" height="28" rx="6" fill="rgba(131,193,103,0.3)" stroke="#83C167" stroke-width="2"/>
+            <text x="140" y="169" text-anchor="middle" fill="#83C167" font-size="11">Voto / Promedio</text>
+            <text x="140" y="198" text-anchor="middle" fill="#FFFF00" font-size="11" font-weight="bold">Predicción final</text>
+          </svg>
+          <ul style="font-size: 0.95em; margin: 0.2em 0 0 1em;">
+            <li>Cada árbol es <strong>independiente</strong> — pueden entrenarse al mismo tiempo en distintos cores.</li>
+            <li>Reduce <strong>varianza</strong> (overfitting).</li>
+            <li>Más árboles casi nunca empeora.</li>
+          </ul>
+          <p style="margin: 0.3em 0 0 0; text-align: center;"><strong style="color: var(--c-blue);">Ejemplos:</strong> Random Forest, Extra Trees</p>
+        </div>
+
+        <!-- RIGHT: Boosting -->
+        <div style="background: rgba(255,134,47,0.10); padding: 0.5em; border-radius: 8px; border: 2px solid var(--c-orange);">
+          <h4 style="color: var(--c-orange); text-align: center; margin: 0;">Boosting — <em>Secuencial</em></h4>
+          <svg viewBox="0 0 280 210" style="width: 100%;">
+            <rect x="100" y="2" width="80" height="22" rx="4" fill="rgba(255,255,255,0.1)" stroke="#a8a290"/>
+            <text x="140" y="17" text-anchor="middle" fill="#ece6d0" font-size="10">Dataset</text>
+            <line x1="140" y1="24" x2="40" y2="55" stroke="#a8a290" stroke-width="1" stroke-dasharray="2,2"/>
+            <text x="140" y="42" text-anchor="middle" fill="#FFFF00" font-size="10" font-weight="bold">→ SECUENCIAL →</text>
+            <rect x="10" y="55" width="60" height="30" rx="4" fill="rgba(255,134,47,0.32)" stroke="#FF862F" stroke-width="1.5"/>
+            <text x="40" y="75" text-anchor="middle" fill="#FF862F" font-size="11">Árbol 1</text>
+            <path d="M 70 70 Q 85 70 100 70" fill="none" stroke="#FC6255" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+            <text x="85" y="58" text-anchor="middle" fill="#FC6255" font-size="8">residuos</text>
+            <rect x="100" y="55" width="60" height="30" rx="4" fill="rgba(255,134,47,0.32)" stroke="#FF862F" stroke-width="1.5"/>
+            <text x="130" y="75" text-anchor="middle" fill="#FF862F" font-size="11">Árbol 2</text>
+            <path d="M 160 70 Q 175 70 190 70" fill="none" stroke="#FC6255" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+            <text x="175" y="58" text-anchor="middle" fill="#FC6255" font-size="8">residuos</text>
+            <rect x="190" y="55" width="60" height="30" rx="4" fill="rgba(255,134,47,0.32)" stroke="#FF862F" stroke-width="1.5"/>
+            <text x="220" y="75" text-anchor="middle" fill="#FF862F" font-size="11">Árbol 3</text>
+            <line x1="40" y1="85" x2="140" y2="150" stroke="#a8a290" stroke-width="1"/>
+            <line x1="130" y1="85" x2="140" y2="150" stroke="#a8a290" stroke-width="1"/>
+            <line x1="220" y1="85" x2="140" y2="150" stroke="#a8a290" stroke-width="1"/>
+            <text x="70" y="115" fill="#a8a290" font-size="8">η·h₁</text>
+            <text x="138" y="115" fill="#a8a290" font-size="8">η·h₂</text>
+            <text x="195" y="115" fill="#a8a290" font-size="8">η·h₃</text>
+            <rect x="80" y="150" width="120" height="28" rx="6" fill="rgba(131,193,103,0.3)" stroke="#83C167" stroke-width="2"/>
+            <text x="140" y="169" text-anchor="middle" fill="#83C167" font-size="11">Suma ponderada</text>
+            <text x="140" y="198" text-anchor="middle" fill="#FFFF00" font-size="11" font-weight="bold">Predicción final</text>
+          </svg>
+          <ul style="font-size: 0.95em; margin: 0.2em 0 0 1em;">
+            <li>Cada árbol <strong>depende</strong> del anterior — no se puede paralelizar entre árboles.</li>
+            <li>Reduce <strong>bias</strong> (underfitting).</li>
+            <li>Demasiados árboles puede sobreajustar.</li>
+          </ul>
+          <p style="margin: 0.3em 0 0 0; text-align: center;"><strong style="color: var(--c-orange);">Ejemplos:</strong> AdaBoost, Gradient Boosting, XGBoost, LightGBM, CatBoost</p>
+        </div>
+      </div>
+
+      <table style="margin: 0.5em auto 0 auto; border-collapse: collapse; font-size: 0.92em;">
+        <thead>
+          <tr style="border-bottom: 2px solid rgba(168,162,144,0.4);">
+            <th style="padding: 0.25em 0.7em; color: var(--c-text-dim);"></th>
+            <th style="padding: 0.25em 0.7em; color: var(--c-blue);">Bagging</th>
+            <th style="padding: 0.25em 0.7em; color: var(--c-orange);">Boosting</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid rgba(168,162,144,0.12);"><td style="padding: 0.2em 0.7em; color: var(--c-text-dim);">Orden</td><td style="padding: 0.2em 0.7em;">Paralelo</td><td style="padding: 0.2em 0.7em;">Secuencial</td></tr>
+          <tr style="border-bottom: 1px solid rgba(168,162,144,0.12);"><td style="padding: 0.2em 0.7em; color: var(--c-text-dim);">Cada árbol aprende de</td><td style="padding: 0.2em 0.7em;">Bootstrap del dataset</td><td style="padding: 0.2em 0.7em;">Errores del anterior</td></tr>
+          <tr style="border-bottom: 1px solid rgba(168,162,144,0.12);"><td style="padding: 0.2em 0.7em; color: var(--c-text-dim);">Foco</td><td style="padding: 0.2em 0.7em;">Reduce varianza</td><td style="padding: 0.2em 0.7em;">Reduce bias</td></tr>
+          <tr style="border-bottom: 1px solid rgba(168,162,144,0.12);"><td style="padding: 0.2em 0.7em; color: var(--c-text-dim);">Riesgo principal</td><td style="padding: 0.2em 0.7em;">Underfit (árboles muy débiles)</td><td style="padding: 0.2em 0.7em;">Overfit (demasiadas iteraciones)</td></tr>
+          <tr style="border-bottom: 1px solid rgba(168,162,144,0.12);"><td style="padding: 0.2em 0.7em; color: var(--c-text-dim);">Hiperparámetro clave</td><td style="padding: 0.2em 0.7em;"><code>n_estimators</code></td><td style="padding: 0.2em 0.7em;"><code>n_estimators</code> + <code>learning_rate</code></td></tr>
+          <tr><td style="padding: 0.2em 0.7em; color: var(--c-text-dim);">Velocidad</td><td style="padding: 0.2em 0.7em;">Rápido (multicore)</td><td style="padding: 0.2em 0.7em;">Más lento (intrínsecamente serial entre árboles)</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <section>
@@ -7693,55 +7851,123 @@ gb.fit(X_train, y_train)</code></pre>
   </section>
 
   <section>
-    <h3>XGBoost</h3>
-    <div style="font-size: 0.65em; margin-top: 0.3em;">
-      <p><strong style="color: var(--c-green);">eXtreme Gradient Boosting</strong> — la implementación más popular y optimizada:</p>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; margin-top: 0.5em;">
-        <div style="background: rgba(131,193,103,0.1); padding: 0.5em; border-radius: 8px;">
-          <strong style="color: var(--c-green);">Optimizaciones:</strong>
-          <ul style="font-size: 0.9em; margin-top: 0.3em;">
-            <li>Paralelización</li>
-            <li>Regularización L1 y L2</li>
-            <li>Manejo de missing values</li>
-            <li>Poda inteligente (pre + post)</li>
-            <li>Cache-aware access</li>
+    <h3>XGBoost: ¿Qué lo hace "eXtreme"?</h3>
+    <div style="font-size: 0.55em; margin-top: 0.2em;">
+      <p><strong style="color: var(--c-green);">eXtreme Gradient Boosting</strong> (Chen &amp; Guestrin, 2014) — la implementación más popular de boosting.</p>
+
+      <!-- Evolution timeline -->
+      <div style="margin-top: 0.4em;">
+        <svg viewBox="0 0 700 110" style="width: 95%; display: block; margin: 0 auto;">
+          <line x1="20" y1="55" x2="680" y2="55" stroke="#a8a290" stroke-width="1.5"/>
+          <!-- AdaBoost -->
+          <circle cx="80" cy="55" r="7" fill="#58C4DD" stroke="#1b1b2f" stroke-width="2"/>
+          <text x="80" y="35" text-anchor="middle" fill="#58C4DD" font-size="11" font-weight="bold">AdaBoost</text>
+          <text x="80" y="80" text-anchor="middle" fill="#a8a290" font-size="9">1995</text>
+          <text x="80" y="97" text-anchor="middle" fill="#a8a290" font-size="8" font-style="italic">pesos α por instancia</text>
+          <!-- Gradient Boosting -->
+          <circle cx="240" cy="55" r="7" fill="#FF862F" stroke="#1b1b2f" stroke-width="2"/>
+          <text x="240" y="35" text-anchor="middle" fill="#FF862F" font-size="11" font-weight="bold">Gradient Boosting</text>
+          <text x="240" y="80" text-anchor="middle" fill="#a8a290" font-size="9">2001 (Friedman)</text>
+          <text x="240" y="97" text-anchor="middle" fill="#a8a290" font-size="8" font-style="italic">árboles sobre gradientes</text>
+          <!-- XGBoost -->
+          <circle cx="420" cy="55" r="9" fill="#83C167" stroke="#FFFF00" stroke-width="2.5"/>
+          <text x="420" y="35" text-anchor="middle" fill="#83C167" font-size="12" font-weight="bold">XGBoost</text>
+          <text x="420" y="80" text-anchor="middle" fill="#a8a290" font-size="9">2014</text>
+          <text x="420" y="97" text-anchor="middle" fill="#a8a290" font-size="8" font-style="italic">+ regularización + 2º orden + paralelo</text>
+          <!-- LightGBM/CatBoost -->
+          <circle cx="600" cy="55" r="7" fill="#9A72AC" stroke="#1b1b2f" stroke-width="2"/>
+          <text x="600" y="35" text-anchor="middle" fill="#9A72AC" font-size="11" font-weight="bold">LightGBM / CatBoost</text>
+          <text x="600" y="80" text-anchor="middle" fill="#a8a290" font-size="9">2017+</text>
+          <text x="600" y="97" text-anchor="middle" fill="#a8a290" font-size="8" font-style="italic">histogram-based, leaf-wise</text>
+        </svg>
+      </div>
+
+      <!-- Delta: what XGBoost adds over GBM -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; margin-top: 0.3em;">
+        <div style="background: rgba(255,134,47,0.08); padding: 0.5em; border-radius: 8px;">
+          <strong style="color: var(--c-orange);">Gradient Boosting (base)</strong>
+          <ul style="font-size: 0.95em; margin: 0.2em 0 0 1em;">
+            <li>Árboles sobre residuos (1er orden)</li>
+            <li>Loss: <span class="katex-inline">\sum L(y, F(x))</span></li>
+            <li>Sin regularización explícita</li>
+            <li>Construcción de árboles serial</li>
           </ul>
         </div>
-        <div style="background: rgba(255,255,0,0.08); padding: 0.5em; border-radius: 8px;">
-          <strong style="color: var(--c-yellow);">En la práctica:</strong>
-          <ul style="font-size: 0.9em; margin-top: 0.3em;">
-            <li>Dominante en Kaggle</li>
-            <li>Estado del arte para tabular</li>
-            <li>Early stopping incluido</li>
-            <li>GPU support</li>
-            <li>LightGBM como alternativa</li>
+        <div style="background: rgba(131,193,103,0.12); padding: 0.5em; border-radius: 8px; border: 1px solid var(--c-green);">
+          <strong style="color: var(--c-green);">XGBoost agrega: <span style="color: var(--c-yellow);">Δ</span></strong>
+          <ul style="font-size: 0.95em; margin: 0.2em 0 0 1em;">
+            <li><strong>Aproximación de 2º orden</strong> (gradiente + Hessiano)</li>
+            <li><strong>Objetivo regularizado:</strong> <span class="katex-inline">L + \Omega(f) = L + \gamma T + \tfrac{1}{2}\lambda \|w\|^2</span></li>
+            <li><strong>Sparsity-aware</strong> (missing values nativo)</li>
+            <li><strong>Paralelo dentro</strong> de cada árbol (block-based split finding)</li>
+            <li><strong>Pre + post-pruning</strong> y early stopping integrado</li>
           </ul>
         </div>
+      </div>
+
+      <div class="fragment fade-up" style="margin-top: 0.3em; background: rgba(255,255,0,0.08); padding: 0.4em; border-radius: 8px;">
+        <strong style="color: var(--c-yellow);">En la práctica:</strong> Dominante en Kaggle desde 2014. Estado del arte para datos tabulares. GPU support nativo. <strong>LightGBM</strong> y <strong>CatBoost</strong> son alternativas modernas con ganancias en velocidad (histogram-based splits) y manejo de features categóricas.
       </div>
     </div>
   </section>
 
   <section>
-    <h3>XGBoost en Python</h3>
-    <pre><code class="language-python">from xgboost import XGBClassifier, XGBRegressor
+    <h3>XGBoost en Python — Pipeline Completo</h3>
+    <pre style="font-size: 0.78em;"><code class="language-python">from xgboost import XGBClassifier, XGBRegressor, plot_importance
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, roc_auc_score
+import matplotlib.pyplot as plt
 
-# Clasificación
+# 1. Datos: split train/test/val (val es para early stopping)
+data = load_breast_cancer()
+X_tv, X_test, y_tv, y_test = train_test_split(
+    data.data, data.target, test_size=0.2, random_state=42, stratify=data.target)
+X_train, X_val, y_train, y_val = train_test_split(
+    X_tv, y_tv, test_size=0.15, random_state=42, stratify=y_tv)
+
+# 2. Definir modelo — early stopping decide cuántos árboles realmente usar
 xgb = XGBClassifier(
-    n_estimators=200,
-    learning_rate=0.1,
-    max_depth=4,
-    reg_lambda=1.0,       # regularización L2
-    reg_alpha=0.0,        # regularización L1
-    eval_metric='logloss'
+    n_estimators=500,           # cota superior; early stopping cortará antes
+    learning_rate=0.05,         # shrinkage — menor lr necesita más árboles
+    max_depth=4,                # árboles pequeños (weak learners)
+    min_child_weight=1,
+    subsample=0.8,              # 80% de filas por árbol (estocástico)
+    colsample_bytree=0.8,       # 80% de columnas por árbol
+    reg_lambda=1.0,             # L2 regularization
+    reg_alpha=0.0,              # L1 regularization
+    eval_metric='logloss',
+    early_stopping_rounds=20,   # para si no mejora val_loss en 20 iters
+    random_state=42, n_jobs=-1
 )
 
-# Early stopping (para en overfitting)
+# 3. Entrenar con eval set para monitorear validación
 xgb.fit(X_train, y_train,
-        eval_set=[(X_val, y_val)],
+        eval_set=[(X_train, y_train), (X_val, y_val)],
         verbose=False)
 
-print(f"Accuracy: {xgb.score(X_test, y_test):.3f}")
-print(f"Best iteration: {xgb.best_iteration}")</code></pre>
+# 4. Evaluación
+print(f"Best iter: {xgb.best_iteration}")                       # típicamente 50-150
+print(f"Test acc:  {xgb.score(X_test, y_test):.3f}")            # ~0.974
+print(f"Test AUC:  {roc_auc_score(y_test, xgb.predict_proba(X_test)[:, 1]):.3f}")
+print(classification_report(y_test, xgb.predict(X_test),
+                            target_names=data.target_names))
+
+# 5. Feature importance — XGBoost ofrece 3 tipos: weight, gain, cover
+plot_importance(xgb, max_num_features=8, importance_type='gain')
+plt.tight_layout(); plt.show()
+
+# 6. Curva de aprendizaje (train vs val) — para detectar overfit
+results = xgb.evals_result()
+plt.plot(results['validation_0']['logloss'], label='train')
+plt.plot(results['validation_1']['logloss'], label='val')
+plt.axvline(xgb.best_iteration, color='r', linestyle='--', label='best iter')
+plt.xlabel('Iteración'); plt.ylabel('logloss'); plt.legend(); plt.show()
+
+# Versión de regresión
+# reg = XGBRegressor(n_estimators=500, learning_rate=0.05, max_depth=4,
+#                    early_stopping_rounds=20).fit(X_train, y_train,
+#                    eval_set=[(X_val, y_val)], verbose=False)</code></pre>
   </section>
 
   <section>
