@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Machine Learning — Curso Completo (Semanas 1-5)</title>
+  <title>Machine Learning — Curso Completo (Semanas 1-6)</title>
 
   <!-- Reveal.js -->
   <link rel="stylesheet" href="lib/reveal.js/dist/reveal.css">
@@ -110,6 +110,17 @@
         <a class="toc-item" onclick="Reveal.slide(46, 0)"><span class="toc-num">46</span>Vectorización</a>
         <a class="toc-item" onclick="Reveal.slide(47, 0)"><span class="toc-num">47</span>Especulaciones sobre AGI</a>
         <a class="toc-item" onclick="Reveal.slide(48, 0)"><span class="toc-num">48</span>Resumen Semana 5</a>
+      </div>
+      <div class="toc-column">
+        <h4 style="color: var(--c-pink); font-size: 0.75em; margin-bottom: 0.3em;">Semana 6</h4>
+        <a class="toc-item" onclick="Reveal.slide(49, 0)"><span class="toc-num">49</span>Portada Semana 6</a>
+        <a class="toc-item" onclick="Reveal.slide(50, 0)"><span class="toc-num">50</span>Entrenamiento en TensorFlow</a>
+        <a class="toc-item" onclick="Reveal.slide(51, 0)"><span class="toc-num">51</span>Funciones de Activación</a>
+        <a class="toc-item" onclick="Reveal.slide(52, 0)"><span class="toc-num">52</span>Multiclase y Softmax</a>
+        <a class="toc-item" onclick="Reveal.slide(53, 0)"><span class="toc-num">53</span>Multi-etiqueta (opcional)</a>
+        <a class="toc-item" onclick="Reveal.slide(54, 0)"><span class="toc-num">54</span>Optimización: Adam</a>
+        <a class="toc-item" onclick="Reveal.slide(55, 0)"><span class="toc-num">55</span>Otros Tipos de Capas</a>
+        <a class="toc-item" onclick="Reveal.slide(56, 0)"><span class="toc-num">56</span>Resumen Semana 6</a>
       </div>
     </div>
     <p style="font-size: 0.5em; color: var(--c-text-dim); margin-top: 0.5em; text-align: center;">Click en cualquier sección para navegar directamente</p>
@@ -9700,9 +9711,99 @@ plt.xlabel('Iteración'); plt.ylabel('logloss'); plt.legend(); plt.show()
   </section>
 
   <section>
+    <h3>Coffee Roasting: el Dataset ☕</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Cada ejemplo es un tostado con su temperatura y duración, etiquetado como <span style="color:#FC6255;">buen café (×, y=1)</span> o <span style="color:#58C4DD;">mal café (○, y=0)</span>. La red tendrá que aprender la región "buena".</p>
+    <div style="display:flex; gap:1em; align-items:center; justify-content:center; font-size:0.55em; margin-top:0.2em;">
+      <!-- Scatter: Temperatura vs Duración -->
+      <svg viewBox="0 0 720 360" style="width:60%; max-width:540px; background:#1b1b2f; border-radius:8px;">
+        <!-- ejes -->
+        <line x1="70" y1="310" x2="700" y2="310" stroke="#a8a290" stroke-width="2"/>
+        <line x1="70" y1="20"  x2="70"  y2="310" stroke="#a8a290" stroke-width="2"/>
+        <!-- ticks x -->
+        <g fill="#a8a290" font-size="11" text-anchor="middle" font-family="Fira Code">
+          <text x="157" y="328">175</text>
+          <text x="287" y="328">200</text>
+          <text x="417" y="328">225</text>
+          <text x="548" y="328">250</text>
+          <text x="678" y="328">275</text>
+        </g>
+        <!-- ticks y -->
+        <g fill="#a8a290" font-size="11" text-anchor="end" font-family="Fira Code">
+          <text x="62" y="285">12</text>
+          <text x="62" y="227">13</text>
+          <text x="62" y="169">14</text>
+          <text x="62" y="111">15</text>
+          <text x="62" y="53">16</text>
+        </g>
+        <!-- labels -->
+        <text x="385" y="354" fill="#ece6d0" font-size="13" text-anchor="middle">Temperatura (°C)</text>
+        <text x="20" y="165" fill="#ece6d0" font-size="13" text-anchor="middle" transform="rotate(-90, 20, 165)">Duración (min)</text>
+        <!-- × buen café (rojo) -->
+        <g stroke="#FC6255" stroke-width="2.5" fill="none">
+          <line x1="280" y1="158" x2="294" y2="172"/><line x1="280" y1="172" x2="294" y2="158"/>
+          <line x1="345" y1="187" x2="359" y2="201"/><line x1="345" y1="201" x2="359" y2="187"/>
+          <line x1="367" y1="129" x2="381" y2="143"/><line x1="367" y1="143" x2="381" y2="129"/>
+          <line x1="432" y1="175" x2="446" y2="189"/><line x1="432" y1="189" x2="446" y2="175"/>
+          <line x1="324" y1="100" x2="338" y2="114"/><line x1="324" y1="114" x2="338" y2="100"/>
+        </g>
+        <!-- ○ mal café (azul) -->
+        <g stroke="#58C4DD" stroke-width="2.5" fill="none">
+          <circle cx="157" cy="223" r="8"/>
+          <circle cx="179" cy="107" r="8"/>
+          <circle cx="244" cy="281" r="8"/>
+          <circle cx="287" cy="35"  r="8"/>
+          <circle cx="548" cy="252" r="8"/>
+          <circle cx="591" cy="107" r="8"/>
+          <circle cx="504" cy="281" r="8"/>
+          <circle cx="417" cy="35"  r="8"/>
+          <circle cx="244" cy="49"  r="8"/>
+          <circle cx="635" cy="165" r="8"/>
+        </g>
+        <!-- leyenda -->
+        <g font-family="Fira Code" font-size="12">
+          <line x1="500" y1="40" x2="514" y2="54" stroke="#FC6255" stroke-width="2.5"/><line x1="500" y1="54" x2="514" y2="40" stroke="#FC6255" stroke-width="2.5"/>
+          <text x="524" y="52" fill="#FC6255">y=1  buen café</text>
+          <circle cx="507" cy="72" r="7" fill="none" stroke="#58C4DD" stroke-width="2.5"/>
+          <text x="524" y="76" fill="#58C4DD">y=0  mal café</text>
+        </g>
+      </svg>
+
+      <!-- Tabla -->
+      <div style="font-family:'Fira Code'; font-size:0.92em; max-width:340px;">
+        <table style="border-collapse:collapse; width:100%;">
+          <thead><tr style="color: var(--c-text); border-bottom:2px solid var(--c-text);">
+            <th style="text-align:right; padding:0.18em 0.4em;">#</th>
+            <th style="text-align:right; padding:0.18em 0.4em;">temp (°C)</th>
+            <th style="text-align:right; padding:0.18em 0.4em;">dur (min)</th>
+            <th style="text-align:center; padding:0.18em 0.4em;">y</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">1</td><td style="text-align:right;">200</td><td style="text-align:right;">13.5</td><td style="text-align:center; color:#FC6255;"><b>1</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">2</td><td style="text-align:right;">215</td><td style="text-align:right;">13.0</td><td style="text-align:center; color:#FC6255;"><b>1</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">3</td><td style="text-align:right;">220</td><td style="text-align:right;">14.0</td><td style="text-align:center; color:#FC6255;"><b>1</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">4</td><td style="text-align:right;">235</td><td style="text-align:right;">13.2</td><td style="text-align:center; color:#FC6255;"><b>1</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">5</td><td style="text-align:right;">210</td><td style="text-align:right;">14.5</td><td style="text-align:center; color:#FC6255;"><b>1</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">6</td><td style="text-align:right;">170</td><td style="text-align:right;">12.5</td><td style="text-align:center; color:#58C4DD;"><b>0</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">7</td><td style="text-align:right;">175</td><td style="text-align:right;">14.5</td><td style="text-align:center; color:#58C4DD;"><b>0</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">8</td><td style="text-align:right;">190</td><td style="text-align:right;">11.5</td><td style="text-align:center; color:#58C4DD;"><b>0</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">9</td><td style="text-align:right;">200</td><td style="text-align:right;">16.0</td><td style="text-align:center; color:#58C4DD;"><b>0</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">10</td><td style="text-align:right;">260</td><td style="text-align:right;">12.0</td><td style="text-align:center; color:#58C4DD;"><b>0</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">11</td><td style="text-align:right;">270</td><td style="text-align:right;">14.5</td><td style="text-align:center; color:#58C4DD;"><b>0</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">12</td><td style="text-align:right;">250</td><td style="text-align:right;">11.5</td><td style="text-align:center; color:#58C4DD;"><b>0</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">13</td><td style="text-align:right;">230</td><td style="text-align:right;">16.0</td><td style="text-align:center; color:#58C4DD;"><b>0</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">14</td><td style="text-align:right;">190</td><td style="text-align:right;">15.5</td><td style="text-align:center; color:#58C4DD;"><b>0</b></td></tr>
+            <tr><td style="text-align:right; padding:0.14em 0.4em; color:var(--c-text-dim);">15</td><td style="text-align:right;">280</td><td style="text-align:right;">13.5</td><td style="text-align:center; color:#58C4DD;"><b>0</b></td></tr>
+          </tbody>
+        </table>
+        <p style="color: var(--c-text-dim); margin-top:0.4em; text-align:center;"><span class="katex-inline">\vec{x}^{(i)} = (\text{temp}, \text{dur})</span>, <span class="katex-inline">y^{(i)} \in \{0,1\}</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
     <h3>Coffee Roasting: la Red en Acción ☕</h3>
     <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Red real 2→3→1 (pesos entrenados). Ajusta temperatura y duración y observa el forward pass y la predicción:</p>
-    <canvas id="nn-coffee-canvas" width="900" height="300" style="border-radius:8px; width:100%; max-width:900px; margin-top:0.2em;"></canvas>
+    <canvas id="nn-coffee-canvas" width="960" height="380" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.2em;"></canvas>
     <div style="display:flex; gap:1.5em; justify-content:center; font-size:0.55em; margin-top:0.2em;">
       <span>Temperatura (°C) <input type="range" id="nc-temp" min="150" max="295" step="1" value="200" style="width:150px;"> <b id="nc-temp-val" style="color:#FF862F;">200</b></span>
       <span>Duración (min) <input type="range" id="nc-dur" min="11" max="16" step="0.1" value="13.5" style="width:150px;"> <b id="nc-dur-val" style="color:#FF862F;">13.5</b></span>
@@ -9710,23 +9811,154 @@ plt.xlabel('Iteración'); plt.ylabel('logloss'); plt.legend(); plt.show()
   </section>
 
   <section>
-    <h3>Datos en TensorFlow: 1D vs 2D</h3>
+    <h3>¿Por qué TensorFlow usa Matrices 2D?</h3>
     <div style="font-size: 0.55em; margin-top:0.2em;">
-      <p>TensorFlow espera los datos como <strong>matrices 2D</strong> (de ahí el doble corchete):</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6em; font-family:'Fira Code'; font-size:0.95em;">
-        <div style="background: rgba(88,196,221,0.1); padding:0.5em; border-radius:8px;">
-          <code>x = np.array([[200.0, 17.0]])</code><br>
-          → <span class="katex-inline">1\times 2</span> (1 fila, 2 columnas) ✓
+      <p>Un dataset es naturalmente una <strong>matriz 2D</strong>: cada <strong>fila</strong> es un ejemplo y cada <strong>columna</strong> es una feature. TensorFlow espera la entrada con esa forma <span class="katex-inline">(m \times n)</span>.</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1em; align-items:center; margin-top:0.4em;">
+        <!-- tabla -->
+        <div>
+          <p style="text-align:center; color: var(--c-text-dim); margin:0 0 0.3em;">como tabla:</p>
+          <table style="margin:0 auto; border-collapse:collapse; font-family:'Fira Code'; font-size:0.95em;">
+            <thead><tr style="color: var(--c-blue); border-bottom:2px solid var(--c-blue);">
+              <th style="padding:0.2em 0.5em;">temp (°C)</th>
+              <th style="padding:0.2em 0.5em;">dur (min)</th>
+            </tr></thead>
+            <tbody>
+              <tr><td style="padding:0.2em 0.5em; text-align:right;">200.0</td><td style="padding:0.2em 0.5em; text-align:right;">17.0</td></tr>
+              <tr><td style="padding:0.2em 0.5em; text-align:right;">425.0</td><td style="padding:0.2em 0.5em; text-align:right;">20.0</td></tr>
+              <tr><td style="padding:0.2em 0.5em; text-align:right;">230.0</td><td style="padding:0.2em 0.5em; text-align:right;">12.5</td></tr>
+              <tr><td style="padding:0.2em 0.5em; text-align:right;">170.0</td><td style="padding:0.2em 0.5em; text-align:right;">18.4</td></tr>
+            </tbody>
+          </table>
+          <p style="text-align:center; color: var(--c-text-dim); margin-top:0.4em; font-size:0.95em;"><span class="katex-inline">m=4</span> ejemplos · <span class="katex-inline">n=2</span> features</p>
         </div>
-        <div style="background: rgba(252,98,85,0.08); padding:0.5em; border-radius:8px;">
-          <code>x = np.array([200, 17])</code><br>
-          → 1D "vector" (sin filas/columnas)
+        <!-- matriz/numpy -->
+        <div>
+          <p style="text-align:center; color: var(--c-text-dim); margin:0 0 0.3em;">como matriz <span class="katex-inline">X</span> (en numpy):</p>
+          <p class="katex-block" style="font-size:0.85em; text-align:center;">X = \begin{bmatrix} 200.0 & 17.0 \\ 425.0 & 20.0 \\ 230.0 & 12.5 \\ 170.0 & 18.4 \end{bmatrix}_{4\times 2}</p>
+          <pre style="font-size:0.8em;"><code class="language-python">X = np.array([[200.0, 17.0],
+              [425.0, 20.0],
+              [230.0, 12.5],
+              [170.0, 18.4]])
+X.shape   # (4, 2)</code></pre>
         </div>
       </div>
-      <p style="margin-top:0.3em;">El resultado de una capa es un <strong>tensor</strong> (la estructura de datos de TF). Para convertirlo a numpy: <code>a1.numpy()</code>.</p>
-      <pre style="font-size:0.8em;"><code class="language-python">layer_1 = Dense(units=3, activation='sigmoid')
-a1 = layer_1(x)        # tf.Tensor([[0.2 0.7 0.3]], shape=(1,3), dtype=float32)
-a1.numpy()             # array([[0.2, 0.7, 0.3]], dtype=float32)</code></pre>
+      <p style="text-align:center; color: var(--c-yellow); margin-top:0.3em;">⚠️ Aunque tengas <strong>un solo ejemplo</strong>, TensorFlow lo espera como matriz <span class="katex-inline">(1, n)</span> — por eso el <strong>doble corchete</strong>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Ejemplos: Matriz ↔ NumPy</h3>
+    <div style="font-size: 0.5em; margin-top:0.2em;">
+      <p>Tres formas de leer cada celda <span class="katex-inline">A_{ij}</span>: <em>i</em>-ésima fila, <em>j</em>-ésima columna.</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1.05fr; gap:0.6em 1.2em; align-items:center; margin-top:0.4em;">
+
+        <!-- ejemplo 1: matriz 2x3 -->
+        <p class="katex-block" style="font-size:0.85em; text-align:center; margin:0;">A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}_{2\times 3}</p>
+        <pre style="font-size:0.78em; margin:0;"><code class="language-python">A = np.array([[1, 2, 3],
+              [4, 5, 6]])
+A.shape   # (2, 3)
+A[0, 1]   # -> 2  (fila 0, col 1)</code></pre>
+
+        <!-- ejemplo 2: matriz 4x2 (dataset) -->
+        <p class="katex-block" style="font-size:0.85em; text-align:center; margin:0;">X = \begin{bmatrix} 200 & 17 \\ 425 & 20 \\ 230 & 12 \\ 170 & 18 \end{bmatrix}_{4\times 2}</p>
+        <pre style="font-size:0.78em; margin:0;"><code class="language-python">X = np.array([[200, 17],
+              [425, 20],
+              [230, 12],
+              [170, 18]])
+X.shape   # (4, 2)   # 4 ejemplos, 2 features</code></pre>
+
+        <!-- ejemplo 3: 1x2 -->
+        <p class="katex-block" style="font-size:0.85em; text-align:center; margin:0;">\vec{x} = \begin{bmatrix} 200 & 17 \end{bmatrix}_{1\times 2}</p>
+        <pre style="font-size:0.78em; margin:0;"><code class="language-python">x = np.array([[200, 17]])   # ¡doble corchete!
+x.shape   # (1, 2)   # 1 ejemplo, 2 features</code></pre>
+
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Row Vector, Column Vector y 1D</h3>
+    <div style="font-size: 0.5em; margin-top:0.2em;">
+      <p>La <strong>misma información</strong> puede representarse de tres formas — y la <strong>shape</strong> es distinta en cada caso. TensorFlow espera 2D <span class="katex-inline">(m \times n)</span>; las multiplicaciones matriciales <strong>dependen de la shape</strong>.</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.6em; margin-top:0.4em;">
+
+        <!-- row vector -->
+        <div style="background: rgba(88,196,221,0.10); border:1px solid rgba(88,196,221,0.5); border-radius:8px; padding:0.5em;">
+          <p style="color:var(--c-blue); margin:0 0 0.2em; text-align:center;"><strong>Row vector</strong> (1 × 2)</p>
+          <p class="katex-block" style="font-size:0.9em; text-align:center; margin:0.2em 0;">\begin{bmatrix} 200 & 17 \end{bmatrix}</p>
+          <pre style="font-size:0.78em; margin:0;"><code class="language-python">x = np.array([[200, 17]])
+x.shape   # (1, 2)</code></pre>
+          <p style="color: var(--c-text-dim); font-size:0.85em; margin:0.3em 0 0;">1 fila, 2 columnas. ✓ uso típico en TF para un ejemplo.</p>
+        </div>
+
+        <!-- column vector -->
+        <div style="background: rgba(255,134,47,0.10); border:1px solid rgba(255,134,47,0.5); border-radius:8px; padding:0.5em;">
+          <p style="color:var(--c-orange); margin:0 0 0.2em; text-align:center;"><strong>Column vector</strong> (2 × 1)</p>
+          <p class="katex-block" style="font-size:0.9em; text-align:center; margin:0.2em 0;">\begin{bmatrix} 200 \\ 17 \end{bmatrix}</p>
+          <pre style="font-size:0.78em; margin:0;"><code class="language-python">x = np.array([[200], [17]])
+x.shape   # (2, 1)</code></pre>
+          <p style="color: var(--c-text-dim); font-size:0.85em; margin:0.3em 0 0;">2 filas, 1 columna. Útil para <code>A · x</code> en notación clásica.</p>
+        </div>
+
+        <!-- 1D -->
+        <div style="background: rgba(252,98,85,0.08); border:1px solid rgba(252,98,85,0.5); border-radius:8px; padding:0.5em;">
+          <p style="color:var(--c-red); margin:0 0 0.2em; text-align:center;"><strong>1D array</strong> (sin filas/cols)</p>
+          <p class="katex-block" style="font-size:0.9em; text-align:center; margin:0.2em 0;">\begin{pmatrix} 200, & 17 \end{pmatrix}</p>
+          <pre style="font-size:0.78em; margin:0;"><code class="language-python">x = np.array([200, 17])
+x.shape   # (2,)</code></pre>
+          <p style="color: var(--c-text-dim); font-size:0.85em; margin:0.3em 0 0;">Un solo eje. ⚠️ TF lo tratará como ambiguo; preferir 2D.</p>
+        </div>
+
+      </div>
+      <p style="text-align:center; color: var(--c-yellow); margin-top:0.4em;">Regla simple: <strong>siempre doble corchete</strong> al crear inputs para TF / Keras → quedan en 2D.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3><code>tf.Tensor</code> y <code>.numpy()</code></h3>
+    <div style="font-size: 0.5em; margin-top:0.2em;">
+      <p>TensorFlow no usa arrays de numpy directamente: internamente trabaja con objetos <strong><code>tf.Tensor</code></strong> (optimizados para GPU, grafos de cómputo y gradientes). Toda capa devuelve un tensor.</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; align-items:start; margin-top:0.3em;">
+
+        <!-- repr del tensor -->
+        <div>
+          <p style="color: var(--c-text-dim); margin:0 0 0.2em; text-align:center;">la salida de una capa es un <code>tf.Tensor</code>:</p>
+          <pre style="font-size:0.78em; margin:0;"><code class="language-python">x = np.array([[200.0, 17.0]])   # (1, 2)
+layer_1 = Dense(units=3, activation='sigmoid')
+
+a1 = layer_1(x)
+print(a1)
+# tf.Tensor(
+#   [[0.2 0.7 0.3]],
+#   shape=(1, 3),
+#   dtype=float32)</code></pre>
+          <p style="color: var(--c-text-dim); font-size:0.85em; margin:0.3em 0 0;">El tensor reporta <strong>shape</strong>, <strong>dtype</strong> y los valores. Es un objeto, no un array.</p>
+        </div>
+
+        <!-- conversión a numpy -->
+        <div>
+          <p style="color: var(--c-text-dim); margin:0 0 0.2em; text-align:center;">para volver a numpy: <code>.numpy()</code></p>
+          <pre style="font-size:0.78em; margin:0;"><code class="language-python">a1.numpy()
+# array([[0.2, 0.7, 0.3]],
+#       dtype=float32)
+
+# accede a metadatos del tensor:
+a1.shape    # TensorShape([1, 3])
+a1.dtype    # tf.float32</code></pre>
+          <p style="color: var(--c-text-dim); font-size:0.85em; margin:0.3em 0 0;">En <strong>PyTorch</strong> es análogo: el equivalente es <code>.detach().numpy()</code>.</p>
+        </div>
+
+      </div>
+
+      <div style="background: rgba(92,208,179,0.10); border-left:3px solid var(--c-teal); padding:0.4em 0.6em; border-radius:6px; margin-top:0.4em;">
+        <p style="margin:0;"><strong style="color: var(--c-teal);">Resumen:</strong>
+          numpy ↔ TF se interconvierten — usa <code>np.array</code> para entradas (2D) y <code>.numpy()</code> para inspeccionar resultados. La <strong>red opera sobre tensores</strong>; los conviertes a numpy solo cuando los necesitas en Python "puro".
+        </p>
+      </div>
     </div>
   </section>
 
@@ -10112,6 +10344,517 @@ def dense(AT, W, b, g):
   </section>
 </section>
 
+<!-- ========================================================== -->
+<!-- ================== SEMANA 6 (49–56) ====================== -->
+<!-- ========================================================== -->
+
+<!-- ========== Sección 49: Portada Semana 6 ========== -->
+<section>
+  <section data-transition="zoom">
+    <h2 style="color: var(--c-pink);">Semana 6</h2>
+    <h3 style="color: var(--c-text); margin-top: 0.3em;">Entrenamiento de Redes Neuronales</h3>
+    <div style="font-size: 0.56em; margin-top: 1em; color: var(--c-text-dim);">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5em; max-width: 660px; margin: 0 auto;">
+        <p>🛠️ Entrenar en TensorFlow (compile/fit)</p>
+        <p>📉 3 pasos: modelo · costo · gradient descent</p>
+        <p>⚡ Activaciones (ReLU, sigmoid, linear)</p>
+        <p>🔢 Multiclase y softmax</p>
+        <p>🏷️ Clasificación multi-etiqueta</p>
+        <p>🚀 Optimización: Adam</p>
+        <p>🧩 Otros tipos de capa (convolucional)</p>
+        <p>🧠 Backpropagation (idea)</p>
+      </div>
+    </div>
+    <p style="font-size: 0.48em; color: var(--c-text-dim); margin-top: 1.2em;">
+      ⚠️ Ahora sí <strong>entrenamos</strong> la red: cost, gradient descent, backpropagation y Adam.
+    </p>
+  </section>
+</section>
+
+<!-- ========== Sección 50: Entrenamiento en TensorFlow ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-pink);">Entrenamiento en TensorFlow ⚙️</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Dado un conjunto de ejemplos (x, y): ¿cómo se construye y entrena en código?</p>
+  </section>
+
+  <section>
+    <h3>Entrenar una Red en TensorFlow</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <pre style="font-size:0.92em;"><code class="language-python">import tensorflow as tf
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.losses import BinaryCrossentropy
+
+model = Sequential([                          # ① definir el modelo
+    Dense(units=25, activation='sigmoid'),
+    Dense(units=15, activation='sigmoid'),
+    Dense(units=1,  activation='sigmoid'),
+])
+model.compile(loss=BinaryCrossentropy())      # ② loss y cost
+model.fit(X, Y, epochs=100)                   # ③ gradient descent</code></pre>
+      <p style="color: var(--c-text-dim);"><strong>epochs</strong> = número de pasos (iteraciones) de gradient descent.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Los 3 Pasos del Entrenamiento</h3>
+    <div style="font-size: 0.5em; margin-top:0.2em;">
+      <table style="width:96%; margin:0 auto; border-collapse:collapse; font-family:'Fira Code';">
+        <thead><tr style="color: var(--c-pink); border-bottom:2px solid var(--c-pink);">
+          <th style="text-align:left; padding:0.3em;">Paso</th>
+          <th style="text-align:left; padding:0.3em;">Logistic regression</th>
+          <th style="text-align:left; padding:0.3em;">Neural network</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(168,162,144,0.25);">
+            <td style="padding:0.3em; color: var(--c-blue);">① modelo<br><span style="color:var(--c-text-dim);">f(x) = ?</span></td>
+            <td style="padding:0.3em;"><code>z = np.dot(w,x)+b</code><br><code>f_x = 1/(1+np.exp(-z))</code></td>
+            <td style="padding:0.3em;"><code>model = Sequential([Dense(...)...])</code></td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(168,162,144,0.25);">
+            <td style="padding:0.3em; color: var(--c-blue);">② loss y cost</td>
+            <td style="padding:0.3em;"><code>loss = -y*np.log(f_x)</code><br><code>      -(1-y)*np.log(1-f_x)</code></td>
+            <td style="padding:0.3em;"><code>model.compile(</code><br><code>  loss=BinaryCrossentropy())</code></td>
+          </tr>
+          <tr>
+            <td style="padding:0.3em; color: var(--c-blue);">③ gradient descent</td>
+            <td style="padding:0.3em;"><code>w = w - alpha*dj_dw</code><br><code>b = b - alpha*dj_db</code></td>
+            <td style="padding:0.3em;"><code>model.fit(X,y,epochs=100)</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="text-align:center; color: var(--c-yellow); margin-top:0.3em;">La misma receta que la regresión logística — TensorFlow automatiza el cálculo de derivadas.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>② Loss y Cost</h3>
+    <div style="font-size: 0.58em; margin-top:0.2em;">
+      <p><strong>Clasificación binaria</strong> → <span style="color:var(--c-blue);">binary cross-entropy</span> (= logistic loss):</p>
+      <p class="katex-block" style="font-size:0.85em;">L\bigl(f(\vec{x}),y\bigr) = -y\log\bigl(f(\vec{x})\bigr) - (1-y)\log\bigl(1-f(\vec{x})\bigr)</p>
+      <pre style="font-size:0.82em;"><code class="language-python">from tensorflow.keras.losses import BinaryCrossentropy
+model.compile(loss=BinaryCrossentropy())</code></pre>
+      <p style="margin-top:0.3em;"><strong>Regresión</strong> (predecir números) → <span style="color:var(--c-blue);">mean squared error</span>:</p>
+      <pre style="font-size:0.82em;"><code class="language-python">from tensorflow.keras.losses import MeanSquaredError
+model.compile(loss=MeanSquaredError())</code></pre>
+      <p style="color: var(--c-text-dim);">El cost es el promedio del loss sobre los <span class="katex-inline">m</span> ejemplos: <span class="katex-inline">J(W,B)=\frac{1}{m}\sum_i L(f(\vec{x}^{(i)}),y^{(i)})</span>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>③ Gradient Descent y Backpropagation</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <div style="display:flex; gap:1em; justify-content:center; align-items:center;">
+        <img src="img/Clase_02_03_GradientDescent_Regresion_slide11_img01.gif" alt="Animación de gradient descent descendiendo por la superficie de costo" style="width:42%; max-width:380px; border-radius:8px;">
+        <div style="text-align:left;">
+          <p class="katex-block" style="font-size:0.8em;">w_j^{[l]} = w_j^{[l]} - \alpha\,\frac{\partial}{\partial w_j^{[l]}} J(\vec{w},b)</p>
+          <p class="katex-block" style="font-size:0.8em;">b_j^{[l]} = b_j^{[l]} - \alpha\,\frac{\partial}{\partial b_j^{[l]}} J(\vec{w},b)</p>
+          <p style="color: var(--c-yellow);">Las derivadas se calculan con <strong>backpropagation</strong>. <code>model.fit</code> lo hace por ti.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Librerías: usar código probado</h3>
+    <div style="font-size: 0.6em; margin-top:0.3em;">
+      <p>En la práctica usamos librerías en vez de programar todo "desde cero":</p>
+      <div style="display:flex; gap:2em; justify-content:center; margin:0.6em 0; font-size:1.3em;">
+        <span style="color:#FF862F;"><strong>TensorFlow</strong></span>
+        <span style="color:#EE4C2C;"><strong>PyTorch</strong></span>
+      </div>
+      <p style="color: var(--c-text-dim);">Conviene <strong>entender la implementación</strong> (forward prop, costo, gradient descent) para depurar y afinar.</p>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 51: Funciones de Activación ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-pink);">Funciones de Activación ⚡</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Alternativas a la sigmoide y cómo elegirlas</p>
+  </section>
+
+  <section>
+    <h3>Alternativas a la Sigmoide</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <p>En "demand prediction", <em>awareness</em> podría ser cualquier número no negativo, no solo 0–1. La sigmoide se queda corta → usamos <strong style="color:var(--c-green);">ReLU</strong>.</p>
+      <div style="display:flex; gap:2em; justify-content:center; align-items:center; margin-top:0.4em;">
+        <div style="text-align:center;">
+          <svg viewBox="0 0 200 140" style="width:200px;">
+            <line x1="20" y1="120" x2="190" y2="120" stroke="#a8a290"/><line x1="30" y1="10" x2="30" y2="130" stroke="#a8a290"/>
+            <path d="M30 120 Q90 120 100 65 Q110 12 180 12" fill="none" stroke="#FC6255" stroke-width="3"/>
+            <text x="105" y="135" fill="#a8a290" font-size="11" text-anchor="middle">Sigmoid · 0&lt;g(z)&lt;1</text>
+          </svg>
+        </div>
+        <div style="text-align:center;">
+          <svg viewBox="0 0 200 140" style="width:200px;">
+            <line x1="20" y1="120" x2="190" y2="120" stroke="#a8a290"/><line x1="100" y1="10" x2="100" y2="130" stroke="#a8a290"/>
+            <path d="M20 120 L100 120 L180 30" fill="none" stroke="#FC6255" stroke-width="3"/>
+            <text x="105" y="135" fill="#a8a290" font-size="11" text-anchor="middle">ReLU · g(z)=max(0,z)</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Las Tres Activaciones (interactivo)</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Activa/desactiva cada función y mueve <span class="katex-inline">z</span> para ver <span class="katex-inline">g(z)</span>.</p>
+    <canvas id="activation-fn-canvas" width="820" height="380" style="border-radius:8px; width:100%; max-width:820px; margin-top:0.2em;"></canvas>
+    <div style="margin-top:0.2em; font-size:0.55em; display:flex; gap:1em; justify-content:center; align-items:center; flex-wrap:wrap;">
+      <label style="color:#FF862F;"><input type="checkbox" id="af-linear" checked> Linear</label>
+      <label style="color:#58C4DD;"><input type="checkbox" id="af-sigmoid" checked> Sigmoid</label>
+      <label style="color:#83C167;"><input type="checkbox" id="af-relu" checked> ReLU</label>
+      <span style="color:var(--c-text-dim);">z = <input type="range" id="af-z" min="-6" max="6" step="0.1" value="1.0" style="width:160px; vertical-align:middle;"> <b id="af-z-val" style="color:#FFFF00;">1.0</b></span>
+    </div>
+  </section>
+
+  <section>
+    <h3>Elegir la Activación de la Capa de <span style="color:var(--c-magenta);">Salida</span></h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <p>Depende del <strong>tipo de y</strong>:</p>
+      <table style="width:90%; margin:0.3em auto; border-collapse:collapse; font-family:'Fira Code';">
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(168,162,144,0.25);"><td style="padding:0.35em; color:var(--c-blue);">Clasificación binaria (y = 0/1)</td><td style="padding:0.35em;"><code>activation='sigmoid'</code></td></tr>
+          <tr style="border-bottom:1px solid rgba(168,162,144,0.25);"><td style="padding:0.35em; color:var(--c-blue);">Regresión (y puede ser + o −)</td><td style="padding:0.35em;"><code>activation='linear'</code></td></tr>
+          <tr><td style="padding:0.35em; color:var(--c-blue);">Regresión (y ≥ 0)</td><td style="padding:0.35em;"><code>activation='relu'</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h3>Elegir la Activación de las Capas <span style="color:var(--c-blue);">Ocultas</span></h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <p>Casi siempre: <strong style="color:var(--c-green);">ReLU</strong> (la opción más común). ¿Por qué no sigmoide?</p>
+      <ul>
+        <li>La sigmoide es <strong>plana</strong> en ambos extremos → gradientes ≈ 0 → gradient descent <strong>lento</strong>.</li>
+        <li>ReLU solo es plana a la izquierda → aprendizaje <strong>más rápido</strong>.</li>
+      </ul>
+      <pre style="font-size:0.82em;"><code class="language-python">model = Sequential([
+    Dense(units=25, activation='relu'),    # capa 1
+    Dense(units=15, activation='relu'),    # capa 2
+    Dense(units=1,  activation='sigmoid'), # salida (binaria)
+])</code></pre>
+    </div>
+  </section>
+
+  <section>
+    <h3>¿Por qué Necesitamos Activaciones? (interactivo)</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Cambia la activación de la capa oculta y observa la función que la red puede representar.</p>
+    <canvas id="linear-collapse-canvas" width="820" height="360" style="border-radius:8px; width:100%; max-width:820px; margin-top:0.2em;"></canvas>
+    <div style="margin-top:0.2em; font-size:0.55em; display:flex; gap:1.2em; justify-content:center; align-items:center; flex-wrap:wrap;">
+      <label style="color:#83C167;"><input type="checkbox" id="lc-relu" checked> usar ReLU (si no: lineal)</label>
+      <span style="color:var(--c-text-dim);">unidades ocultas: <input type="range" id="lc-units" min="1" max="10" step="1" value="4" style="width:140px; vertical-align:middle;"> <b id="lc-units-val" style="color:#FFFF00;">4</b></span>
+      <span id="lc-note" style="color:var(--c-text-dim); display:block; max-width:760px; margin-top:0.3em;"></span>
+    </div>
+  </section>
+
+  <section>
+    <h3>La Lección</h3>
+    <div style="font-size: 0.6em; margin-top:0.3em;">
+      <p>Si <strong>todas</strong> las activaciones fueran lineales <span class="katex-inline">g(z)=z</span>:</p>
+      <ul>
+        <li>Red completa con activación lineal → equivalente a <strong>regresión lineal</strong>.</li>
+        <li>Capas ocultas lineales + salida sigmoide → equivalente a <strong>regresión logística</strong>.</li>
+      </ul>
+      <p style="color: var(--c-yellow); text-align:center; margin-top:0.4em;">⚠️ No uses activación lineal en las capas ocultas — usa <strong>ReLU</strong>.</p>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 52: Multiclase y Softmax ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-pink);">Clasificación Multiclase 🔢</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Cuando y puede tomar más de dos valores · softmax</p>
+  </section>
+
+  <section>
+    <h3>Más de Dos Clases</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <p>Ejemplo MNIST: reconocer dígitos <span class="katex-inline">y \in \{0,1,2,\dots,9\}</span>. El target puede tomar <strong>más de dos</strong> valores.</p>
+      <svg viewBox="0 0 760 220" style="width:88%;">
+        <!-- binaria vs multiclase -->
+        <text x="120" y="20" fill="#a8a290" font-size="13" text-anchor="middle">binaria (2 clases)</text>
+        <line x1="30" y1="180" x2="220" y2="180" stroke="#a8a290"/><line x1="40" y1="30" x2="40" y2="190" stroke="#a8a290"/>
+        <g fill="#FC6255"><text x="90" y="60">✕</text><text x="120" y="55">✕</text><text x="150" y="70">✕</text></g>
+        <g fill="none" stroke="#58C4DD" stroke-width="2"><circle cx="80" cy="140" r="7"/><circle cx="115" cy="155" r="7"/><circle cx="150" cy="135" r="7"/></g>
+        <line x1="55" y1="170" x2="200" y2="95" stroke="#58C4DD" stroke-width="2"/>
+        <text x="560" y="20" fill="#a8a290" font-size="13" text-anchor="middle">multiclase (4 clases)</text>
+        <line x1="430" y1="180" x2="730" y2="180" stroke="#a8a290"/><line x1="440" y1="30" x2="440" y2="190" stroke="#a8a290"/>
+        <g fill="#FC6255"><text x="500" y="55">✕</text><text x="530" y="50">✕</text><text x="555" y="68">✕</text></g>
+        <g fill="none" stroke="#58C4DD" stroke-width="2"><circle cx="490" cy="150" r="7"/><circle cx="520" cy="160" r="7"/></g>
+        <g fill="#FF862F"><text x="650" y="60">▢</text><text x="680" y="75">▢</text></g>
+        <g fill="#9A72AC"><text x="640" y="160">▲</text><text x="675" y="150">▲</text></g>
+        <path d="M560 60 L600 110 L560 180" fill="none" stroke="#5CD0B3" stroke-width="2"/>
+        <path d="M600 110 L730 120" fill="none" stroke="#5CD0B3" stroke-width="2"/>
+      </svg>
+      <p style="color: var(--c-text-dim);">Necesitamos estimar <span class="katex-inline">P(y=1|\vec{x}),\dots,P(y=N|\vec{x})</span>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Softmax Regression</h3>
+    <div style="font-size: 0.56em; margin-top:0.2em;">
+      <p>Generaliza la regresión logística a <span class="katex-inline">N</span> clases. Para cada clase <span class="katex-inline">j</span>:</p>
+      <p class="katex-block" style="font-size:0.9em;">z_j = \vec{w}_j\cdot\vec{x} + b_j, \qquad a_j = \frac{e^{z_j}}{\sum_{k=1}^{N} e^{z_k}} = P(y=j\,|\,\vec{x})</p>
+      <p style="text-align:center;">Las salidas suman 1: <span class="katex-inline">a_1 + a_2 + \dots + a_N = 1</span>.</p>
+      <p style="font-size:0.5em; color: var(--c-text-dim); text-align:center;">🎛️ Hay un <strong>widget interactivo de softmax</strong> en la sección "Softmax Interactivo" (Semana 3): mueve los logits <span class="katex-inline">z_j</span> y observa cómo cambian las probabilidades.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Cost de Softmax (crossentropy)</h3>
+    <div style="font-size: 0.56em; margin-top:0.2em;">
+      <p>El loss penaliza una baja probabilidad asignada a la clase correcta:</p>
+      <p class="katex-block" style="font-size:0.9em;">\text{loss}(a_1,\dots,a_N,y) = -\log a_j \quad \text{si } y = j</p>
+      <div style="display:flex; gap:1.5em; justify-content:center; align-items:center; font-size:0.85em;">
+        <svg viewBox="0 0 240 150" style="width:240px;">
+          <line x1="30" y1="120" x2="220" y2="120" stroke="#a8a290"/><line x1="30" y1="10" x2="30" y2="130" stroke="#a8a290"/>
+          <path d="M35 18 Q70 95 130 112 Q180 120 215 122" fill="none" stroke="#58C4DD" stroke-width="2.5"/>
+          <text x="125" y="140" fill="#a8a290" font-size="11" text-anchor="middle">aⱼ →</text>
+          <text x="14" y="70" fill="#a8a290" font-size="11">L</text>
+        </svg>
+        <p style="color: var(--c-text-dim); text-align:left;">Si <span class="katex-inline">a_j</span> es alta (cerca de 1) → loss bajo.<br>Si <span class="katex-inline">a_j</span> es baja → loss alto.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Red Neuronal con Salida Softmax</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <svg viewBox="0 0 720 240" style="width:88%;">
+        <text x="30" y="120" fill="#FF862F" font-size="13">x⃗</text><line x1="45" y1="115" x2="80" y2="115" stroke="#FF862F" stroke-width="2"/>
+        <rect x="85" y="40" width="40" height="150" rx="8" fill="none" stroke="#58C4DD" stroke-width="2"/><text x="105" y="210" fill="#a8a290" font-size="11" text-anchor="middle">25 · relu</text>
+        <text x="150" y="110" fill="#58C4DD" font-size="11">a⁽¹⁾</text>
+        <rect x="175" y="55" width="40" height="120" rx="8" fill="none" stroke="#58C4DD" stroke-width="2"/><text x="195" y="195" fill="#a8a290" font-size="11" text-anchor="middle">15 · relu</text>
+        <text x="240" y="110" fill="#58C4DD" font-size="11">a⁽²⁾</text>
+        <rect x="265" y="25" width="40" height="190" rx="8" fill="none" stroke="#FF40FF" stroke-width="2.5"/><text x="285" y="230" fill="#FF40FF" font-size="11" text-anchor="middle">10 · softmax</text>
+        <text x="330" y="120" fill="#FF40FF" font-size="11">a⁽³⁾</text>
+        <text x="380" y="60" fill="#ece6d0" font-size="14" font-family="Fira Code">z₁ = w⃗₁·a⁽²⁾ + b₁</text>
+        <text x="380" y="115" fill="#a8a290" font-size="16">⋮</text>
+        <text x="380" y="160" fill="#ece6d0" font-size="14" font-family="Fira Code">z₁₀ = w⃗₁₀·a⁽²⁾ + b₁₀</text>
+        <text x="380" y="200" fill="#FF40FF" font-size="13" font-family="Fira Code">a⃗⁽³⁾ = softmax(z₁,…,z₁₀)</text>
+      </svg>
+      <p style="color: var(--c-text-dim);">A diferencia de las otras capas, cada <span class="katex-inline">a_j^{[3]}</span> depende de <strong>todos</strong> los <span class="katex-inline">z_1,\dots,z_{10}</span>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Código MNIST (versión básica)</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <pre style="font-size:0.82em;"><code class="language-python">from tensorflow.keras.losses import SparseCategoricalCrossentropy
+
+model = Sequential([
+    Dense(units=25, activation='relu'),
+    Dense(units=15, activation='relu'),
+    Dense(units=10, activation='softmax'),   # 10 clases
+])
+model.compile(loss=SparseCategoricalCrossentropy())
+model.fit(X, Y, epochs=100)</code></pre>
+      <p style="color: var(--c-red); text-align:center;">⚠️ Funciona, pero <strong>NO uses esta versión</strong> — hay una numéricamente mejor 👉</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Implementación Mejorada (estabilidad numérica)</h3>
+    <div style="font-size: 0.52em; margin-top:0.2em;">
+      <p>Calcular <span class="katex-inline">a_j</span> y luego <span class="katex-inline">\log a_j</span> acumula errores de redondeo. Mejor: salida <code>'linear'</code> (logits) y dejar que el loss combine softmax + log internamente con <code>from_logits=True</code>.</p>
+      <pre style="font-size:0.82em;"><code class="language-python">model = Sequential([
+    Dense(units=25, activation='relu'),
+    Dense(units=15, activation='relu'),
+    Dense(units=10, activation='linear'),    # logits (z), no softmax
+])
+model.compile(loss=SparseCategoricalCrossentropy(from_logits=True))
+model.fit(X, Y, epochs=100)
+
+# Para predecir probabilidades:
+logits = model(X)
+f_x = tf.nn.softmax(logits)</code></pre>
+      <p style="color: var(--c-text-dim);">Lo mismo aplica a la binaria: salida <code>'linear'</code> + <code>BinaryCrossentropy(from_logits=True)</code> y <code>tf.nn.sigmoid</code> al predecir.</p>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 53: Multi-etiqueta (opcional) ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-pink);">Clasificación Multi-etiqueta 🏷️</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">(Opcional) varias etiquetas a la vez, no una sola clase</p>
+  </section>
+
+  <section>
+    <h3>Multi-etiqueta vs Multiclase</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <p>En una foto: ¿hay coche? ¿hay autobús? ¿hay peatón? Pueden ser <strong>varias a la vez</strong>. La salida es un <strong>vector</strong> de 0/1:</p>
+      <p class="katex-block" style="font-size:0.9em;">\vec{y} = \begin{bmatrix} \text{coche} \\ \text{autobús} \\ \text{peatón} \end{bmatrix} = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}</p>
+      <p style="color: var(--c-text-dim);">Distinto de multiclase (softmax), donde las clases son <strong>mutuamente excluyentes</strong> y suman 1.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Una Red con Varias Salidas Sigmoide</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <svg viewBox="0 0 640 220" style="width:80%;">
+        <text x="30" y="110" fill="#FF862F" font-size="13">x⃗</text><line x1="45" y1="105" x2="85" y2="105" stroke="#FF862F" stroke-width="2"/>
+        <rect x="90" y="40" width="40" height="140" rx="8" fill="none" stroke="#58C4DD" stroke-width="2"/>
+        <rect x="180" y="55" width="40" height="110" rx="8" fill="none" stroke="#58C4DD" stroke-width="2"/>
+        <g fill="rgba(255,64,255,0.2)" stroke="#FF40FF" stroke-width="2.5">
+          <circle cx="300" cy="70" r="16"/><circle cx="300" cy="110" r="16"/><circle cx="300" cy="150" r="16"/>
+        </g>
+        <g fill="#FF40FF" font-size="12" text-anchor="start" font-family="Fira Code">
+          <text x="330" y="74">a₁ → ¿coche?</text><text x="330" y="114">a₂ → ¿autobús?</text><text x="330" y="154">a₃ → ¿peatón?</text>
+        </g>
+        <line x1="130" y1="105" x2="180" y2="105" stroke="#a8a290"/><line x1="220" y1="105" x2="282" y2="100" stroke="#a8a290"/>
+        <text x="300" y="200" fill="#a8a290" font-size="11" text-anchor="middle">3 salidas sigmoid (independientes)</text>
+      </svg>
+      <p style="color: var(--c-text-dim);">Cada salida usa <strong>sigmoide</strong> (no softmax): son preguntas independientes sí/no. Alternativa: entrenar 3 redes separadas.</p>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 54: Optimización Adam ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-pink);">Optimización: Adam 🚀</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Un mejor algoritmo que el gradient descent clásico</p>
+  </section>
+
+  <section>
+    <h3>El Learning Rate Importa</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <p class="katex-block" style="font-size:0.85em;">w_j = w_j - \alpha\,\frac{\partial}{\partial w_j} J(\vec{w},b)</p>
+      <ul>
+        <li><span class="katex-inline">\alpha</span> muy <strong>pequeño</strong> → convergencia lentísima.</li>
+        <li><span class="katex-inline">\alpha</span> muy <strong>grande</strong> → oscila o diverge.</li>
+      </ul>
+      <p style="color: var(--c-text-dim);">¿Y si el algoritmo <strong>ajustara <span class="katex-inline">\alpha</span> automáticamente</strong>? → <strong style="color:var(--c-green);">Adam</strong>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Adam: GD vs Adaptativo (animación)</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;"><strong>Adam</strong> = <em>Adaptive Moment estimation</em>: usa un learning rate distinto por parámetro y lo adapta sobre la marcha.</p>
+    <canvas id="adam-canvas" width="640" height="420" style="border-radius:8px; width:100%; max-width:640px; margin-top:0.2em;"></canvas>
+    <div style="margin-top:0.2em; font-size:0.55em;">
+      <button id="adam-play-btn" style="background: var(--c-pink); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer;">⏸ Pausa</button>
+      <span style="color: var(--c-text-dim); margin-left:1em;">Si un parámetro avanza siempre en la misma dirección → sube su α; si oscila → baja su α.</span>
+    </div>
+  </section>
+
+  <section>
+    <h3>Adam en Código</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <pre style="font-size:0.82em;"><code class="language-python">model.compile(
+    optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+)
+model.fit(X, Y, epochs=100)</code></pre>
+      <p style="color: var(--c-text-dim);">Adam suele converger <strong>mucho más rápido</strong> que el gradient descent clásico y es el optimizador por defecto en la práctica.</p>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 55: Otros Tipos de Capas ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-pink);">Otros Tipos de Capas 🧩</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Más allá de la capa densa: la capa convolucional</p>
+  </section>
+
+  <section>
+    <h3>Capa Densa (recap)</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <svg viewBox="0 0 520 200" style="width:70%;">
+        <g fill="none" stroke="#58C4DD" stroke-width="2"><circle cx="80" cy="70" r="16"/><circle cx="80" cy="130" r="16"/></g>
+        <g fill="rgba(88,196,221,0.28)" stroke="#58C4DD" stroke-width="2"><circle cx="250" cy="60" r="16"/><circle cx="250" cy="110" r="16"/><circle cx="250" cy="160" r="16"/></g>
+        <g stroke="rgba(168,162,144,0.5)" stroke-width="1">
+          <line x1="96" y1="70" x2="234" y2="60"/><line x1="96" y1="70" x2="234" y2="110"/><line x1="96" y1="70" x2="234" y2="160"/>
+          <line x1="96" y1="130" x2="234" y2="60"/><line x1="96" y1="130" x2="234" y2="110"/><line x1="96" y1="130" x2="234" y2="160"/>
+        </g>
+        <text x="340" y="105" fill="#a8a290" font-size="13" text-anchor="start">cada neurona usa</text>
+        <text x="340" y="125" fill="#a8a290" font-size="13" text-anchor="start"><tspan style="fill:#58C4DD;">todas</tspan> las activaciones</text>
+        <text x="340" y="145" fill="#a8a290" font-size="13" text-anchor="start">de la capa anterior</text>
+      </svg>
+      <p class="katex-block" style="font-size:0.8em;">a_1^{[2]} = g\bigl(\vec{w}_1^{[2]}\cdot\vec{a}^{[1]} + b_1^{[2]}\bigr)</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Capa Convolucional</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <svg viewBox="0 0 520 200" style="width:70%;">
+        <g fill="none" stroke="#58C4DD" stroke-width="2"><circle cx="80" cy="50" r="14"/><circle cx="80" cy="90" r="14"/><circle cx="80" cy="130" r="14"/><circle cx="80" cy="170" r="14"/></g>
+        <g fill="rgba(255,64,255,0.18)" stroke="#FF40FF" stroke-width="2"><circle cx="250" cy="80" r="14"/><circle cx="250" cy="140" r="14"/></g>
+        <g stroke="rgba(255,64,255,0.55)" stroke-width="1.4">
+          <line x1="94" y1="50" x2="236" y2="80"/><line x1="94" y1="90" x2="236" y2="80"/>
+          <line x1="94" y1="130" x2="236" y2="140"/><line x1="94" y1="170" x2="236" y2="140"/>
+        </g>
+        <text x="330" y="95" fill="#a8a290" font-size="13" text-anchor="start">cada neurona solo ve</text>
+        <text x="330" y="115" fill="#a8a290" font-size="13" text-anchor="start"><tspan style="fill:#FF40FF;">parte</tspan> de la entrada</text>
+      </svg>
+      <ul>
+        <li>Cálculo <strong>más rápido</strong>.</li>
+        <li>Necesita <strong>menos datos</strong> (menos propenso a overfitting).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h3>CNN: Ejemplo con una Señal EKG</h3>
+    <div style="font-size: 0.55em; margin-top:0.2em;">
+      <svg viewBox="0 0 720 200" style="width:90%;">
+        <text x="40" y="30" fill="#58C4DD" font-size="12">EKG x₁…x₁₀₀</text>
+        <path d="M20 90 L60 90 L70 55 L80 120 L90 90 L150 90 L160 60 L170 120 L180 90 L240 90" fill="none" stroke="#58C4DD" stroke-width="1.5"/>
+        <text x="130" y="150" fill="#FF862F" font-size="12">x⃗</text><line x1="150" y1="145" x2="270" y2="120" stroke="#FF862F" stroke-width="2"/>
+        <rect x="275" y="40" width="40" height="150" rx="8" fill="none" stroke="#9A72AC" stroke-width="2"/><text x="295" y="30" fill="#9A72AC" font-size="11" text-anchor="middle">conv (9)</text>
+        <text x="330" y="118" fill="#9A72AC" font-size="11">a⁽¹⁾</text>
+        <rect x="360" y="60" width="40" height="110" rx="8" fill="none" stroke="#9A72AC" stroke-width="2"/><text x="380" y="30" fill="#9A72AC" font-size="11" text-anchor="middle">conv (3)</text>
+        <text x="415" y="118" fill="#9A72AC" font-size="11">a⁽²⁾</text>
+        <circle cx="460" cy="115" r="16" fill="rgba(255,64,255,0.2)" stroke="#FF40FF" stroke-width="2.5"/><text x="460" y="160" fill="#FF40FF" font-size="11" text-anchor="middle">sigmoid</text>
+        <text x="500" y="118" fill="#FF40FF" font-size="12" text-anchor="start">¿enfermedad cardiaca?</text>
+      </svg>
+      <p style="color: var(--c-text-dim);">Cada neurona de una capa convolucional mira solo una <strong>ventana</strong> de la señal. Apilando capas convolucionales se forma una <strong>CNN</strong>.</p>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 56: Resumen Semana 6 ========== -->
+<section>
+  <section>
+    <h3>Resumen Semana 6</h3>
+    <div style="font-size: 0.5em; margin-top:0.3em;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5em; max-width:760px; margin:0 auto;">
+        <div style="background: rgba(228,139,176,0.12); border-left:3px solid var(--c-pink); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-pink);">🛠️ Entrenar (3 pasos)</strong><br>① definir modelo · ② <code>compile</code> (loss) · ③ <code>fit</code> (gradient descent + backprop).
+        </div>
+        <div style="background: rgba(228,139,176,0.12); border-left:3px solid var(--c-pink); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-pink);">⚡ Activaciones</strong><br>ReLU en ocultas; salida según y: sigmoid / linear / relu. Sin activación → solo regresión lineal.
+        </div>
+        <div style="background: rgba(228,139,176,0.12); border-left:3px solid var(--c-pink); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-pink);">🔢 Softmax / multiclase</strong><br><code>SparseCategoricalCrossentropy(from_logits=True)</code> + salida <code>'linear'</code>.
+        </div>
+        <div style="background: rgba(228,139,176,0.12); border-left:3px solid var(--c-pink); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-pink);">🚀 Adam</strong><br>Learning rate adaptativo por parámetro; converge mucho más rápido. Optimizador por defecto.
+        </div>
+        <div style="background: rgba(228,139,176,0.12); border-left:3px solid var(--c-pink); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-pink);">🏷️ Multi-etiqueta</strong><br>Varias salidas <strong>sigmoide</strong> independientes (no softmax).
+        </div>
+        <div style="background: rgba(228,139,176,0.12); border-left:3px solid var(--c-pink); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-pink);">🧩 Tipos de capa</strong><br>Densa (todas las entradas) vs convolucional (ventana local → CNN).
+        </div>
+      </div>
+      <div class="fragment fade-up" style="margin-top:0.5em;">
+        <p style="font-size: 0.62em; color: var(--c-pink); text-align:center;">Próxima semana: <strong>consejos para aplicar ML</strong> — bias/variance, evaluación y mejora de modelos.</p>
+      </div>
+      <p style="font-size: 0.45em; color: var(--c-text-dim); text-align:center; margin-top:0.3em;">Material adaptado de DeepLearning.AI / Stanford (CC BY-SA 2.0) y Universidad Galileo</p>
+    </div>
+  </section>
+</section>
+
 </div><!-- .slides -->
 </div><!-- .reveal -->
 
@@ -10158,6 +10901,9 @@ def dense(AT, W, b, g):
 <script src="js/widgets/nn-layer-build.js"></script>
 <script src="js/widgets/nn-layer-compute.js"></script>
 <script src="js/widgets/random-forest-widget.js"></script>
+<script src="js/widgets/activation-functions-widget.js"></script>
+<script src="js/widgets/linear-collapse-widget.js"></script>
+<script src="js/widgets/adam-widget.js"></script>
 
 <script>
 // ============================================================
@@ -10166,6 +10912,10 @@ def dense(AT, W, b, g):
 Reveal.initialize({
   hash: true,
   slideNumber: true,
+  // navigationMode 'linear': las flechas ←/→ (y los botones inferior-derecha)
+  // recorren TODAS las slides en orden, incluyendo el contenido vertical de cada
+  // tema. Sin esto, → salta de tema en tema y se brinca las sub-slides de contenido.
+  navigationMode: 'linear',
   transition: 'fade',
   transitionSpeed: 'default',
   backgroundTransition: 'fade',
@@ -10945,6 +11695,16 @@ Reveal.on('slidechanged', function(event) {
       initBaggingBoostingAnim();
       widgetsInitialized.bagBoost = true;
     }
+  }
+  // Semana 6 widgets (Entrenamiento de Redes Neuronales)
+  if (slide.querySelector('#activation-fn-canvas') && !widgetsInitialized.activationFn) {
+    if (typeof initActivationFunctions === 'function') { initActivationFunctions(); widgetsInitialized.activationFn = true; }
+  }
+  if (slide.querySelector('#linear-collapse-canvas') && !widgetsInitialized.linearCollapse) {
+    if (typeof initLinearCollapse === 'function') { initLinearCollapse(); widgetsInitialized.linearCollapse = true; }
+  }
+  if (slide.querySelector('#adam-canvas') && !widgetsInitialized.adamWidget) {
+    if (typeof initAdamWidget === 'function') { initAdamWidget(); widgetsInitialized.adamWidget = true; }
   }
   // Semana 5 widgets (Redes Neuronales)
   if (slide.querySelector('#neuron-sigmoid-canvas') && !widgetsInitialized.neuronSig) {
