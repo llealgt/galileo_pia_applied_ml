@@ -9237,6 +9237,61 @@ plt.xlabel('Iteración'); plt.ylabel('logloss'); plt.legend(); plt.show()
   </section>
 
   <section>
+    <h3>El Modelo en NumPy: Nodo por Nodo (paso a paso)</h3>
+    <p style="font-size: 0.46em; color: var(--c-text-dim); margin:0;">Presiona <strong style="color: var(--c-blue);">"Siguiente"</strong> para recorrer la red neurona por neurona — se resalta la <strong>neurona</strong> en el diagrama y su <strong>bloque de código</strong> correspondiente.</p>
+
+    <!-- Diagrama de la red (canvas) -->
+    <canvas id="nn-numpy-canvas" width="720" height="220" style="border-radius:8px; width:100%; max-width:720px; margin-top:0.15em;"></canvas>
+
+    <div style="font-size: 0.42em; margin-top:0.2em; text-align:left;">
+
+      <pre id="nns-intro" style="font-size:0.95em; margin:0; padding:0.2em 0.5em; border:1.5px solid transparent; border-radius:6px;"><code class="language-python">import numpy as np
+def sigmoid(z): return 1 / (1 + np.exp(-z))</code></pre>
+
+      <!-- 3 columnas, una por neurona oculta -->
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.4em; margin-top:0.3em;">
+
+        <pre id="nns-code-1" style="font-size:0.95em; margin:0; padding:0.2em 0.5em; border:1.5px solid transparent; border-radius:6px; opacity:0.28;"><code class="language-python">w1_1 = np.array(
+  [0.01,-0.02, 0.01,-0.005])
+b1_1 = np.array([-1.5])
+
+z1_1 = np.dot(w1_1, x) + b1_1
+a1_1 = sigmoid(z1_1)</code></pre>
+
+        <pre id="nns-code-2" style="font-size:0.95em; margin:0; padding:0.2em 0.5em; border:1.5px solid transparent; border-radius:6px; opacity:0.28;"><code class="language-python">w1_2 = np.array(
+  [0.02, 0.01,-0.01,-0.005])
+b1_2 = np.array([-3.0])
+
+z1_2 = np.dot(w1_2, x) + b1_2
+a1_2 = sigmoid(z1_2)</code></pre>
+
+        <pre id="nns-code-3" style="font-size:0.95em; margin:0; padding:0.2em 0.5em; border:1.5px solid transparent; border-radius:6px; opacity:0.28;"><code class="language-python">w1_3 = np.array(
+  [-0.005,0.01,0.02,-0.005])
+b1_3 = np.array([-1.0])
+
+z1_3 = np.dot(w1_3, x) + b1_3
+a1_3 = sigmoid(z1_3)</code></pre>
+
+      </div>
+
+      <pre id="nns-a1" style="font-size:0.95em; margin:0.3em 0 0; padding:0.2em 0.5em; border:1.5px solid transparent; border-radius:6px; opacity:0.28;"><code class="language-python">a1 = np.array([a1_1, a1_2, a1_3])          # vector a⁽¹⁾  (3,)</code></pre>
+
+      <pre id="nns-code-out" style="font-size:0.95em; margin:0.3em 0 0; padding:0.2em 0.5em; border:1.5px solid transparent; border-radius:6px; opacity:0.28;"><code class="language-python">w2_1 = np.array([4.0, -3.0, 2.0]);   b2_1 = np.array([-0.5])
+z2_1 = np.dot(w2_1, a1) + b2_1
+a2_1 = sigmoid(z2_1)         # escalar a⁽²⁾ — probabilidad
+yhat = 1 if a2_1 >= 0.5 else 0</code></pre>
+
+    </div>
+
+    <div style="margin-top:0.3em; font-size:0.5em;">
+      <button id="nns-next-btn" style="background: var(--c-blue); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer;">Siguiente ▶</button>
+      <button id="nns-reset-btn" style="background: var(--c-green); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer; margin-left:0.5em;">↻ Reiniciar</button>
+      <span id="nns-step" style="color: var(--c-text-dim); margin-left:1em; font-family:'Fira Code';">Paso 0 / 5</span>
+      <p style="color: var(--c-text-dim); font-size:0.85em; margin:0.3em 0 0;">⚠️ Valores de <code>w</code> y <code>b</code> ilustrativos — los reales se aprenden en el entrenamiento (Semana 6).</p>
+    </div>
+  </section>
+
+  <section>
     <h3>Notación General</h3>
     <div style="font-size: 0.6em; margin-top:0.3em;">
       <svg viewBox="0 0 720 130" style="width: 88%;">
@@ -9396,6 +9451,71 @@ plt.xlabel('Iteración'); plt.ylabel('logloss'); plt.legend(); plt.show()
       </svg>
       <p style="text-align:center; color: var(--c-yellow); margin-top:0.2em;"><span class="katex-inline">\vec{x}\to \vec{a}^{[1]}\to \vec{a}^{[2]}\to \vec{a}^{[3]}\to a^{[4]}=0.82 \ge 0.5 \Rightarrow \hat{y}=1</span>. ¡Esto es <strong>forward propagation</strong>!</p>
     </div>
+  </section>
+
+  <section>
+    <h3>¿Por qué Funcionan? — Universal Approximation 🌀</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Una característica clave de las redes neuronales: pueden aprender <strong>fronteras de decisión no lineales arbitrariamente complejas</strong> — no solo líneas o planos como la regresión lineal/logística.</p>
+
+    <div style="display:flex; gap:1.4em; justify-content:center; align-items:center; font-size:0.5em; margin-top:0.3em;">
+      <!-- IZQ: clasificador lineal NO puede -->
+      <div style="text-align:center;">
+        <p style="color: var(--c-red); margin:0 0 0.2em;"><strong>Regresión logística (lineal)</strong></p>
+        <svg viewBox="0 0 200 200" style="width:200px; background:#1b1b2f; border-radius:6px;">
+          <!-- puntos exteriores azules (un anillo) -->
+          <g fill="none" stroke="#58C4DD" stroke-width="2">
+            <circle cx="100" cy="30" r="6"/><circle cx="155" cy="55" r="6"/><circle cx="170" cy="100" r="6"/><circle cx="155" cy="145" r="6"/>
+            <circle cx="100" cy="170" r="6"/><circle cx="45" cy="145" r="6"/><circle cx="30" cy="100" r="6"/><circle cx="45" cy="55" r="6"/>
+          </g>
+          <!-- puntos interiores rojos × -->
+          <g stroke="#FC6255" stroke-width="2.5">
+            <line x1="93" y1="78" x2="107" y2="92"/><line x1="93" y1="92" x2="107" y2="78"/>
+            <line x1="118" y1="93" x2="132" y2="107"/><line x1="118" y1="107" x2="132" y2="93"/>
+            <line x1="93" y1="108" x2="107" y2="122"/><line x1="93" y1="122" x2="107" y2="108"/>
+            <line x1="68" y1="93" x2="82" y2="107"/><line x1="68" y1="107" x2="82" y2="93"/>
+          </g>
+          <!-- frontera lineal (falla) -->
+          <line x1="20" y1="160" x2="180" y2="40" stroke="#FC6255" stroke-width="2" stroke-dasharray="5 4"/>
+          <text x="100" y="190" text-anchor="middle" fill="#FC6255" font-size="11" font-family="Fira Code">✗ no separa</text>
+        </svg>
+      </div>
+
+      <!-- DER: red neuronal sí puede -->
+      <div style="text-align:center;">
+        <p style="color: var(--c-green); margin:0 0 0.2em;"><strong>Red neuronal</strong></p>
+        <svg viewBox="0 0 200 200" style="width:200px; background:#1b1b2f; border-radius:6px;">
+          <!-- mismos puntos -->
+          <g fill="none" stroke="#58C4DD" stroke-width="2">
+            <circle cx="100" cy="30" r="6"/><circle cx="155" cy="55" r="6"/><circle cx="170" cy="100" r="6"/><circle cx="155" cy="145" r="6"/>
+            <circle cx="100" cy="170" r="6"/><circle cx="45" cy="145" r="6"/><circle cx="30" cy="100" r="6"/><circle cx="45" cy="55" r="6"/>
+          </g>
+          <g stroke="#FC6255" stroke-width="2.5">
+            <line x1="93" y1="78" x2="107" y2="92"/><line x1="93" y1="92" x2="107" y2="78"/>
+            <line x1="118" y1="93" x2="132" y2="107"/><line x1="118" y1="107" x2="132" y2="93"/>
+            <line x1="93" y1="108" x2="107" y2="122"/><line x1="93" y1="122" x2="107" y2="108"/>
+            <line x1="68" y1="93" x2="82" y2="107"/><line x1="68" y1="107" x2="82" y2="93"/>
+          </g>
+          <!-- frontera no lineal (separa) -->
+          <circle cx="100" cy="100" r="42" fill="rgba(131,193,103,0.15)" stroke="#83C167" stroke-width="2.5" stroke-dasharray="5 4"/>
+          <text x="100" y="190" text-anchor="middle" fill="#83C167" font-size="11" font-family="Fira Code">✓ separa</text>
+        </svg>
+      </div>
+    </div>
+
+    <div style="background: rgba(92,208,179,0.10); border-left:3px solid var(--c-teal); padding:0.5em 0.7em; border-radius:6px; margin-top:0.4em; font-size:0.5em;">
+      <p style="margin:0;"><strong style="color: var(--c-teal);">🎓 Universal Approximation Theorem</strong> (Cybenko, 1989)</p>
+      <p style="margin:0.3em 0 0; color: var(--c-text);">
+        «Una red neuronal feedforward con <strong>una sola capa oculta suficientemente grande</strong> (y activaciones sigmoides) puede aproximar <strong>cualquier función continua</strong> sobre un conjunto compacto, con la precisión que se desee.»
+      </p>
+      <p style="margin:0.3em 0 0; font-size:0.85em; color: var(--c-text-dim);">
+        📄 G. Cybenko (1989), <em>«Approximation by superpositions of a sigmoidal function»</em>, <i>Mathematics of Control, Signals, and Systems</i>, 2(4), 303–314.
+        <a href="https://link.springer.com/article/10.1007/BF02551274" target="_blank" rel="noopener" style="color: var(--c-blue);">link.springer.com/article/10.1007/BF02551274</a>
+      </p>
+    </div>
+
+    <p style="text-align:center; color: var(--c-yellow); margin-top:0.3em; font-size:0.5em;">
+      ⚠️ El teorema garantiza que <strong>existen</strong> tales pesos; <strong>encontrarlos</strong> requiere <strong>entrenamiento</strong> (Semana 6). En la práctica, además, más capas suelen funcionar mejor que una sola "muy ancha".
+    </p>
   </section>
 </section>
 
@@ -9954,6 +10074,39 @@ a1.dtype    # tf.float32</code></pre>
 
       </div>
 
+      <!-- segunda capa: a2 = layer_2(a1) -->
+      <p style="text-align:center; color: var(--c-pink); margin:0.5em 0 0.2em;"><strong>… y la siguiente capa repite el patrón con <code>a1</code> como entrada:</strong></p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; align-items:start;">
+
+        <!-- a2 tensor -->
+        <div>
+          <p style="color: var(--c-text-dim); margin:0 0 0.2em; text-align:center;"><code>a2</code> también es un <code>tf.Tensor</code> (shape distinta):</p>
+          <pre style="font-size:0.78em; margin:0;"><code class="language-python">layer_2 = Dense(units=1, activation='sigmoid')
+
+a2 = layer_2(a1)        # a1 como entrada
+print(a2)
+# tf.Tensor(
+#   [[0.8]],
+#   shape=(1, 1),
+#   dtype=float32)</code></pre>
+          <p style="color: var(--c-text-dim); font-size:0.85em; margin:0.3em 0 0;">La capa de salida (1 unidad) produce un tensor <span class="katex-inline">1\times 1</span> — un solo número (la probabilidad).</p>
+        </div>
+
+        <!-- a2 numpy -->
+        <div>
+          <p style="color: var(--c-text-dim); margin:0 0 0.2em; text-align:center;">y se convierte igual con <code>.numpy()</code>:</p>
+          <pre style="font-size:0.78em; margin:0;"><code class="language-python">a2.numpy()
+# array([[0.8]],
+#       dtype=float32)
+
+a2.shape    # TensorShape([1, 1])
+a2.dtype    # tf.float32</code></pre>
+          <p style="color: var(--c-text-dim); font-size:0.85em; margin:0.3em 0 0;"><strong style="color:var(--c-yellow);">Mismo objeto, distinta shape</strong>: cada capa devuelve un tensor con su tamaño correspondiente a sus <code>units</code>.</p>
+        </div>
+
+      </div>
+
       <div style="background: rgba(92,208,179,0.10); border-left:3px solid var(--c-teal); padding:0.4em 0.6em; border-radius:6px; margin-top:0.4em;">
         <p style="margin:0;"><strong style="color: var(--c-teal);">Resumen:</strong>
           numpy ↔ TF se interconvierten — usa <code>np.array</code> para entradas (2D) y <code>.numpy()</code> para inspeccionar resultados. La <strong>red opera sobre tensores</strong>; los conviertes a numpy solo cuando los necesitas en Python "puro".
@@ -10161,8 +10314,20 @@ def sequential(x):
 <!-- ========== Sección 46: Vectorización ========== -->
 <section>
   <section>
-    <h2 style="color: var(--c-teal);">Vectorización <span style="font-size:0.6em; color:var(--c-text-dim);">(opcional)</span></h2>
+    <h2 style="color: var(--c-teal);">Vectorización</h2>
     <p style="font-size: 0.65em; color: var(--c-text-dim);">Cómo se implementan las redes de forma eficiente</p>
+  </section>
+
+  <section>
+    <h3>Matmul = Dot Products fila × columna (paso a paso)</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Presiona <strong style="color: var(--c-blue);">"Siguiente"</strong> para construir <span class="katex-inline">C = A\cdot B</span> celda por celda: cada <span class="katex-inline">C_{ij}</span> es el dot product entre la <strong>fila <span class="katex-inline">i</span></strong> de <span class="katex-inline">A</span> y la <strong>columna <span class="katex-inline">j</span></strong> de <span class="katex-inline">B</span>.</p>
+    <canvas id="matmul-canvas" width="760" height="320" style="border-radius:8px; width:100%; max-width:760px; margin-top:0.2em;"></canvas>
+    <div style="margin-top:0.2em; font-size:0.5em;">
+      <button id="mm-next-btn" style="background: var(--c-blue); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer;">Siguiente ▶</button>
+      <button id="mm-reset-btn" style="background: var(--c-green); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer; margin-left:0.5em;">↻ Reiniciar</button>
+      <span id="mm-step" style="color: var(--c-text-dim); margin-left:1em; font-family:'Fira Code';">Paso 0 / 5</span>
+      <p style="text-align:center; color: var(--c-yellow); margin:0.4em 0 0;">💡 Esto es <strong>exactamente lo que hace forward propagation vectorizado</strong>: <span class="katex-inline">Z = A_{\text{in}}\,W + b</span> con <code>np.matmul</code> en vez de un <code>for</code> sobre cada neurona.</p>
+    </div>
   </section>
 
   <section>
@@ -10452,6 +10617,83 @@ model.compile(loss=MeanSquaredError())</code></pre>
           <p class="katex-block" style="font-size:0.8em;">b_j^{[l]} = b_j^{[l]} - \alpha\,\frac{\partial}{\partial b_j^{[l]}} J(\vec{w},b)</p>
           <p style="color: var(--c-yellow);">Las derivadas se calculan con <strong>backpropagation</strong>. <code>model.fit</code> lo hace por ti.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Backpropagation: la Regla de la Cadena 🔗</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">
+      <strong>Backpropagation</strong> es la aplicación de la <strong>regla de la cadena</strong> del cálculo, generalizada a funciones de <strong>múltiples variables</strong>. Es lo que se usa para calcular las derivadas <span class="katex-inline">\partial J/\partial w_j^{[l]}</span> y <span class="katex-inline">\partial J/\partial b_j^{[l]}</span> de <strong>todos</strong> los parámetros de la red.
+    </p>
+
+    <div style="font-size: 0.48em; margin-top:0.2em;">
+      <div style="display:grid; grid-template-columns:0.95fr 1.2fr; gap:1em; align-items:start;">
+
+        <!-- IZQ: regla de la cadena -->
+        <div>
+          <p style="color: var(--c-blue); margin:0 0 0.2em;"><strong>Regla de la cadena — caso simple</strong></p>
+          <p style="margin:0;">Si <span class="katex-inline">J = f(g(x))</span>, entonces:</p>
+          <p class="katex-block" style="margin:0.2em 0;">\frac{\partial J}{\partial x} = \frac{\partial J}{\partial g}\cdot \frac{\partial g}{\partial x}</p>
+
+          <p style="color: var(--c-blue); margin:0.5em 0 0.2em;"><strong>Caso de múltiples variables</strong></p>
+          <p style="margin:0;">Si <span class="katex-inline">J = f(y_1,\dots,y_n)</span> con <span class="katex-inline">y_i = g_i(x)</span>:</p>
+          <p class="katex-block" style="margin:0.2em 0;">\frac{\partial J}{\partial x} = \sum_i \frac{\partial J}{\partial y_i}\cdot \frac{\partial y_i}{\partial x}</p>
+          <p style="color: var(--c-text-dim); margin:0.3em 0 0;">En una red, cada capa <em>compone</em> funciones con muchas entradas/salidas — la cadena se aplica recursivamente.</p>
+        </div>
+
+        <!-- DER: grafo de cómputo -->
+        <div>
+          <p style="text-align:center; color: var(--c-yellow); margin:0 0 0.2em;"><strong>Grafo de cómputo de la red</strong></p>
+          <svg viewBox="0 0 500 220" style="width:100%; background:#1b1b2f; border-radius:8px;">
+            <!-- títulos arriba/abajo -->
+            <text x="250" y="22" fill="#58C4DD" font-size="13" text-anchor="middle" font-family="Fira Code" font-weight="bold">→  forward (cálculo)  →</text>
+            <text x="250" y="208" fill="#FFFF00" font-size="13" text-anchor="middle" font-family="Fira Code" font-weight="bold">←  backward (gradientes)  ←</text>
+
+            <!-- nodos -->
+            <circle cx="60"  cy="110" r="24" fill="rgba(255,134,47,0.25)" stroke="#FF862F" stroke-width="2.5"/>
+            <text x="60" y="115" fill="#FF862F" font-size="15" text-anchor="middle" font-family="Fira Code">x</text>
+
+            <circle cx="195" cy="110" r="24" fill="rgba(88,196,221,0.25)" stroke="#58C4DD" stroke-width="2.5"/>
+            <text x="195" y="115" fill="#58C4DD" font-size="13" text-anchor="middle" font-family="Fira Code">a⁽¹⁾</text>
+
+            <circle cx="330" cy="110" r="24" fill="rgba(88,196,221,0.25)" stroke="#58C4DD" stroke-width="2.5"/>
+            <text x="330" y="115" fill="#58C4DD" font-size="13" text-anchor="middle" font-family="Fira Code">a⁽²⁾</text>
+
+            <circle cx="450" cy="110" r="24" fill="rgba(255,255,0,0.20)" stroke="#FFFF00" stroke-width="2.5"/>
+            <text x="450" y="115" fill="#FFFF00" font-size="14" text-anchor="middle" font-family="Fira Code">J</text>
+
+            <!-- forward arrows -->
+            <g stroke="#58C4DD" stroke-width="2" fill="#58C4DD">
+              <line x1="84"  y1="102" x2="165" y2="102"/><polygon points="165,97 173,102 165,107"/>
+              <line x1="219" y1="102" x2="300" y2="102"/><polygon points="300,97 308,102 300,107"/>
+              <line x1="354" y1="102" x2="420" y2="102"/><polygon points="420,97 428,102 420,107"/>
+            </g>
+            <text x="125" y="90"  fill="#58C4DD" font-size="11" text-anchor="middle" font-family="Fira Code">capa 1</text>
+            <text x="260" y="90"  fill="#58C4DD" font-size="11" text-anchor="middle" font-family="Fira Code">capa 2</text>
+            <text x="387" y="90"  fill="#58C4DD" font-size="11" text-anchor="middle" font-family="Fira Code">loss</text>
+
+            <!-- backward arrows -->
+            <g stroke="#FFFF00" stroke-width="2" fill="#FFFF00">
+              <line x1="420" y1="130" x2="354" y2="130"/><polygon points="360,125 354,130 360,135"/>
+              <line x1="300" y1="130" x2="219" y2="130"/><polygon points="225,125 219,130 225,135"/>
+              <line x1="165" y1="130" x2="84"  y2="130"/><polygon points="90,125 84,130 90,135"/>
+            </g>
+            <text x="387" y="155" fill="#FFFF00" font-size="11" text-anchor="middle" font-family="Fira Code">∂J/∂a⁽²⁾</text>
+            <text x="260" y="155" fill="#FFFF00" font-size="11" text-anchor="middle" font-family="Fira Code">∂J/∂a⁽¹⁾</text>
+            <text x="125" y="155" fill="#FFFF00" font-size="11" text-anchor="middle" font-family="Fira Code">∂J/∂w⁽¹⁾, ∂J/∂b⁽¹⁾</text>
+            <text x="260" y="172" fill="#a8a290" font-size="10" text-anchor="middle" font-family="Fira Code" font-style="italic">cada flecha = una aplicación de la regla de la cadena</text>
+          </svg>
+        </div>
+      </div>
+
+      <div style="background: rgba(92,208,179,0.10); border-left:3px solid var(--c-teal); padding:0.5em 0.7em; border-radius:6px; margin-top:0.4em;">
+        <p style="margin:0;"><strong style="color: var(--c-teal);">💡 La gran idea:</strong>
+          <strong>una sola pasada hacia atrás</strong> (<em>backward pass</em>) aplica la regla de la cadena capa a capa y obtiene los gradientes de <strong>todos</strong> los parámetros del modelo — sin que tengas que derivar a mano cada uno.
+        </p>
+        <p style="margin:0.3em 0 0; color: var(--c-text-dim);">
+          🎁 TensorFlow y PyTorch lo hacen <strong>automáticamente</strong> con su <strong>autograd</strong>: tú escribes el forward, ellos calculan las derivadas con backprop.
+        </p>
       </div>
     </div>
   </section>
@@ -10904,6 +11146,8 @@ model.fit(X, Y, epochs=100)</code></pre>
 <script src="js/widgets/activation-functions-widget.js"></script>
 <script src="js/widgets/linear-collapse-widget.js"></script>
 <script src="js/widgets/adam-widget.js"></script>
+<script src="js/widgets/nn-numpy-stepwise.js"></script>
+<script src="js/widgets/matmul-stepwise.js"></script>
 
 <script>
 // ============================================================
@@ -11705,6 +11949,12 @@ Reveal.on('slidechanged', function(event) {
   }
   if (slide.querySelector('#adam-canvas') && !widgetsInitialized.adamWidget) {
     if (typeof initAdamWidget === 'function') { initAdamWidget(); widgetsInitialized.adamWidget = true; }
+  }
+  if (slide.querySelector('#nn-numpy-canvas') && !widgetsInitialized.nnNumpy) {
+    if (typeof initNNNumpyStepwise === 'function') { initNNNumpyStepwise(); widgetsInitialized.nnNumpy = true; }
+  }
+  if (slide.querySelector('#matmul-canvas') && !widgetsInitialized.matmul) {
+    if (typeof initMatmulStepwise === 'function') { initMatmulStepwise(); widgetsInitialized.matmul = true; }
   }
   // Semana 5 widgets (Redes Neuronales)
   if (slide.querySelector('#neuron-sigmoid-canvas') && !widgetsInitialized.neuronSig) {
