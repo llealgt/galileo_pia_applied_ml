@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proyecto Final — Clasificador Multi-Clase | Machine Learning Aplicado · Galileo 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c-bg: #1b1b2f;
+    --c-bg-light: #232340;
+    --c-bg-card: #20203a;
+    --c-text: #ece6d0;
+    --c-text-dim: #a8a290;
+    --c-blue: #58C4DD;
+    --c-yellow: #FFFF00;
+    --c-green: #83C167;
+    --c-red: #FC6255;
+    --c-orange: #FF862F;
+    --c-purple: #9A72AC;
+    --c-teal: #5CD0B3;
+    --c-pink: #E48BB0;
+    --c-code-bg: #0d0d1a;
+    --c-border: #34345a;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--c-bg);
+    background-image: radial-gradient(ellipse at top, #1f1f3a 0%, #1b1b2f 70%);
+    background-attachment: fixed;
+    color: var(--c-text);
+    font-family: 'Lora', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.65;
+  }
+
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  /* ---- Header ---- */
+  header.hero {
+    text-align: center;
+    padding: 2.5rem 1rem 2rem;
+    border-bottom: 1px solid var(--c-border);
+    margin-bottom: 2.5rem;
+  }
+  header.hero .eyebrow {
+    color: var(--c-pink);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  header.hero h1 {
+    color: var(--c-blue);
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.4rem;
+    line-height: 1.15;
+  }
+  header.hero .sub {
+    color: var(--c-text-dim);
+    font-size: 1.05rem;
+  }
+
+  /* ---- Headings ---- */
+  h2 {
+    color: var(--c-blue);
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 3rem 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--c-border);
+  }
+  h2 .num {
+    color: var(--c-pink);
+    font-family: 'Fira Code', monospace;
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+  }
+  h3 {
+    color: var(--c-teal);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 1.8rem 0 0.6rem;
+  }
+
+  p { margin: 0.7rem 0; }
+
+  a { color: var(--c-blue); text-decoration: none; border-bottom: 1px dotted var(--c-blue); }
+  a:hover { color: var(--c-teal); border-bottom-style: solid; }
+
+  ul, ol { margin: 0.6rem 0 1rem; padding-left: 1.4rem; }
+  li { margin: 0.35rem 0; }
+
+  strong { color: var(--c-text); font-weight: 600; }
+  em { color: var(--c-text-dim); }
+
+  code {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85em;
+    background: var(--c-code-bg);
+    color: var(--c-teal);
+    padding: 0.12em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--c-border);
+  }
+
+  /* ---- Tables ---- */
+  .table-scroll { overflow-x: auto; margin: 1.2rem 0; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.92rem;
+    background: var(--c-bg-card);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.65rem 0.85rem;
+    border-bottom: 1px solid var(--c-border);
+    vertical-align: top;
+  }
+  th {
+    background: var(--c-bg-light);
+    color: var(--c-blue);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  tr:last-child td { border-bottom: none; }
+  td code { font-size: 0.82em; }
+
+  /* ---- Callouts ---- */
+  .callout {
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 1.4rem 0;
+    border-left: 4px solid var(--c-blue);
+    background: var(--c-bg-card);
+  }
+  .callout p { margin: 0.3rem 0; }
+  .callout.warn { border-left-color: var(--c-red); }
+  .callout.warn .tag { color: var(--c-red); }
+  .callout.note { border-left-color: var(--c-yellow); }
+  .callout.note .tag { color: var(--c-yellow); }
+  .callout.tip { border-left-color: var(--c-green); }
+  .callout.tip .tag { color: var(--c-green); }
+  .callout .tag {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-blue);
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  /* ---- Model / step cards ---- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1.4rem 0; }
+  .card {
+    background: var(--c-bg-card);
+    border: 1px solid var(--c-border);
+    border-radius: 10px;
+    padding: 1.1rem 1.2rem;
+  }
+  .card h4 { margin: 0 0 0.5rem; font-size: 1.05rem; }
+  .card.rf h4 { color: var(--c-green); }
+  .card.xgb h4 { color: var(--c-orange); }
+  .card.nn h4 { color: var(--c-purple); }
+  .card p { font-size: 0.9rem; margin: 0.3rem 0; color: var(--c-text-dim); }
+  .card code { display: block; margin-top: 0.5rem; font-size: 0.78rem; color: var(--c-teal); background: var(--c-code-bg); padding: 0.4rem 0.6rem; }
+
+  .pill {
+    display: inline-block;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.72rem;
+    padding: 0.15em 0.55em;
+    border-radius: 999px;
+    border: 1px solid var(--c-border);
+    color: var(--c-text-dim);
+    margin: 0.1rem 0.2rem 0.1rem 0;
+  }
+  .pill.ok { color: var(--c-green); border-color: var(--c-green); }
+  .pill.no { color: var(--c-red); border-color: var(--c-red); }
+
+  /* ---- Diagnosis legend ---- */
+  .diag { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 1rem 0; }
+  .diag > div { flex: 1 1 200px; background: var(--c-bg-card); border: 1px solid var(--c-border); border-radius: 8px; padding: 0.8rem 1rem; }
+  .diag .u { color: var(--c-orange); font-weight: 600; }
+  .diag .o { color: var(--c-red); font-weight: 600; }
+  .diag .g { color: var(--c-green); font-weight: 600; }
+  .diag small { color: var(--c-text-dim); display: block; font-size: 0.85rem; margin-top: 0.2rem; }
+
+  /* ---- Examples / figures ---- */
+  figure { margin: 1.4rem 0; }
+  figcaption {
+    color: var(--c-text-dim);
+    font-size: 0.82rem;
+    font-style: italic;
+    text-align: center;
+    margin-top: 0.6rem;
+  }
+  .example {
+    background: var(--c-bg-card);
+    border: 1px solid var(--c-border);
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+    margin: 1.4rem 0;
+  }
+  .example > .label {
+    display: inline-block;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-yellow);
+    border: 1px solid var(--c-yellow);
+    border-radius: 999px;
+    padding: 0.1em 0.7em;
+    margin-bottom: 0.9rem;
+  }
+  pre {
+    background: var(--c-code-bg);
+    border: 1px solid var(--c-border);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--c-text);
+    margin: 1rem 0;
+  }
+  pre code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
+  /* minimal token coloring */
+  pre .k { color: var(--c-pink); }      /* keyword */
+  pre .s { color: var(--c-green); }     /* string */
+  pre .n { color: var(--c-blue); }      /* number */
+  pre .c { color: var(--c-text-dim); font-style: italic; } /* comment */
+  pre .f { color: var(--c-yellow); }    /* function/attr */
+
+  .csv-best { color: var(--c-green); font-weight: 600; }
+  .csv-best td { background: rgba(131,193,103,0.10); }
+
+  /* vote diagram */
+  .vote { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 0.6rem; margin: 1rem 0; }
+  .vote .col { text-align: center; }
+  .vote .voter { background: var(--c-bg-light); border: 1px solid var(--c-border); border-radius: 8px; padding: 0.6rem 0.5rem; margin: 0.35rem 0; font-size: 0.82rem; }
+  .vote .voter .m { display: block; font-family: 'Fira Code', monospace; font-size: 0.68rem; color: var(--c-text-dim); }
+  .vote .voter .v { font-weight: 700; font-size: 1rem; }
+  .vote .arrow { color: var(--c-text-dim); font-size: 1.6rem; }
+  .vote .result { background: var(--c-bg-light); border: 2px solid var(--c-green); border-radius: 10px; padding: 0.9rem 0.6rem; }
+  .vote .result .v { color: var(--c-green); font-weight: 700; font-size: 1.3rem; display: block; }
+  .vote .result small { color: var(--c-text-dim); font-size: 0.72rem; }
+  .vc-a { color: var(--c-blue); }
+  .vc-b { color: var(--c-orange); }
+  .vc-c { color: var(--c-purple); }
+  @media (max-width: 600px) {
+    .vote { grid-template-columns: 1fr; }
+    .vote .arrow { transform: rotate(90deg); }
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--c-border);
+    color: var(--c-text-dim);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  /* ---- TOC ---- */
+  nav.toc {
+    background: var(--c-bg-card);
+    border: 1px solid var(--c-border);
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  nav.toc h4 { margin: 0 0 0.6rem; color: var(--c-text-dim); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'Fira Code', monospace; }
+  nav.toc ol { columns: 2; column-gap: 2rem; margin: 0; padding-left: 1.2rem; font-size: 0.9rem; }
+
+  @media (max-width: 600px) {
+    header.hero h1 { font-size: 2rem; }
+    nav.toc ol { columns: 1; }
+    body { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Proyecto Final · Machine Learning Aplicado</div>
+    <h1>Clasificador Multi-Clase</h1>
+    <div class="sub">Universidad Galileo · 2026</div>
+  </header>
+
+  <nav class="toc">
+    <h4>Contenido</h4>
+    <ol>
+      <li><a href="#objetivo">Objetivo</a></li>
+      <li><a href="#dataset">Elección del dataset</a></li>
+      <li><a href="#datos">Preparación de datos</a></li>
+      <li><a href="#modelos">Modelos a implementar</a></li>
+      <li><a href="#bitacora">Bitácora de experimentos (CSV)</a></li>
+      <li><a href="#ensamble">Ensamble (majority voting)</a></li>
+      <li><a href="#comparacion">Comparación y diagnóstico</a></li>
+      <li><a href="#entregables">Entregables</a></li>
+      <li><a href="#rubrica">Rúbrica</a></li>
+      <li><a href="#reglas">Reglas (resumen)</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="objetivo"><span class="num">1</span>Objetivo</h2>
+  <p>Construir un sistema de <strong>clasificación multi-clase</strong> (mínimo <strong>3 clases</strong>) entrenando, comparando y ensamblando tres familias de modelos distintas. El proyecto evalúa tu capacidad de:</p>
+  <ul>
+    <li>Diseñar y registrar <strong>experimentos</strong> de forma sistemática y reproducible.</li>
+    <li>Comparar modelos con métricas consistentes (precision, recall, F1, accuracy).</li>
+    <li>Diagnosticar <strong>underfit / overfit</strong> comparando desempeño en train vs test.</li>
+    <li>Combinar modelos en un <strong>ensamble</strong> y razonar sobre el resultado.</li>
+  </ul>
+  <div class="callout note">
+    <span class="tag">Importante</span>
+    <p>Este es un problema de clasificación <strong>multi-clase</strong>, no binario. El dataset elegido debe tener <strong>al menos 3 clases</strong> en la variable objetivo.</p>
+  </div>
+
+  <h2 id="dataset"><span class="num">2</span>Elección del dataset</h2>
+  <p>Debes elegir <strong>uno</strong> de los siguientes <strong>5 datasets candidatos</strong>. Todos son tabulares, multi-clase y de dificultad apropiada. <strong>Queda prohibido usar MNIST</strong> (ni Fashion-MNIST ni variantes de dígitos de imágenes).</p>
+  <div class="callout tip">
+    <span class="tag">Acción</span>
+    <p>Una vez elegido, indícalo claramente en la primera celda del notebook/reporte y justifica brevemente por qué lo escogiste.</p>
+  </div>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>#</th><th>Dataset</th><th>Clases</th><th>Features</th><th>Instancias</th><th>Descarga / Ubicación</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>1</td><td><strong>Wine</strong></td><td>3</td><td>13</td><td>178</td>
+        <td><code>from sklearn.datasets import load_wine</code> → <code>load_wine(as_frame=True)</code>. Incluido en scikit-learn, sin descarga.</td>
+      </tr>
+      <tr>
+        <td>2</td><td><strong>Palmer Penguins</strong></td><td>3 (especies)</td><td>~7</td><td>344</td>
+        <td><code>pip install palmerpenguins</code> → <code>from palmerpenguins import load_penguins</code>. Alt.: <code>seaborn.load_dataset("penguins")</code>. CSV: <a href="https://raw.githubusercontent.com/allisonhorst/palmerpenguins/main/inst/extdata/penguins.csv" target="_blank" rel="noopener">GitHub allisonhorst</a></td>
+      </tr>
+      <tr>
+        <td>3</td><td><strong>Dry Bean Dataset</strong></td><td>7 (variedades)</td><td>16</td><td>13,611</td>
+        <td>UCI ID 602: <a href="https://archive.ics.uci.edu/dataset/602/dry+bean+dataset" target="_blank" rel="noopener">archive.ics.uci.edu/dataset/602</a> (descargar <code>.xlsx</code>). O <code>ucimlrepo</code>: <code>fetch_ucirepo(id=602)</code></td>
+      </tr>
+      <tr>
+        <td>4</td><td><strong>Forest Cover Type</strong></td><td>7 (tipos de bosque)</td><td>54</td><td>581,012</td>
+        <td><code>from sklearn.datasets import fetch_covtype</code> → <code>fetch_covtype(as_frame=True)</code> (descarga automática). UCI ID 31: <a href="https://archive.ics.uci.edu/dataset/31/covertype" target="_blank" rel="noopener">archive.ics.uci.edu/dataset/31</a></td>
+      </tr>
+      <tr>
+        <td>5</td><td><strong>HAR — Smartphones</strong></td><td>6 (actividades)</td><td>561</td><td>10,299</td>
+        <td>UCI ID 240: <a href="https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones" target="_blank" rel="noopener">archive.ics.uci.edu/dataset/240</a> (ZIP con <code>train/</code> y <code>test/</code>). O <code>fetch_ucirepo(id=240)</code></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>Recomendaciones por nivel</h3>
+  <ul>
+    <li><em>Más sencillo / rápido:</em> Wine o Palmer Penguins (datasets pequeños, ideales para iterar rápido).</li>
+    <li><em>Intermedio:</em> Dry Bean (más datos, buen reto de feature importance).</li>
+    <li><em>Más exigente:</em> Forest Cover Type (muy grande, conviene submuestrear) o HAR (561 features).</li>
+  </ul>
+  <div class="callout note">
+    <span class="tag">Nota</span>
+    <p>Si el dataset tiene valores faltantes (p. ej. Penguins) o variables categóricas, debes manejarlos (imputación, encoding) y documentar la decisión.</p>
+  </div>
+
+  <h2 id="datos"><span class="num">3</span>Preparación de datos</h2>
+  <ol>
+    <li>Carga y exploración mínima (shape, distribución de clases, nulos).</li>
+    <li>Limpieza: manejo de nulos, encoding de categóricas, escalado si el modelo lo requiere (la red neuronal típicamente sí; los árboles no).</li>
+    <li><strong>Split único train-test</strong> (sugerido 70/30 u 80/20), estratificado por clase (<code>stratify=y</code>).</li>
+  </ol>
+  <div class="callout warn">
+    <span class="tag">Restricción obligatoria</span>
+    <p>Solo se permite <strong>train-test split</strong>. <strong>NO uses cross-validation</strong> (ni <code>cross_val_score</code>, ni <code>GridSearchCV</code> con CV, ni <code>KFold</code>). Todos los experimentos y la selección del mejor modelo se reportan sobre el <strong>mismo test split</strong>.</p>
+    <p>Usa una <code>random_state</code> fija para que el split sea reproducible.</p>
+  </div>
+
+  <h2 id="modelos"><span class="num">4</span>Modelos a implementar</h2>
+  <p>Debes implementar <strong>tres familias de modelos</strong>:</p>
+  <div class="cards">
+    <div class="card rf">
+      <h4>Random Forest</h4>
+      <p>Bosque de árboles de decisión.</p>
+      <code>sklearn.ensemble.RandomForestClassifier</code>
+    </div>
+    <div class="card xgb">
+      <h4>XGBoost</h4>
+      <p>Gradient boosting de árboles.</p>
+      <code>xgboost.XGBClassifier</code>
+    </div>
+    <div class="card nn">
+      <h4>Red Neuronal</h4>
+      <p>TensorFlow/Keras o PyTorch (tu elección).</p>
+      <code>keras.Sequential / torch.nn</code>
+    </div>
+  </div>
+
+  <h3>4.1 — Experimentos por modelo</h3>
+  <p>Por <strong>cada uno de los 3 modelos</strong> debes ejecutar <strong>al menos 5 experimentos</strong>, variando hiperparámetros y/o arquitectura. Ejemplos de qué variar:</p>
+  <ul>
+    <li><strong>Random Forest:</strong> <code>n_estimators</code>, <code>max_depth</code>, <code>min_samples_leaf</code>, <code>max_features</code>, <code>criterion</code>.</li>
+    <li><strong>XGBoost:</strong> <code>n_estimators</code>, <code>max_depth</code>, <code>learning_rate</code>, <code>subsample</code>, <code>colsample_bytree</code>, <code>reg_lambda</code>.</li>
+    <li><strong>Red Neuronal:</strong> número de capas, neuronas por capa, activación, <code>learning_rate</code>, <code>batch_size</code>, <code>epochs</code>, dropout/regularización.</li>
+  </ul>
+  <p>Para cada experimento, calcula las métricas en <strong>train</strong> y en <strong>test</strong>.</p>
+
+  <div class="example">
+    <span class="label">Ejemplo · loop de experimentos + append a disco</span>
+    <p>Una función reutilizable que calcula <strong>todas las métricas en train y test</strong> y <strong>agrega cada fila al CSV</strong> (creando el encabezado solo la primera vez). Así puedes correr el notebook varias veces sin perder resultados:</p>
+<pre><code><span class="k">import</span> os
+<span class="k">import</span> pandas <span class="k">as</span> pd
+<span class="k">from</span> sklearn.ensemble <span class="k">import</span> RandomForestClassifier
+<span class="k">from</span> sklearn.metrics <span class="k">import</span> precision_score, recall_score, f1_score, accuracy_score
+
+BITACORA = <span class="s">"bitacora_experimentos.csv"</span>
+
+<span class="k">def</span> <span class="f">metricas</span>(y_true, y_pred, sufijo):
+    <span class="k">return</span> {
+        <span class="f">f</span><span class="s">"precision_{sufijo}"</span>: precision_score(y_true, y_pred, average=<span class="s">"macro"</span>),
+        <span class="f">f</span><span class="s">"recall_{sufijo}"</span>:    recall_score(y_true, y_pred, average=<span class="s">"macro"</span>),
+        <span class="f">f</span><span class="s">"f1_{sufijo}"</span>:        f1_score(y_true, y_pred, average=<span class="s">"macro"</span>),
+        <span class="f">f</span><span class="s">"accuracy_{sufijo}"</span>:  accuracy_score(y_true, y_pred),
+    }
+
+<span class="k">def</span> <span class="f">registrar</span>(exp_id, modelo, hiperparams, arquitectura, model):
+    fila = {<span class="s">"experimento_id"</span>: exp_id, <span class="s">"modelo"</span>: modelo,
+            <span class="s">"hiperparametros"</span>: str(hiperparams), <span class="s">"arquitectura"</span>: arquitectura}
+    fila.<span class="f">update</span>(<span class="f">metricas</span>(y_train, model.<span class="f">predict</span>(X_train), <span class="s">"train"</span>))   <span class="c"># métricas en TRAIN</span>
+    fila.<span class="f">update</span>(<span class="f">metricas</span>(y_test,  model.<span class="f">predict</span>(X_test),  <span class="s">"test"</span>))    <span class="c"># métricas en TEST</span>
+    <span class="c"># append: encabezado solo si el archivo aún no existe</span>
+    pd.<span class="f">DataFrame</span>([fila]).<span class="f">to_csv</span>(BITACORA, mode=<span class="s">"a"</span>,
+        header=<span class="k">not</span> os.path.<span class="f">exists</span>(BITACORA), index=<span class="k">False</span>)
+
+<span class="c"># cada dict = un experimento con distintos hiperparámetros</span>
+configs = [
+    {<span class="s">"n_estimators"</span>: <span class="n">100</span>, <span class="s">"max_depth"</span>: <span class="n">5</span>},
+    {<span class="s">"n_estimators"</span>: <span class="n">200</span>, <span class="s">"max_depth"</span>: <span class="n">10</span>},
+    {<span class="s">"n_estimators"</span>: <span class="n">300</span>, <span class="s">"max_depth"</span>: <span class="k">None</span>},
+    {<span class="s">"n_estimators"</span>: <span class="n">200</span>, <span class="s">"max_depth"</span>: <span class="n">10</span>, <span class="s">"min_samples_leaf"</span>: <span class="n">5</span>},
+    {<span class="s">"n_estimators"</span>: <span class="n">400</span>, <span class="s">"max_depth"</span>: <span class="n">15</span>, <span class="s">"max_features"</span>: <span class="s">"sqrt"</span>},
+]
+
+<span class="k">for</span> i, cfg <span class="k">in</span> enumerate(configs, start=<span class="n">1</span>):
+    model = RandomForestClassifier(**cfg, random_state=<span class="n">42</span>).<span class="f">fit</span>(X_train, y_train)
+    <span class="f">registrar</span>(<span class="f">f</span><span class="s">"RF_{i:02d}"</span>, <span class="s">"random_forest"</span>, cfg, <span class="s">""</span>, model)   <span class="c"># ← se agrega al CSV</span></code></pre>
+    <p>Reutiliza <code>registrar(...)</code> para XGBoost y la red neuronal. Cada llamada agrega una fila al mismo archivo; al volver a correr el notebook, las filas nuevas se <strong>añaden</strong> a las existentes.</p>
+  </div>
+  <div class="callout note">
+    <span class="tag">Sugerencia</span>
+    <p>Para evitar filas duplicadas entre corridas, usa <code>experimento_id</code> distintos en cada ejecución (incluye fecha/hora o un contador de corrida), o al final deduplica con <code>df.drop_duplicates()</code>.</p>
+  </div>
+
+  <h3>4.2 — Selección del mejor por familia</h3>
+  <p>De los ≥5 experimentos de cada familia, elige el <strong>mejor modelo según el F1-score máximo en el test split</strong> (usa <code>f1_score(..., average='macro')</code> o <code>'weighted'</code> — indica cuál usas y sé consistente). Al final tendrás <strong>3 "mejores modelos"</strong>, uno por familia.</p>
+  <div class="example">
+    <span class="label">Ejemplo · elegir el mejor por F1 máximo</span>
+<pre><code><span class="c"># df_rf: filas de la bitácora correspondientes a Random Forest</span>
+mejor_rf = df_rf.<span class="f">loc</span>[df_rf[<span class="s">"f1"</span>].<span class="f">idxmax</span>()]
+<span class="f">print</span>(mejor_rf[<span class="s">"experimento_id"</span>], mejor_rf[<span class="s">"f1"</span>])   <span class="c"># → RF_05  0.94</span></code></pre>
+  </div>
+
+  <h3>4.3 — Feature importance (Random Forest y XGBoost)</h3>
+  <p>Para el <strong>mejor Random Forest</strong> y el <strong>mejor XGBoost</strong>, realiza un <strong>análisis de feature importance</strong>:</p>
+  <ul>
+    <li>Extrae las importancias: <code>rf.feature_importances_</code> y <code>xgb.feature_importances_</code> (en XGBoost también existe <code>xgb.get_booster().get_score(importance_type="gain")</code>).</li>
+    <li>Grafica las importancias ordenadas (bar chart) para <strong>cada uno de los dos modelos</strong>.</li>
+    <li>Comenta cuáles features dominan la decisión y si tiene sentido respecto al dominio del problema.</li>
+    <li><strong>Compara ambos rankings:</strong> ¿coinciden Random Forest y XGBoost en las features más importantes? Señala las diferencias.</li>
+  </ul>
+  <div class="example">
+    <span class="label">Ejemplo · graficar feature importance</span>
+<pre><code><span class="k">import</span> matplotlib.pyplot <span class="k">as</span> plt
+<span class="k">import</span> pandas <span class="k">as</span> pd
+
+<span class="k">def</span> <span class="f">plot_importancia</span>(model, nombres, titulo):
+    imp = pd.<span class="f">Series</span>(model.feature_importances_, index=nombres).<span class="f">sort_values</span>()
+    imp.<span class="f">plot</span>.<span class="f">barh</span>(title=titulo)
+    plt.<span class="f">tight_layout</span>(); plt.<span class="f">show</span>()
+
+<span class="f">plot_importancia</span>(mejor_rf,  feature_names, <span class="s">"Random Forest"</span>)
+<span class="f">plot_importancia</span>(mejor_xgb, feature_names, <span class="s">"XGBoost"</span>)</code></pre>
+  </div>
+  <figure>
+    <svg viewBox="0 0 600 260" width="100%" role="img" aria-label="Gráfico de ejemplo de feature importance">
+      <style>
+        .fi-bar { fill: var(--c-green); }
+        .fi-lbl { fill: var(--c-text); font-family: 'Fira Code', monospace; font-size: 13px; }
+        .fi-val { fill: var(--c-text-dim); font-family: 'Fira Code', monospace; font-size: 12px; }
+        .fi-axis { stroke: var(--c-border); stroke-width: 1; }
+        .fi-title { fill: var(--c-blue); font-family: 'Lora', serif; font-size: 15px; font-weight: 700; }
+      </style>
+      <text x="300" y="22" text-anchor="middle" class="fi-title">Feature importance — mejor Random Forest (ejemplo: Wine)</text>
+      <line x1="170" y1="40" x2="170" y2="240" class="fi-axis"/>
+      <!-- bars: x start 170, max width 360 for value 0.30 -->
+      <g>
+        <rect class="fi-bar" x="170" y="48"  width="312" height="22" rx="3"/><text x="160" y="64"  text-anchor="end" class="fi-lbl">flavanoids</text><text x="490" y="64"  class="fi-val">0.26</text>
+        <rect class="fi-bar" x="170" y="78"  width="264" height="22" rx="3"/><text x="160" y="94"  text-anchor="end" class="fi-lbl">color_intensity</text><text x="442" y="94"  class="fi-val">0.22</text>
+        <rect class="fi-bar" x="170" y="108" width="204" height="22" rx="3"/><text x="160" y="124" text-anchor="end" class="fi-lbl">proline</text><text x="382" y="124" class="fi-val">0.17</text>
+        <rect class="fi-bar" x="170" y="138" width="144" height="22" rx="3"/><text x="160" y="154" text-anchor="end" class="fi-lbl">od280/od315</text><text x="322" y="154" class="fi-val">0.12</text>
+        <rect class="fi-bar" x="170" y="168" width="96"  height="22" rx="3"/><text x="160" y="184" text-anchor="end" class="fi-lbl">alcohol</text><text x="274" y="184" class="fi-val">0.08</text>
+        <rect class="fi-bar" x="170" y="198" width="48"  height="22" rx="3"/><text x="160" y="214" text-anchor="end" class="fi-lbl">hue</text><text x="226" y="214" class="fi-val">0.04</text>
+        <rect class="fi-bar" x="170" y="228" width="24"  height="10" rx="3"/><text x="160" y="237" text-anchor="end" class="fi-lbl" style="font-size:11px">resto…</text>
+      </g>
+    </svg>
+    <figcaption>Así debe lucir cada gráfico (uno para Random Forest y otro para XGBoost): barras horizontales ordenadas de mayor a menor importancia. (Valores ilustrativos.)</figcaption>
+  </figure>
+  <div class="callout tip">
+    <span class="tag">Interpretación esperada (ejemplo)</span>
+    <p>“En Random Forest, las features <code>flavanoids</code> y <code>color_intensity</code> concentran ~48% de la importancia: el modelo distingue las variedades de vino principalmente por composición química y color, coherente con el dominio. <strong>XGBoost</strong> coincide en <code>flavanoids</code> como la más relevante, pero da más peso a <code>proline</code>. Features como <code>hue</code> aportan poco en ambos y podrían eliminarse sin afectar el desempeño.”</p>
+  </div>
+
+  <h2 id="bitacora"><span class="num">5</span>Bitácora de experimentos (CSV)</h2>
+  <p>Debes generar un archivo <code>bitacora_experimentos.csv</code> que registre <strong>todos</strong> los experimentos (los ≥15 en total: ≥5 por familia). Cada fila = un experimento.</p>
+  <div class="callout warn">
+    <span class="tag">Obligatorio · append a disco</span>
+    <p>Los resultados deben <strong>agregarse (append) al CSV en disco a medida que se ejecutan</strong>, no sobrescribirse. Así puedes hacer <strong>varias corridas en distintos momentos sin perder los resultados previos</strong>. En la práctica: si el archivo no existe, créalo con encabezado; si ya existe, agrega las filas nuevas sin volver a escribir el encabezado (modo <code>append</code>).</p>
+  </div>
+  <div class="callout note">
+    <span class="tag">Obligatorio · métricas en train Y test</span>
+    <p>La bitácora debe guardar <strong>las cuatro métricas calculadas tanto en train como en test</strong>: precision, recall, F1 y accuracy → 8 columnas de métricas en total. Esto permite la comparación train vs test y el diagnóstico de underfit/overfit.</p>
+  </div>
+  <h3>Columnas mínimas requeridas</h3>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Columna</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td><code>experimento_id</code></td><td>Identificador único (p. ej. <code>RF_01</code>, <code>XGB_03</code>, <code>NN_05</code>).</td></tr>
+      <tr><td><code>modelo</code></td><td>Familia: <code>random_forest</code>, <code>xgboost</code> o <code>neural_network</code>.</td></tr>
+      <tr><td><code>hiperparametros</code></td><td>Hiperparámetros usados (string/JSON, p. ej. <code>{"n_estimators":200,"max_depth":10}</code>).</td></tr>
+      <tr><td><code>arquitectura</code></td><td>Para la NN: descripción de capas (p. ej. <code>[64, relu, 32, relu, softmax]</code>). Para árboles puede repetir hiperparámetros clave.</td></tr>
+      <tr><td><code>precision_train</code> · <code>precision_test</code></td><td>Precision en train y en test (macro o weighted; sé consistente).</td></tr>
+      <tr><td><code>recall_train</code> · <code>recall_test</code></td><td>Recall en train y en test.</td></tr>
+      <tr><td><code>f1_train</code> · <code>f1_test</code></td><td>F1-score en train y en test (el <code>f1_test</code> decide el mejor modelo).</td></tr>
+      <tr><td><code>accuracy_train</code> · <code>accuracy_test</code></td><td>Accuracy en train y en test.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout tip">
+    <span class="tag">Tip</span>
+    <p>Puedes agregar columnas extra (tiempo de entrenamiento, fecha/hora de la corrida, etc.). El CSV debe generarse <strong>desde el código</strong> (no a mano), agregando cada fila en modo <code>append</code> conforme se ejecuta el experimento.</p>
+  </div>
+
+  <div class="example">
+    <span class="label">Ejemplo · bitácora con datos (vista de tabla)</span>
+    <p>Fragmento de cómo se vería el CSV ya poblado, con las métricas en <strong>train</strong> y <strong>test</strong>. La <span style="color:var(--c-green)">fila resaltada</span> es el experimento ganador de esa familia (<code>f1_test</code> máximo):</p>
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>experimento_id</th><th>modelo</th>
+          <th>prec_train</th><th>rec_train</th><th>f1_train</th><th>acc_train</th>
+          <th>prec_test</th><th>rec_test</th><th>f1_test</th><th>acc_test</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>RF_01</td><td>random_forest</td><td>0.92</td><td>0.91</td><td>0.91</td><td>0.92</td><td>0.89</td><td>0.88</td><td>0.88</td><td>0.89</td></tr>
+        <tr><td>RF_02</td><td>random_forest</td><td>0.99</td><td>0.99</td><td>0.99</td><td>0.99</td><td>0.92</td><td>0.91</td><td>0.91</td><td>0.92</td></tr>
+        <tr class="csv-best"><td>RF_05</td><td>random_forest</td><td>0.97</td><td>0.97</td><td>0.97</td><td>0.97</td><td>0.95</td><td>0.94</td><td>0.94</td><td>0.94</td></tr>
+        <tr><td>XGB_03</td><td>xgboost</td><td>0.98</td><td>0.98</td><td>0.98</td><td>0.98</td><td>0.93</td><td>0.93</td><td>0.93</td><td>0.93</td></tr>
+        <tr><td>NN_04</td><td>neural_network</td><td>0.93</td><td>0.92</td><td>0.93</td><td>0.93</td><td>0.90</td><td>0.90</td><td>0.90</td><td>0.90</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>El archivo en disco se ve así (texto plano separado por comas; se va llenando por <code>append</code> entre corridas):</p>
+<pre><code>experimento_id,modelo,hiperparametros,arquitectura,precision_train,recall_train,f1_train,accuracy_train,precision_test,recall_test,f1_test,accuracy_test
+RF_01,random_forest,"{'n_estimators':100,'max_depth':5}",,0.92,0.91,0.91,0.92,0.89,0.88,0.88,0.89
+RF_02,random_forest,"{'n_estimators':200,'max_depth':10}",,0.99,0.99,0.99,0.99,0.92,0.91,0.91,0.92
+RF_05,random_forest,"{'n_estimators':400,'max_depth':15}",,0.97,0.97,0.97,0.97,0.95,0.94,0.94,0.94
+XGB_03,xgboost,"{'n_estimators':300,'learning_rate':0.1}",,0.98,0.98,0.98,0.98,0.93,0.93,0.93,0.93
+NN_04,neural_network,"{'lr':0.001,'epochs':80}","[64,relu,32,relu,softmax]",0.93,0.92,0.93,0.93,0.90,0.90,0.90,0.90</code></pre>
+  </div>
+
+  <h2 id="ensamble"><span class="num">6</span>Ensamble — majority voting con bootstrap</h2>
+  <p>Construye un <strong>ensamble de tipo majority voting</strong> combinando los <strong>3 mejores modelos</strong> (uno por familia, los seleccionados en 4.2).</p>
+  <ul>
+    <li>El ensamble predice la clase por <strong>voto mayoritario</strong> entre los 3 modelos.</li>
+    <li>Cada modelo base se entrena sobre una <strong>muestra bootstrap</strong> (muestreo con reemplazo del train set). Generas 3 réplicas bootstrap del conjunto de entrenamiento y entrenas cada mejor-modelo en su propia muestra.</li>
+    <li>En caso de empate (3 clases distintas), define y documenta una regla de desempate (p. ej. la clase del modelo con mayor F1 individual).</li>
+  </ul>
+  <figure>
+    <div class="vote">
+      <div class="col">
+        <div class="voter"><span class="m">Random Forest<br>(bootstrap #1)</span><span class="v vc-a">Clase&nbsp;1</span></div>
+        <div class="voter"><span class="m">XGBoost<br>(bootstrap #2)</span><span class="v vc-b">Clase&nbsp;2</span></div>
+        <div class="voter"><span class="m">Red Neuronal<br>(bootstrap #3)</span><span class="v vc-a">Clase&nbsp;1</span></div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="col">
+        <div class="voter" style="border-style:dashed">Conteo de votos<br><span class="vc-a">Clase 1: ██ (2)</span><br><span class="vc-b">Clase 2: █ (1)</span></div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="col">
+        <div class="result"><span class="v">Clase&nbsp;1</span><small>mayoría (2 de 3)</small></div>
+      </div>
+    </div>
+    <figcaption>Voto mayoritario para una muestra: cada modelo —entrenado en su propia muestra bootstrap— emite un voto; gana la clase más votada.</figcaption>
+  </figure>
+
+  <div class="example">
+    <span class="label">Ejemplo · ensamble en código</span>
+<pre><code><span class="k">import</span> numpy <span class="k">as</span> np
+<span class="k">from</span> scipy.stats <span class="k">import</span> mode
+
+modelos = [mejor_rf, mejor_xgb, mejor_nn]   <span class="c"># los 3 ganadores</span>
+preds = []
+<span class="k">for</span> m <span class="k">in</span> modelos:
+    <span class="c"># muestra bootstrap: con reemplazo, mismo tamaño que el train</span>
+    idx = np.random.<span class="f">choice</span>(len(X_train), size=len(X_train), replace=<span class="k">True</span>)
+    m.<span class="f">fit</span>(X_train[idx], y_train[idx])
+    preds.<span class="f">append</span>(m.<span class="f">predict</span>(X_test))
+
+preds = np.<span class="f">vstack</span>(preds)              <span class="c"># shape (3, n_test)</span>
+y_ensamble = mode(preds, axis=<span class="n">0</span>).mode.<span class="f">ravel</span>()   <span class="c"># voto mayoritario</span></code></pre>
+    <p class="csv-note" style="color:var(--c-text-dim);font-size:0.88rem;margin-top:0.6rem">Regla de desempate sugerida: si los 3 votan distinto, quédate con la predicción del modelo de mayor F1 individual.</p>
+  </div>
+
+  <div class="callout tip">
+    <span class="tag">Implementación</span>
+    <p>Manual (entrenar cada modelo en su bootstrap y combinar predicciones con <code>scipy.stats.mode</code>) o con utilidades, siempre que cumplas: <strong>bootstrap por modelo + voto mayoritario</strong>. Evalúa el ensamble final en <strong>train</strong> y en <strong>test</strong>.</p>
+  </div>
+
+  <h2 id="comparacion"><span class="num">7</span>Comparación final y diagnóstico</h2>
+  <p>Presenta una <strong>tabla comparativa</strong> de <strong>F1-score en train vs test</strong> para <strong>4 modelos</strong>: los 3 mejores (uno por familia) + el ensamble.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Modelo</th><th>F1 (train)</th><th>F1 (test)</th><th>Diagnóstico</th></tr></thead>
+    <tbody>
+      <tr><td>Mejor Random Forest</td><td>…</td><td>…</td><td>underfit / overfit / bien</td></tr>
+      <tr><td>Mejor XGBoost</td><td>…</td><td>…</td><td>underfit / overfit / bien</td></tr>
+      <tr><td>Mejor Red Neuronal</td><td>…</td><td>…</td><td>underfit / overfit / bien</td></tr>
+      <tr><td>Ensamble (majority voting)</td><td>…</td><td>…</td><td>underfit / overfit / bien</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Para <strong>cada modelo</strong>, agrega una <strong>nota de diagnóstico</strong>:</p>
+  <div class="diag">
+    <div><span class="u">Underfitting</span><small>F1 bajo en train <em>y</em> en test. El modelo no aprende.</small></div>
+    <div><span class="o">Overfitting</span><small>F1 alto en train pero bastante más bajo en test. Memoriza, no generaliza.</small></div>
+    <div><span class="g">Buen ajuste</span><small>F1 alto y similar en train y test.</small></div>
+  </div>
+  <p>Justifica brevemente cada diagnóstico con los números.</p>
+
+  <div class="example">
+    <span class="label">Ejemplo · tabla comparativa resuelta</span>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>Modelo</th><th>F1 (train)</th><th>F1 (test)</th><th>Δ</th><th>Diagnóstico</th></tr></thead>
+      <tbody>
+        <tr><td>Mejor Random Forest</td><td>0.97</td><td>0.94</td><td>0.03</td><td><span class="g" style="color:var(--c-green)">Bien ajustado</span></td></tr>
+        <tr><td>Mejor XGBoost</td><td>0.99</td><td>0.91</td><td>0.08</td><td><span style="color:var(--c-red)">Ligero overfit</span></td></tr>
+        <tr><td>Mejor Red Neuronal</td><td>0.78</td><td>0.76</td><td>0.02</td><td><span style="color:var(--c-orange)">Underfit</span></td></tr>
+        <tr><td>Ensamble (majority voting)</td><td>0.96</td><td>0.95</td><td>0.01</td><td><span style="color:var(--c-green)">Bien ajustado (el mejor)</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:0.8rem"><strong>Notas de diagnóstico (así deben redactarse):</strong></p>
+    <ul style="font-size:0.92rem">
+      <li><strong>Random Forest:</strong> F1 alto y cercano en train/test (Δ=0.03) → <span style="color:var(--c-green)">buen ajuste</span>, generaliza bien.</li>
+      <li><strong>XGBoost:</strong> F1 casi perfecto en train (0.99) pero cae a 0.91 en test (Δ=0.08) → <span style="color:var(--c-red)">overfitting leve</span>; convendría más regularización (<code>reg_lambda</code>, menor <code>max_depth</code>).</li>
+      <li><strong>Red Neuronal:</strong> F1 bajo en train <em>y</em> test → <span style="color:var(--c-orange)">underfitting</span>; el modelo es muy simple o le faltan epochs / mejor escalado de features.</li>
+      <li><strong>Ensamble:</strong> F1 test 0.95, el más alto y con la menor brecha (Δ=0.01) → el voto mayoritario redujo la varianza y mejoró la generalización frente a los modelos individuales.</li>
+    </ul>
+  </div>
+
+  <h2 id="entregables"><span class="num">8</span>Entregables</h2>
+  <ol>
+    <li><strong>Notebook</strong> (<code>.ipynb</code>) con todo el código: carga, preparación, experimentos, feature importance, ensamble y comparación final.</li>
+    <li><code>bitacora_experimentos.csv</code> generado por el código en modo <strong>append</strong>, con métricas en train y test.</li>
+    <li>Gráficos de <strong>feature importance</strong> del mejor Random Forest <strong>y</strong> del mejor XGBoost, con su comparación.</li>
+    <li><strong>Tabla comparativa final</strong> (sección 7) con notas de diagnóstico.</li>
+    <li>Breve <strong>conclusión</strong> (5–10 líneas): qué familia funcionó mejor, si el ensamble mejoró o no, y qué aprendiste.</li>
+  </ol>
+
+  <h2 id="rubrica"><span class="num">9</span>Rúbrica sugerida (100 pts)</h2>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Criterio</th><th>Pts</th></tr></thead>
+    <tbody>
+      <tr><td>Elección y preparación correcta del dataset (multi-clase, split estratificado, sin CV)</td><td>10</td></tr>
+      <tr><td>≥5 experimentos por familia (≥15 total) bien parametrizados</td><td>25</td></tr>
+      <tr><td>Bitácora CSV (append a disco, métricas train+test, todas las columnas)</td><td>15</td></tr>
+      <tr><td>Feature importance analysis de Random Forest y XGBoost (+ comparación)</td><td>10</td></tr>
+      <tr><td>Selección correcta del mejor modelo por F1 máximo en test</td><td>10</td></tr>
+      <tr><td>Ensamble majority voting con bootstrap correctamente implementado</td><td>15</td></tr>
+      <tr><td>Tabla comparativa train vs test + diagnóstico underfit/overfit/bien</td><td>10</td></tr>
+      <tr><td>Conclusión y calidad general del reporte</td><td>5</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2 id="reglas"><span class="num">10</span>Reglas y restricciones (resumen)</h2>
+  <p>
+    <span class="pill ok">✓ Multi-clase ≥3 clases</span>
+    <span class="pill ok">✓ Dataset de la lista de 5</span>
+    <span class="pill no">✗ Prohibido MNIST</span>
+    <span class="pill ok">✓ Random Forest + XGBoost + Red Neuronal</span>
+    <span class="pill ok">✓ ≥5 experimentos por familia</span>
+    <span class="pill ok">✓ Mejor modelo por F1 máx. en test</span>
+    <span class="pill ok">✓ Solo train-test split</span>
+    <span class="pill no">✗ Sin cross-validation</span>
+    <span class="pill ok">✓ Feature importance (RF y XGBoost)</span>
+    <span class="pill ok">✓ Ensamble majority voting + bootstrap</span>
+    <span class="pill ok">✓ Comparar F1 train vs test + diagnóstico</span>
+    <span class="pill ok">✓ Bitácora CSV: append a disco</span>
+    <span class="pill ok">✓ Métricas en train Y test</span>
+  </p>
+
+  <footer>
+    Machine Learning Aplicado · Universidad Galileo · 2026
+  </footer>
+
+</div>
+</body>
+</html>
