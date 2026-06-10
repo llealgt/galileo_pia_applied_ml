@@ -10540,7 +10540,168 @@ def dense(AT, W, b, g):
 <section>
   <section>
     <h2 style="color: var(--c-pink);">Entrenamiento en TensorFlow ⚙️</h2>
-    <p style="font-size: 0.65em; color: var(--c-text-dim);">Dado un conjunto de ejemplos (x, y): ¿cómo se construye y entrena en código?</p>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Dado un conjunto de ejemplos (x, y): ¿cómo se construye y entrena en código? Pero antes, la <strong>intuición</strong>…</p>
+  </section>
+
+  <!-- ===== SLIDE A: el bucle de entrenamiento ===== -->
+  <section>
+    <h3>¿Cómo Aprende una Red? — El Bucle de Entrenamiento 🔁</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Una red empieza con pesos al <strong>azar</strong> y mejora repitiendo este ciclo <strong>miles de veces</strong>. Cada vuelta acerca su predicción al objetivo.</p>
+    <div style="display:flex; gap:1.2em; justify-content:center; align-items:center; margin-top:0.3em; font-size:0.55em;">
+      <!-- ciclo de 4 fases -->
+      <svg viewBox="0 0 360 300" style="width:340px;">
+        <!-- 4 cajas + flechas circulares -->
+        <g>
+          <rect x="120" y="20"  width="120" height="58" rx="10" fill="rgba(88,196,221,0.15)" stroke="#58C4DD" stroke-width="2"/>
+          <text x="180" y="42" text-anchor="middle" fill="#58C4DD" font-size="13" font-weight="bold" font-family="Fira Code">① Forward</text>
+          <text x="180" y="62" text-anchor="middle" fill="#a8a290" font-size="10">predice ŷ</text>
+
+          <rect x="240" y="120" width="110" height="58" rx="10" fill="rgba(252,98,85,0.12)" stroke="#FC6255" stroke-width="2"/>
+          <text x="295" y="142" text-anchor="middle" fill="#FC6255" font-size="13" font-weight="bold" font-family="Fira Code">② Loss</text>
+          <text x="295" y="162" text-anchor="middle" fill="#a8a290" font-size="10">mide error</text>
+
+          <rect x="120" y="220" width="120" height="58" rx="10" fill="rgba(255,255,0,0.10)" stroke="#FFFF00" stroke-width="2"/>
+          <text x="180" y="242" text-anchor="middle" fill="#FFFF00" font-size="13" font-weight="bold" font-family="Fira Code">③ Backward</text>
+          <text x="180" y="262" text-anchor="middle" fill="#a8a290" font-size="10">propaga la <em>culpa</em></text>
+
+          <rect x="10" y="120" width="110" height="58" rx="10" fill="rgba(131,193,103,0.15)" stroke="#83C167" stroke-width="2"/>
+          <text x="65" y="142" text-anchor="middle" fill="#83C167" font-size="13" font-weight="bold" font-family="Fira Code">④ Update</text>
+          <text x="65" y="162" text-anchor="middle" fill="#a8a290" font-size="10">ajusta pesos</text>
+        </g>
+        <!-- flechas curvas entre cajas -->
+        <g stroke="#a8a290" stroke-width="2" fill="none">
+          <path d="M 220 70 Q 270 95 270 118" marker-end="url(#arr)"/>
+          <path d="M 290 175 Q 270 210 245 230" marker-end="url(#arr)"/>
+          <path d="M 140 245 Q 90 215 95 180" marker-end="url(#arr)"/>
+          <path d="M 95 120 Q 95 90 120 80" marker-end="url(#arr)"/>
+        </g>
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a8a290"/>
+          </marker>
+        </defs>
+        <text x="180" y="200" text-anchor="middle" fill="#FFFF00" font-style="italic" font-size="11">🔁 repetir miles de veces</text>
+      </svg>
+
+      <div style="max-width:300px; font-size:0.95em;">
+        <p style="margin:0;"><strong style="color:#58C4DD;">①</strong> La red toma una entrada y produce una predicción.</p>
+        <p style="margin:0.3em 0 0;"><strong style="color:#FC6255;">②</strong> Se compara con la respuesta correcta → <em>cost J</em>.</p>
+        <p style="margin:0.3em 0 0;"><strong style="color:#FFFF00;">③</strong> Se calcula <strong>cuánta culpa</strong> tiene cada neurona del error, de la salida hacia atrás.</p>
+        <p style="margin:0.3em 0 0;"><strong style="color:#83C167;">④</strong> Los pesos se ajustan según su culpa, reduciendo el error en la próxima vuelta.</p>
+        <p class="fragment fade-up" style="margin-top:0.4em; color: var(--c-yellow);">📉 El cost J <strong>baja</strong> con cada epoch — la red está <em>aprendiendo</em>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE B: el problema central ===== -->
+  <section>
+    <h3>El Problema Central: ¿Quién es Culpable del Error? 🤔</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Una red puede tener <strong>millones</strong> de pesos. Cuando la predicción está mal, ¿a cuál peso debemos culpar? ¿En cuánto?</p>
+
+    <div style="display:flex; gap:1.5em; justify-content:center; align-items:center; margin-top:0.3em; font-size:0.55em;">
+      <svg viewBox="0 0 460 280" style="width:460px;">
+        <!-- input -->
+        <text x="30" y="142" fill="#FF862F" font-size="13" text-anchor="middle" font-family="Fira Code">x⃗</text>
+        <line x1="42" y1="140" x2="85" y2="140" stroke="#FF862F" stroke-width="2"/>
+        <polygon points="85,135 93,140 85,145" fill="#FF862F"/>
+
+        <!-- 3 neuronas ocultas -->
+        <g fill="rgba(88,196,221,0.22)" stroke="#58C4DD" stroke-width="2">
+          <circle cx="155" cy="85"  r="22"/>
+          <circle cx="155" cy="140" r="22"/>
+          <circle cx="155" cy="195" r="22"/>
+        </g>
+        <!-- output -->
+        <circle cx="320" cy="140" r="26" fill="rgba(255,64,255,0.22)" stroke="#FF40FF" stroke-width="2.5"/>
+        <text x="320" y="146" fill="#ece6d0" font-size="13" text-anchor="middle" font-family="Fira Code">0.4</text>
+
+        <!-- aristas con ? -->
+        <g stroke="#a8a290" stroke-width="1.4">
+          <line x1="177" y1="85"  x2="298" y2="135"/>
+          <line x1="177" y1="140" x2="298" y2="140"/>
+          <line x1="177" y1="195" x2="298" y2="145"/>
+        </g>
+        <!-- símbolos ? sobre las aristas -->
+        <g fill="#E48BB0" font-size="20" font-weight="bold" font-family="Fira Code" text-anchor="middle">
+          <text x="240" y="105">?</text>
+          <text x="240" y="135">?</text>
+          <text x="240" y="180">?</text>
+        </g>
+
+        <!-- error rojo a la derecha del output -->
+        <line x1="350" y1="140" x2="395" y2="140" stroke="#FF40FF" stroke-width="2.5"/>
+        <polygon points="395,134 408,140 395,146" fill="#FF40FF"/>
+        <text x="430" y="120" fill="#FF40FF" font-size="13" text-anchor="middle">ŷ = 0.4</text>
+        <text x="430" y="145" fill="#83C167" font-size="13" text-anchor="middle">y = 1.0</text>
+        <text x="430" y="170" fill="#FC6255" font-size="14" text-anchor="middle" font-weight="bold">❗ error</text>
+
+        <text x="230" y="40" fill="#ece6d0" font-size="14" text-anchor="middle" font-weight="bold">¿Quién es culpable?</text>
+      </svg>
+    </div>
+
+    <div style="background: rgba(255,255,0,0.10); border-left:3px solid var(--c-yellow); padding:0.5em 0.7em; border-radius:6px; margin-top:0.3em; font-size:0.55em;">
+      <p style="margin:0;">💡 <strong style="color: var(--c-yellow);">Backpropagation</strong> responde esta pregunta: asigna una <strong>cuota de culpa</strong> a cada neurona del error, de la salida hacia la entrada — capa por capa.</p>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE C: widget centerpiece ===== -->
+  <section>
+    <h3>Backpropagation = Propagación de la Culpa (interactivo) 🎯</h3>
+    <p style="font-size: 0.46em; color: var(--c-text-dim); margin:0;">Presiona <strong style="color: var(--c-pink);">"Siguiente fase ▶"</strong> para recorrer un epoch completo: <span style="color:#58C4DD;">Forward</span> → <span style="color:#FC6255;">Loss</span> → <span style="color:#FFFF00;">Backward (culpa)</span> → <span style="color:#83C167;">Update</span>. Cada neurona oculta recibe una culpa <code>∂J/∂a</code> de la salida — propagada <strong>de derecha a izquierda</strong>.</p>
+    <canvas id="nn-training-cycle-canvas" width="960" height="400" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
+    <div style="margin-top:0.15em; font-size:0.46em;">
+      <button id="ntc-next-btn" style="background: var(--c-pink); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer;">Siguiente fase ▶</button>
+      <button id="ntc-reset-btn" style="background: var(--c-green); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer; margin-left:0.5em;">↻ Reiniciar</button>
+      <span id="ntc-phase" style="color: var(--c-text-dim); margin-left:1em; font-family:'Fira Code';">Epoch 0 · Inicio</span>
+      <p id="ntc-narration" style="color: var(--c-text-dim); margin:0.25em 0 0;">Empezamos con pesos al azar; el modelo aún no sabe nada.</p>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE D: de la culpa al aprendizaje ===== -->
+  <section>
+    <h3>De la Culpa al Aprendizaje: Cómo se Ajustan los Pesos 🛠️</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">La <strong>culpa</strong> de cada peso es su <strong>gradiente <span class="katex-inline">\partial J/\partial w</span></strong>. <em>Gradient descent</em> ajusta cada peso proporcional a su culpa.</p>
+
+    <div style="display:flex; gap:2em; justify-content:center; align-items:center; margin-top:0.3em; font-size:0.55em;">
+      <!-- Peso A: poca culpa -->
+      <div style="text-align:center;">
+        <svg viewBox="0 0 200 120" style="width:200px;">
+          <text x="100" y="20" text-anchor="middle" fill="#a8a290" font-size="12">Peso A · poca culpa</text>
+          <circle cx="60" cy="70" r="14" fill="rgba(88,196,221,0.2)" stroke="#58C4DD" stroke-width="2"/>
+          <text x="60" y="74" fill="#ece6d0" font-size="11" text-anchor="middle" font-family="Fira Code">w</text>
+          <line x1="80" y1="70" x2="115" y2="70" stroke="#FFFF00" stroke-width="2"/>
+          <polygon points="115,65 122,70 115,75" fill="#FFFF00"/>
+          <circle cx="140" cy="70" r="14" fill="rgba(131,193,103,0.18)" stroke="#83C167" stroke-width="2"/>
+          <text x="140" y="74" fill="#ece6d0" font-size="11" text-anchor="middle" font-family="Fira Code">w'</text>
+          <text x="100" y="102" text-anchor="middle" fill="#FFFF00" font-size="11" font-style="italic">paso pequeño</text>
+        </svg>
+        <p style="color: var(--c-text-dim); margin:0;">∂J/∂w ≈ 0  →  apenas cambia</p>
+      </div>
+
+      <!-- Peso B: mucha culpa -->
+      <div style="text-align:center;">
+        <svg viewBox="0 0 240 120" style="width:240px;">
+          <text x="120" y="20" text-anchor="middle" fill="#a8a290" font-size="12">Peso B · MUCHA culpa</text>
+          <circle cx="40" cy="70" r="14" fill="rgba(88,196,221,0.2)" stroke="#58C4DD" stroke-width="2"/>
+          <text x="40" y="74" fill="#ece6d0" font-size="11" text-anchor="middle" font-family="Fira Code">w</text>
+          <line x1="60" y1="70" x2="170" y2="70" stroke="#FC6255" stroke-width="3"/>
+          <polygon points="170,63 180,70 170,77" fill="#FC6255"/>
+          <circle cx="200" cy="70" r="16" fill="rgba(131,193,103,0.25)" stroke="#83C167" stroke-width="2.5"/>
+          <text x="200" y="74" fill="#ece6d0" font-size="11" text-anchor="middle" font-family="Fira Code">w'</text>
+          <text x="120" y="102" text-anchor="middle" fill="#FC6255" font-size="11" font-style="italic">paso GRANDE</text>
+        </svg>
+        <p style="color: var(--c-text-dim); margin:0;">∂J/∂w grande  →  ajuste fuerte</p>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:0.3em; font-size:0.6em;">
+      <p class="katex-block" style="margin:0.2em 0;">w_{\text{nuevo}} = w_{\text{viejo}} - \alpha \cdot \underbrace{\frac{\partial J}{\partial w}}_{\text{la culpa de } w}</p>
+    </div>
+
+    <div style="background: rgba(92,208,179,0.10); border-left:3px solid var(--c-teal); padding:0.5em 0.7em; border-radius:6px; margin-top:0.3em; font-size:0.5em;">
+      <p style="margin:0;">🔑 <strong style="color: var(--c-teal);">La idea clave</strong>: cada peso recibe un ajuste proporcional a su culpa. Los pesos "culpables" cambian mucho; los "inocentes" casi nada.</p>
+      <p style="margin:0.3em 0 0; color: var(--c-text-dim);">🎁 Una <strong>sola pasada backward</strong> calcula la culpa de <strong>TODOS</strong> los pesos a la vez. Eso es lo que hacen <code>loss.backward()</code> (PyTorch) y el autograd de TensorFlow — automáticamente. Ahora veamos cómo se escribe en código →</p>
+    </div>
   </section>
 
   <section>
@@ -10817,6 +10978,16 @@ model.compile(loss=MeanSquaredError())</code></pre>
   <section>
     <h3>Más de Dos Clases</h3>
     <div style="font-size: 0.55em; margin-top:0.2em;">
+
+  <section>
+    <h3>Galería de Activaciones (resumen interactivo)</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Mueve <span class="katex-inline">z</span> para ver <span class="katex-inline">g(z)</span> sobre cada curva. <span style="color:var(--c-purple);">Leaky ReLU</span> usa pendiente <span class="katex-inline">\alpha</span> a la izquierda; <span style="color:var(--c-pink);">Softmax</span> convierte el vector <span class="katex-inline">[z, 1.5, -1]</span> en probabilidades que suman 1.</p>
+    <canvas id="activation-gallery-canvas" width="900" height="430" style="border-radius:8px; width:100%; max-width:900px; margin-top:0.2em;"></canvas>
+    <div style="margin-top:0.2em; font-size:0.55em; display:flex; gap:1.6em; justify-content:center; align-items:center; flex-wrap:wrap;">
+      <span style="color:var(--c-text-dim);">z = <input type="range" id="ag-z" min="-6" max="6" step="0.1" value="1.0" style="width:170px; vertical-align:middle;"> <b id="ag-z-val" style="color:#FFFF00;">1.0</b></span>
+      <span style="color:var(--c-purple);">α (Leaky) = <input type="range" id="ag-alpha" min="0" max="0.5" step="0.01" value="0.10" style="width:130px; vertical-align:middle;"> <b id="ag-alpha-val" style="color:#FFFF00;">0.10</b></span>
+    </div>
+  </section>
       <p>Ejemplo MNIST: reconocer dígitos <span class="katex-inline">y \in \{0,1,2,\dots,9\}</span>. El target puede tomar <strong>más de dos</strong> valores.</p>
       <svg viewBox="0 0 760 220" style="width:88%;">
         <!-- binaria vs multiclase -->
@@ -11833,10 +12004,12 @@ Reveal.on('slidechanged', function(event) {
     if (typeof initVectorizationWidget === 'function') {
       initVectorizationWidget();
       widgetsInitialized.vectorization = true;
+<script src="js/widgets/activation-gallery-widget.js"></script>
     }
   }
   if (slide.querySelector('#feature-scaling-canvas') && !widgetsInitialized.featureScaling) {
     if (typeof initFeatureScalingWidget === 'function') {
+<script src="js/widgets/nn-training-cycle.js"></script>
       initFeatureScalingWidget();
       widgetsInitialized.featureScaling = true;
     }
@@ -12293,3 +12466,6 @@ Reveal.on('slidechanged', function(event) {
 
 </body>
 </html>
+  if (slide.querySelector('#nn-training-cycle-canvas') && !widgetsInitialized.nnTrainingCycle) {
+    if (typeof initNNTrainingCycle === 'function') { initNNTrainingCycle(); widgetsInitialized.nnTrainingCycle = true; }
+  }
