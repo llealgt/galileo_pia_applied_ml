@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Machine Learning — Curso Completo (Semanas 1-6)</title>
+  <title>Machine Learning — Curso Completo (Semanas 1-7)</title>
 
   <!-- Reveal.js -->
   <link rel="stylesheet" href="lib/reveal.js/dist/reveal.css">
@@ -121,6 +121,18 @@
         <a class="toc-item" onclick="Reveal.slide(54, 0)"><span class="toc-num">54</span>Optimización: Adam</a>
         <a class="toc-item" onclick="Reveal.slide(55, 0)"><span class="toc-num">55</span>Otros Tipos de Capas</a>
         <a class="toc-item" onclick="Reveal.slide(56, 0)"><span class="toc-num">56</span>Resumen Semana 6</a>
+      </div>
+      <div class="toc-column">
+        <h4 style="color: var(--c-red); font-size: 0.75em; margin-bottom: 0.3em;">Semana 7</h4>
+        <a class="toc-item" onclick="Reveal.slide(57, 0)"><span class="toc-num">57</span>Portada Semana 7</a>
+        <a class="toc-item" onclick="Reveal.slide(58, 0)"><span class="toc-num">58</span>¿Qué es No Supervisado?</a>
+        <a class="toc-item" onclick="Reveal.slide(59, 0)"><span class="toc-num">59</span>K-Means</a>
+        <a class="toc-item" onclick="Reveal.slide(60, 0)"><span class="toc-num">60</span>GMM (soft clustering)</a>
+        <a class="toc-item" onclick="Reveal.slide(61, 0)"><span class="toc-num">61</span>Detección de Anomalías</a>
+        <a class="toc-item" onclick="Reveal.slide(62, 0)"><span class="toc-num">62</span>PCA</a>
+        <a class="toc-item" onclick="Reveal.slide(63, 0)"><span class="toc-num">63</span>t-SNE</a>
+        <a class="toc-item" onclick="Reveal.slide(64, 0)"><span class="toc-num">64</span>¿Cuándo Usar Cada Técnica?</a>
+        <a class="toc-item" onclick="Reveal.slide(65, 0)"><span class="toc-num">65</span>Resumen Semana 7</a>
       </div>
     </div>
     <p style="font-size: 0.5em; color: var(--c-text-dim); margin-top: 0.5em; text-align: center;">Click en cualquier sección para navegar directamente</p>
@@ -10966,6 +10978,16 @@ model.compile(loss=MeanSquaredError())</code></pre>
       <p style="color: var(--c-yellow); text-align:center; margin-top:0.4em;">⚠️ No uses activación lineal en las capas ocultas — usa <strong>ReLU</strong>.</p>
     </div>
   </section>
+
+  <section>
+    <h3>Galería de Activaciones (resumen interactivo)</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Mueve <span class="katex-inline">z</span> para ver <span class="katex-inline">g(z)</span> sobre cada curva. <span style="color:var(--c-purple);">Leaky ReLU</span> usa pendiente <span class="katex-inline">\alpha</span> a la izquierda; <span style="color:var(--c-pink);">Softmax</span> convierte el vector <span class="katex-inline">[z, 1.5, -1]</span> en probabilidades que suman 1.</p>
+    <canvas id="activation-gallery-canvas" width="900" height="430" style="border-radius:8px; width:100%; max-width:900px; margin-top:0.2em;"></canvas>
+    <div style="margin-top:0.2em; font-size:0.55em; display:flex; gap:1.6em; justify-content:center; align-items:center; flex-wrap:wrap;">
+      <span style="color:var(--c-text-dim);">z = <input type="range" id="ag-z" min="-6" max="6" step="0.1" value="1.0" style="width:170px; vertical-align:middle;"> <b id="ag-z-val" style="color:#FFFF00;">1.0</b></span>
+      <span style="color:var(--c-purple);">α (Leaky) = <input type="range" id="ag-alpha" min="0" max="0.5" step="0.01" value="0.10" style="width:130px; vertical-align:middle;"> <b id="ag-alpha-val" style="color:#FFFF00;">0.10</b></span>
+    </div>
+  </section>
 </section>
 
 <!-- ========== Sección 52: Multiclase y Softmax ========== -->
@@ -10978,16 +11000,6 @@ model.compile(loss=MeanSquaredError())</code></pre>
   <section>
     <h3>Más de Dos Clases</h3>
     <div style="font-size: 0.55em; margin-top:0.2em;">
-
-  <section>
-    <h3>Galería de Activaciones (resumen interactivo)</h3>
-    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Mueve <span class="katex-inline">z</span> para ver <span class="katex-inline">g(z)</span> sobre cada curva. <span style="color:var(--c-purple);">Leaky ReLU</span> usa pendiente <span class="katex-inline">\alpha</span> a la izquierda; <span style="color:var(--c-pink);">Softmax</span> convierte el vector <span class="katex-inline">[z, 1.5, -1]</span> en probabilidades que suman 1.</p>
-    <canvas id="activation-gallery-canvas" width="900" height="430" style="border-radius:8px; width:100%; max-width:900px; margin-top:0.2em;"></canvas>
-    <div style="margin-top:0.2em; font-size:0.55em; display:flex; gap:1.6em; justify-content:center; align-items:center; flex-wrap:wrap;">
-      <span style="color:var(--c-text-dim);">z = <input type="range" id="ag-z" min="-6" max="6" step="0.1" value="1.0" style="width:170px; vertical-align:middle;"> <b id="ag-z-val" style="color:#FFFF00;">1.0</b></span>
-      <span style="color:var(--c-purple);">α (Leaky) = <input type="range" id="ag-alpha" min="0" max="0.5" step="0.01" value="0.10" style="width:130px; vertical-align:middle;"> <b id="ag-alpha-val" style="color:#FFFF00;">0.10</b></span>
-    </div>
-  </section>
       <p>Ejemplo MNIST: reconocer dígitos <span class="katex-inline">y \in \{0,1,2,\dots,9\}</span>. El target puede tomar <strong>más de dos</strong> valores.</p>
       <svg viewBox="0 0 760 220" style="width:88%;">
         <!-- binaria vs multiclase -->
@@ -11268,6 +11280,683 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 </section>
 
+<!-- ========================================================== -->
+<!-- ================== SEMANA 7 (57–65) ====================== -->
+<!-- ========================================================== -->
+
+<!-- ========== Sección 57: Portada Semana 7 ========== -->
+<section>
+  <section data-transition="zoom">
+    <h2 style="color: var(--c-red);">Semana 7</h2>
+    <h3 style="color: var(--c-text); margin-top: 0.3em;">Aprendizaje No Supervisado</h3>
+    <div style="font-size: 0.56em; margin-top: 1em; color: var(--c-text-dim);">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5em; max-width: 660px; margin: 0 auto;">
+        <p>📊 Clustering: K-Means</p>
+        <p>🧠 Gaussian Mixture Models (GMM)</p>
+        <p>⚠️ Detección de Anomalías</p>
+        <p>🔻 PCA — Reducción lineal</p>
+        <p>🌐 t-SNE — Manifolds no lineales</p>
+        <p>🎯 ¿Cuándo usar cada técnica?</p>
+      </div>
+    </div>
+    <p style="font-size: 0.48em; color: var(--c-text-dim); margin-top: 1.2em;">
+      📦 Training set: solo <span class="katex-inline">\{x^{(1)},x^{(2)},\ldots,x^{(m)}\}</span> — <strong>sin etiquetas</strong>. La meta: encontrar <strong>estructura</strong>.
+    </p>
+  </section>
+</section>
+
+<!-- ========== Sección 58: ¿Qué es Aprendizaje No Supervisado? ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-red);">¿Qué es Aprendizaje No Supervisado?</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Cuando los datos no traen "respuestas correctas"</p>
+  </section>
+
+  <section>
+    <h3>Supervisado vs No Supervisado</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em; display:grid; grid-template-columns:1fr 1fr; gap:1.2em;">
+      <div style="text-align:center;">
+        <p style="color:var(--c-blue);"><strong>Supervisado</strong></p>
+        <svg viewBox="0 0 200 180" style="width:200px;">
+          <line x1="20" y1="160" x2="180" y2="160" stroke="#a8a290"/><line x1="30" y1="20" x2="30" y2="170" stroke="#a8a290"/>
+          <g fill="#FC6255"><text x="80" y="55" font-size="16">×</text><text x="105" y="50" font-size="16">×</text><text x="125" y="65" font-size="16">×</text><text x="100" y="75" font-size="16">×</text></g>
+          <g fill="none" stroke="#58C4DD" stroke-width="2"><circle cx="60" cy="120" r="6"/><circle cx="85" cy="135" r="6"/><circle cx="115" cy="125" r="6"/><circle cx="70" cy="145" r="6"/></g>
+          <line x1="30" y1="160" x2="180" y2="20" stroke="#FFFF00" stroke-width="2" stroke-dasharray="4 3"/>
+        </svg>
+        <p style="color:var(--c-text-dim); margin-top:0.3em; font-size:0.95em;">Dataset: <span class="katex-inline">(x^{(i)}, y^{(i)})</span></p>
+        <p style="color:var(--c-text-dim); font-size:0.9em;">Aprende a predecir <span class="katex-inline">y</span></p>
+      </div>
+      <div style="text-align:center;">
+        <p style="color:var(--c-red);"><strong>No supervisado</strong></p>
+        <svg viewBox="0 0 200 180" style="width:200px;">
+          <line x1="20" y1="160" x2="180" y2="160" stroke="#a8a290"/><line x1="30" y1="20" x2="30" y2="170" stroke="#a8a290"/>
+          <g fill="#ece6d0"><circle cx="80" cy="55" r="5"/><circle cx="105" cy="50" r="5"/><circle cx="125" cy="65" r="5"/><circle cx="100" cy="75" r="5"/></g>
+          <g fill="#ece6d0"><circle cx="60" cy="120" r="5"/><circle cx="85" cy="135" r="5"/><circle cx="115" cy="125" r="5"/><circle cx="70" cy="145" r="5"/></g>
+          <path d="M 70 50 Q 130 45 130 80 Q 130 90 100 85 Q 75 80 70 50 Z" fill="none" stroke="#FFFF00" stroke-width="2"/>
+          <path d="M 50 115 Q 130 105 125 145 Q 90 160 60 150 Q 45 145 50 115 Z" fill="none" stroke="#FFFF00" stroke-width="2"/>
+        </svg>
+        <p style="color:var(--c-text-dim); margin-top:0.3em; font-size:0.95em;">Dataset: <span class="katex-inline">x^{(i)}</span> solamente</p>
+        <p style="color:var(--c-text-dim); font-size:0.9em;">Encuentra <strong>estructura</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Tres Grandes Familias 🧩</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.8em;">
+        <div style="background: rgba(252,98,85,0.10); border-left:3px solid var(--c-red); padding:0.6em 0.8em; border-radius:6px;">
+          <p style="color: var(--c-red); margin:0;"><strong>📊 Clustering</strong></p>
+          <p style="margin:0.3em 0 0;">Agrupar puntos similares. Ej. segmentación de clientes, agrupar noticias.</p>
+          <p style="margin:0.3em 0 0; color: var(--c-text-dim); font-size:0.9em;">→ K-Means, GMM</p>
+        </div>
+        <div style="background: rgba(255,255,0,0.08); border-left:3px solid var(--c-yellow); padding:0.6em 0.8em; border-radius:6px;">
+          <p style="color: var(--c-yellow); margin:0;"><strong>⚠️ Detección de anomalías</strong></p>
+          <p style="margin:0.3em 0 0;">Encontrar puntos "raros". Ej. fraude, fallas en motores, defectos.</p>
+          <p style="margin:0.3em 0 0; color: var(--c-text-dim); font-size:0.9em;">→ Density estimation</p>
+        </div>
+        <div style="background: rgba(92,208,179,0.10); border-left:3px solid var(--c-teal); padding:0.6em 0.8em; border-radius:6px;">
+          <p style="color: var(--c-teal); margin:0;"><strong>🔻 Reducción de dim.</strong></p>
+          <p style="margin:0.3em 0 0;">Comprimir / visualizar datos de alta dimensión.</p>
+          <p style="margin:0.3em 0 0; color: var(--c-text-dim); font-size:0.9em;">→ PCA, t-SNE</p>
+        </div>
+      </div>
+      <p style="text-align:center; color: var(--c-yellow); margin-top:0.7em;">Esta semana cubrimos las 3 ramas con widgets interactivos 🎛️</p>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 59: K-Means ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-red);">K-Means: Clustering 📊</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">El algoritmo de clustering más usado</p>
+  </section>
+
+  <section>
+    <h3>Aplicaciones del Clustering</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6em;">
+        <div><strong style="color:var(--c-blue);">🛒 Segmentación de clientes</strong><br>Agrupar usuarios con comportamiento similar.</div>
+        <div><strong style="color:var(--c-blue);">📰 Agrupar noticias</strong><br>Google News agrupa artículos del mismo evento.</div>
+        <div><strong style="color:var(--c-blue);">🧬 Análisis de DNA</strong><br>Agrupar genes con expresión similar.</div>
+        <div><strong style="color:var(--c-blue);">🌌 Astronomía</strong><br>Encontrar galaxias y estructuras cósmicas.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>La Idea: Dos Pasos Repetidos 🔁</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <div style="display:flex; gap:1em; justify-content:center; align-items:center;">
+        <div style="background:rgba(255,255,0,0.10); border-left:3px solid var(--c-yellow); padding:0.6em 1em; border-radius:6px;">
+          <p style="color: var(--c-yellow); margin:0;"><strong>① ASIGNAR</strong></p>
+          <p style="margin:0.3em 0 0;">Cada punto al <strong>centroide más cercano</strong>.</p>
+        </div>
+        <div style="font-size:1.5em; color:var(--c-text-dim);">→</div>
+        <div style="background:rgba(131,193,103,0.10); border-left:3px solid var(--c-green); padding:0.6em 1em; border-radius:6px;">
+          <p style="color: var(--c-green); margin:0;"><strong>② MOVER</strong></p>
+          <p style="margin:0.3em 0 0;">Cada centroide al <strong>promedio</strong> de sus puntos.</p>
+        </div>
+        <div style="font-size:1.5em; color:var(--c-text-dim);">🔁</div>
+      </div>
+      <p style="text-align:center; color: var(--c-yellow); margin-top:0.4em;">Iterar hasta que los centroides ya no se muevan → <strong>converged</strong>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>K-Means Paso a Paso (interactivo) 🎯</h3>
+    <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;">Configura <strong>K</strong>, presiona <strong style="color:var(--c-red);">"Paso ▶"</strong> para alternar entre ① asignar y ② mover. El cost <span class="katex-inline">J</span> (distortion) baja en cada paso.</p>
+    <canvas id="kmeans-canvas" width="960" height="420" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
+    <div style="margin-top:0.15em; font-size:0.48em; display:flex; gap:0.6em; align-items:center; flex-wrap:wrap;">
+      <button id="km-step-btn" style="background: var(--c-red); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer;">Paso ▶</button>
+      <button id="km-run-btn" style="background: var(--c-yellow); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer;">▶▶ Auto-run</button>
+      <button id="km-reset-btn" style="background: var(--c-green); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer;">↻ Reiniciar</button>
+      <label style="color: var(--c-text-dim);">K = <input type="range" id="km-k-slider" min="2" max="5" step="1" value="3" style="width:120px; vertical-align:middle;"> <b id="km-k-val" style="color:var(--c-red);">3</b></label>
+      <span id="km-step-info" style="color: var(--c-text-dim); margin-left:auto;">init · K=3</span>
+      <span style="color: var(--c-red);">J = <b id="km-cost">—</b></span>
+    </div>
+  </section>
+
+  <section>
+    <h3>Función de Costo: Distortion <span class="katex-inline">J</span></h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <p>K-Means minimiza el <strong>cost J</strong> = promedio de las distancias cuadradas de cada punto a su centroide:</p>
+      <p class="katex-block">J\bigl(c^{(1)},\ldots,c^{(m)}, \mu_1,\ldots,\mu_K\bigr) = \frac{1}{m}\sum_{i=1}^{m} \bigl\|x^{(i)} - \mu_{c^{(i)}}\bigr\|^2</p>
+      <p>Cada paso (asignar y mover) <strong>nunca aumenta</strong> J — por eso K-Means siempre converge.</p>
+      <div style="background: rgba(255,255,0,0.10); border-left:3px solid var(--c-yellow); padding:0.5em 0.7em; border-radius:6px; margin-top:0.4em;">
+        <p style="margin:0;">⚠️ Pero puede caer en un <strong>mínimo local</strong>. Solución: correr K-Means 50–100 veces con inicializaciones aleatorias y <strong>quedarse con el J más bajo</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>¿Cómo Eligir K? — Método del Codo</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <div style="display:flex; gap:1.5em; justify-content:center; align-items:center;">
+        <svg viewBox="0 0 320 220" style="width:320px;">
+          <line x1="40" y1="190" x2="300" y2="190" stroke="#a8a290"/><line x1="40" y1="20" x2="40" y2="200" stroke="#a8a290"/>
+          <text x="170" y="212" fill="#a8a290" font-size="11" text-anchor="middle" font-family="Fira Code">K (nº clusters)</text>
+          <text x="22" y="105" fill="#a8a290" font-size="11" text-anchor="middle" font-family="Fira Code" transform="rotate(-90,22,105)">cost J</text>
+          <!-- elbow curve -->
+          <path d="M 60 40 Q 90 95 120 130 Q 160 165 200 175 Q 240 182 280 185" fill="none" stroke="#58C4DD" stroke-width="2.5"/>
+          <g fill="#58C4DD"><circle cx="60" cy="40" r="4"/><circle cx="90" cy="80" r="4"/><circle cx="120" cy="130" r="4"/><circle cx="160" cy="165" r="4"/><circle cx="200" cy="175" r="4"/><circle cx="240" cy="182" r="4"/><circle cx="280" cy="185" r="4"/></g>
+          <!-- elbow marker -->
+          <circle cx="120" cy="130" r="10" fill="none" stroke="#FFFF00" stroke-width="2.5"/>
+          <text x="140" y="120" fill="#FFFF00" font-size="13" font-family="Fira Code" font-weight="bold">codo!</text>
+          <text x="120" y="208" fill="#FC6255" font-size="11" text-anchor="middle">K=3</text>
+        </svg>
+        <div style="max-width:300px;">
+          <p>Graficar <strong>J vs K</strong>: J siempre baja al crecer K (más clusters = menos error). El <strong>"codo"</strong> sugiere el K óptimo.</p>
+          <p style="color: var(--c-text-dim); margin-top:0.4em;">⚠️ A veces la curva es suave (sin codo claro). Otra estrategia: elegir K según el <strong>propósito downstream</strong> (talla XS/S/M/L/XL para playeras).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 60: GMM ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-red);">GMM: Soft Clustering 🧠</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">K-Means + probabilidades de pertenencia</p>
+  </section>
+
+  <section>
+    <h3>K-Means es "Hard"; GMM es "Soft"</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1em;">
+        <div style="background:rgba(252,98,85,0.10); border-left:3px solid var(--c-red); padding:0.6em 0.8em; border-radius:6px;">
+          <p style="color: var(--c-red); margin:0;"><strong>K-Means (hard)</strong></p>
+          <p style="margin:0.3em 0 0;">Cada punto pertenece a <strong>UN solo</strong> cluster (asignación binaria).</p>
+          <p style="margin:0.3em 0 0; color: var(--c-text-dim);">→ Fronteras rectas, sin "confianza".</p>
+        </div>
+        <div style="background:rgba(88,196,221,0.10); border-left:3px solid var(--c-blue); padding:0.6em 0.8em; border-radius:6px;">
+          <p style="color: var(--c-blue); margin:0;"><strong>GMM (soft)</strong></p>
+          <p style="margin:0.3em 0 0;">Cada punto tiene <strong>probabilidades</strong> de pertenecer a cada cluster (responsibilities).</p>
+          <p style="margin:0.3em 0 0; color: var(--c-text-dim);">→ Fronteras suaves; expresa <strong>incertidumbre</strong>.</p>
+        </div>
+      </div>
+      <p style="text-align:center; color: var(--c-yellow); margin-top:0.5em;">Cada cluster = <strong>gaussiana multivariada</strong> con media <span class="katex-inline">\mu_k</span>, covarianza <span class="katex-inline">\Sigma_k</span>, peso <span class="katex-inline">\pi_k</span>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>GMM por Expectation-Maximization (interactivo) 🎯</h3>
+    <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;">Presiona <strong>"Paso EM ▶"</strong> para alternar entre ① E-step (responsibilities) y ② M-step (re-fit gaussianas). Los puntos se pintan con la <strong>mezcla RGB</strong> de los colores de cluster según sus probabilidades.</p>
+    <canvas id="gmm-canvas" width="960" height="420" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
+    <div style="margin-top:0.15em; font-size:0.48em;">
+      <button id="gmm-step-btn" style="background: var(--c-red); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer;">Paso EM ▶</button>
+      <button id="gmm-reset-btn" style="background: var(--c-green); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer; margin-left:0.5em;">↻ Reiniciar</button>
+      <span id="gmm-phase" style="color: var(--c-text-dim); margin-left:1em; font-family:'Fira Code';">init</span>
+    </div>
+  </section>
+
+  <section>
+    <h3>EM en Dos Frases</h3>
+    <div style="font-size: 0.58em; margin-top:0.3em;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1em;">
+        <div style="background:rgba(255,255,0,0.10); border-left:3px solid var(--c-yellow); padding:0.7em 0.9em; border-radius:6px;">
+          <p style="color: var(--c-yellow); margin:0;"><strong>① E-step (Expectation)</strong></p>
+          <p style="margin:0.3em 0 0;">"¿Qué gaussiana te explica mejor?" Cada punto recibe <span class="katex-inline">r_{ik}</span> = probabilidad de pertenecer al cluster <span class="katex-inline">k</span>.</p>
+        </div>
+        <div style="background:rgba(131,193,103,0.10); border-left:3px solid var(--c-green); padding:0.7em 0.9em; border-radius:6px;">
+          <p style="color: var(--c-green); margin:0;"><strong>② M-step (Maximization)</strong></p>
+          <p style="margin:0.3em 0 0;">Reajustar <span class="katex-inline">\mu_k, \Sigma_k, \pi_k</span> de cada gaussiana como promedio <strong>ponderado</strong> de los puntos por sus responsibilities.</p>
+        </div>
+      </div>
+      <p style="text-align:center; color: var(--c-yellow); margin-top:0.4em;">🔁 Repetir hasta convergencia. La log-likelihood sube en cada iteración.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>¿Cuándo Usar GMM en lugar de K-Means?</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <ul>
+        <li>Clusters <strong>elongados o elipsoidales</strong> (K-Means asume circulares).</li>
+        <li>Clusters que se <strong>solapan</strong> — GMM da probabilidad por punto.</li>
+        <li>Necesitas <strong>medir confianza</strong> en cada asignación.</li>
+        <li>Como <strong>modelo generativo</strong>: puedes muestrear nuevos puntos.</li>
+      </ul>
+      <p style="color: var(--c-text-dim);">⚠️ Costo: más parámetros (covarianzas), más sensible a inicialización. <code>sklearn.mixture.GaussianMixture</code> lo implementa.</p>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 61: Anomaly Detection ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-red);">Detección de Anomalías ⚠️</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Encontrar eventos inusuales</p>
+  </section>
+
+  <section>
+    <h3>Ejemplo: Motor de Avión 🛩️</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em; display:flex; gap:1em; justify-content:center; align-items:center;">
+      <svg viewBox="0 0 320 220" style="width:320px;">
+        <line x1="30" y1="180" x2="290" y2="180" stroke="#a8a290"/><line x1="40" y1="20" x2="40" y2="190" stroke="#a8a290"/>
+        <text x="160" y="202" fill="#a8a290" font-size="11" text-anchor="middle">x₁ (calor)</text>
+        <text x="22" y="100" fill="#a8a290" font-size="11" text-anchor="middle" transform="rotate(-90,22,100)">x₂ (vibración)</text>
+        <!-- normal points -->
+        <g fill="#FC6255">
+          <text x="130" y="100" font-size="12">×</text><text x="150" y="95" font-size="12">×</text><text x="165" y="110" font-size="12">×</text><text x="180" y="100" font-size="12">×</text>
+          <text x="145" y="115" font-size="12">×</text><text x="170" y="125" font-size="12">×</text><text x="135" y="130" font-size="12">×</text><text x="155" y="120" font-size="12">×</text>
+          <text x="125" y="115" font-size="12">×</text><text x="190" y="115" font-size="12">×</text><text x="160" y="135" font-size="12">×</text><text x="175" y="140" font-size="12">×</text>
+          <text x="140" y="100" font-size="12">×</text><text x="150" y="125" font-size="12">×</text>
+        </g>
+        <!-- anomaly -->
+        <text x="250" y="160" fill="#9A72AC" font-size="14" font-weight="bold">×</text>
+        <text x="270" y="155" fill="#9A72AC" font-size="10">anomalía</text>
+        <!-- OK -->
+        <circle cx="160" cy="115" r="8" fill="none" stroke="#58C4DD" stroke-width="2"/>
+        <text x="175" y="105" fill="#58C4DD" font-size="10">OK</text>
+      </svg>
+      <div style="max-width:320px;">
+        <p>Recolectamos features de motores buenos. Cuando llega uno nuevo, preguntamos:</p>
+        <p style="color: var(--c-yellow); margin-top:0.4em;"><strong>¿Es similar a los datos que ya vimos?</strong></p>
+        <p style="margin-top:0.4em;">Si NO → es anómalo → inspección manual.</p>
+        <p style="color: var(--c-text-dim); margin-top:0.4em; font-size:0.9em;">También: fraude bancario, monitoreo de servidores, defectos de fabricación.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>La Idea: <em>Density Estimation</em></h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <p>Modelamos <span class="katex-inline">p(x)</span> = probabilidad de que <span class="katex-inline">x</span> sea "normal" según los datos vistos.</p>
+      <div style="background: rgba(252,98,85,0.10); border-left:3px solid var(--c-red); padding:0.5em 0.8em; border-radius:6px; margin-top:0.4em;">
+        <p style="margin:0; font-size:1.05em;">Si <span class="katex-inline">p(x_{\text{test}}) < \varepsilon</span> → 🚨 <strong>anomalía</strong></p>
+        <p style="margin:0.2em 0 0; font-size:1.05em;">Si <span class="katex-inline">p(x_{\text{test}}) \geq \varepsilon</span> → ✓ <strong>normal</strong></p>
+      </div>
+      <p style="margin-top:0.4em; color: var(--c-text-dim);">¿Cómo modelar <span class="katex-inline">p(x)</span>? El más simple: <strong>asumir gaussiana por feature</strong>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>La Distribución Gaussiana (Normal) 🔔</h3>
+    <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;">Mueve <strong>μ</strong> (centro) y <strong>σ</strong> (ancho), y el punto <strong>x_test</strong>. Observa <span class="katex-inline">p(x_{\text{test}})</span>.</p>
+    <canvas id="gauss-canvas" width="800" height="340" style="border-radius:8px; width:100%; max-width:800px; margin-top:0.15em;"></canvas>
+    <div style="margin-top:0.15em; font-size:0.48em; display:flex; gap:0.8em; flex-wrap:wrap;">
+      <label style="color:#FC6255;">μ <input type="range" id="g-mu-slider" min="-3" max="3" step="0.1" value="0" style="width:120px; vertical-align:middle;"> <b id="g-mu-val">0.00</b></label>
+      <label style="color:#58C4DD;">σ <input type="range" id="g-sigma-slider" min="0.2" max="3" step="0.1" value="1" style="width:120px; vertical-align:middle;"> <b id="g-sigma-val">1.00</b></label>
+      <label style="color:#FFFF00;">x_test <input type="range" id="g-x-slider" min="-5" max="5" step="0.1" value="0" style="width:120px; vertical-align:middle;"> <b id="g-x-val">0.00</b></label>
+      <span style="color: var(--c-text-dim); margin-left:auto;">p(x_test) = <b id="g-prob" style="color:var(--c-yellow);">—</b></span>
+    </div>
+    <p style="text-align:center; color: var(--c-text-dim); margin-top:0.3em; font-size:0.5em;">Fórmula: <span class="katex-inline">p(x) = \frac{1}{\sigma\sqrt{2\pi}}\,\exp\!\bigl(-\tfrac{(x-\mu)^2}{2\sigma^2}\bigr)</span></p>
+  </section>
+
+  <section>
+    <h3>Multi-Feature: Producto de Gaussianas</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <p>Con <span class="katex-inline">n</span> features, asumimos <strong>independencia</strong> entre ellas:</p>
+      <p class="katex-block">p(\vec{x}) = \prod_{j=1}^{n} p(x_j;\mu_j,\sigma_j^2) = p(x_1)\cdot p(x_2)\cdots p(x_n)</p>
+      <p>Cada feature tiene su <span class="katex-inline">\mu_j</span> y <span class="katex-inline">\sigma_j</span> estimados del dataset (MLE):</p>
+      <p class="katex-block" style="font-size:0.9em;">\mu_j = \frac{1}{m}\sum_i x_j^{(i)}, \qquad \sigma_j^2 = \frac{1}{m}\sum_i (x_j^{(i)}-\mu_j)^2</p>
+      <p style="color: var(--c-text-dim);">Aunque la asunción de independencia rara vez se cumple, este modelo simple funciona sorprendentemente bien para detección.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Detector 2D Interactivo 🎯</h3>
+    <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;"><strong>Arrastra</strong> el punto <span style="color:#FFFF00;">amarillo</span> por el espacio. Las curvas son <strong>contornos de p(x)</strong>. Ajusta <strong>ε</strong> para cambiar el umbral.</p>
+    <canvas id="anom-canvas" width="900" height="380" style="border-radius:8px; width:100%; max-width:900px; margin-top:0.15em;"></canvas>
+    <div style="margin-top:0.15em; font-size:0.48em; display:flex; gap:1em; flex-wrap:wrap; align-items:center;">
+      <label style="color: var(--c-yellow);">ε = <input type="range" id="anom-eps" min="0.001" max="0.15" step="0.001" value="0.02" style="width:160px; vertical-align:middle;"> <b id="anom-eps-val">0.020</b></label>
+      <span style="color: var(--c-text-dim);">p(x_test) = <b id="anom-prob" style="color:var(--c-red);">—</b></span>
+      <span id="anom-verdict" style="font-weight:bold;">✓ OK</span>
+    </div>
+  </section>
+
+  <section>
+    <h3>Algoritmo Completo (3 Pasos)</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <ol>
+        <li><strong>Elegir</strong> <span class="katex-inline">n</span> features que creas indicativas de anomalías.</li>
+        <li><strong>Ajustar parámetros</strong> <span class="katex-inline">\mu_1,\ldots,\mu_n, \sigma_1^2,\ldots,\sigma_n^2</span> desde los datos.</li>
+        <li><strong>Para cada nuevo</strong> <span class="katex-inline">x</span>: calcular <span class="katex-inline">p(x) = \prod_j p(x_j;\mu_j,\sigma_j^2)</span>; marcar como anomalía si <span class="katex-inline">p(x) < \varepsilon</span>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h3>Anomaly Detection vs Supervised Learning</h3>
+    <div style="font-size: 0.48em; margin-top:0.3em;">
+      <table style="width:96%; margin:0 auto; border-collapse:collapse; font-family:'Fira Code';">
+        <thead>
+          <tr style="color: var(--c-red); border-bottom:2px solid var(--c-red);">
+            <th style="text-align:left; padding:0.3em;">Característica</th>
+            <th style="text-align:left; padding:0.3em;">Anomaly Detection</th>
+            <th style="text-align:left; padding:0.3em;">Supervised Learning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(168,162,144,0.25);">
+            <td style="padding:0.3em; color:var(--c-text-dim);">Positivos (y=1)</td>
+            <td style="padding:0.3em;">Muy pocos (0-20), tipos diversos</td>
+            <td style="padding:0.3em;">Muchos (≥20+), similares entre sí</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(168,162,144,0.25);">
+            <td style="padding:0.3em; color:var(--c-text-dim);">Aprendizaje</td>
+            <td style="padding:0.3em;">Solo de los normales</td>
+            <td style="padding:0.3em;">De positivos y negativos</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(168,162,144,0.25);">
+            <td style="padding:0.3em; color:var(--c-text-dim);">Future positives</td>
+            <td style="padding:0.3em;">Pueden ser <strong>completamente nuevos</strong></td>
+            <td style="padding:0.3em;">Parecidos al training set</td>
+          </tr>
+          <tr>
+            <td style="padding:0.3em; color:var(--c-text-dim);">Ejemplos</td>
+            <td style="padding:0.3em;">Fraude, defectos de aviones, monitoreo</td>
+            <td style="padding:0.3em;">Spam, clima, enfermedades</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h3>Elegir y Diseñar Features</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <p><strong>Si una feature no es gaussiana</strong>, transformarla:</p>
+      <ul>
+        <li><code>x ← log(x + c)</code> — para features con cola larga.</li>
+        <li><code>x ← sqrt(x)</code> o <code>x ← x^(1/3)</code> — alternativas.</li>
+      </ul>
+      <p style="margin-top:0.4em;"><strong>Error analysis</strong>: si una anomalía tiene <span class="katex-inline">p(x)</span> alta (no se detecta), <strong>agrega nuevas features</strong> que la hagan estadísticamente distinta.</p>
+      <div style="background: rgba(131,193,103,0.10); border-left:3px solid var(--c-green); padding:0.5em 0.7em; border-radius:6px; margin-top:0.4em;">
+        <p style="margin:0;">💡 <strong>Combinaciones útiles</strong>: ratios (CPU load / network traffic), tasas, productos. Estas razones suelen ser más discriminativas que las features crudas.</p>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 62: PCA ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-red);">PCA: Reducción Lineal 🔻</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Principal Component Analysis</p>
+  </section>
+
+  <section>
+    <h3>¿Por qué Reducir Dimensiones?</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em;">
+        <div style="background:rgba(88,196,221,0.10); border-left:3px solid var(--c-blue); padding:0.6em 0.8em; border-radius:6px;">
+          <p style="color: var(--c-blue); margin:0;"><strong>📊 Visualización</strong></p>
+          <p style="margin:0.3em 0 0;">¿Cómo "ver" datos con 100 features? Proyectar a 2D o 3D para inspeccionar visualmente.</p>
+        </div>
+        <div style="background:rgba(131,193,103,0.10); border-left:3px solid var(--c-green); padding:0.6em 0.8em; border-radius:6px;">
+          <p style="color: var(--c-green); margin:0;"><strong>💾 Compresión</strong></p>
+          <p style="margin:0.3em 0 0;">Reducir features para acelerar modelos y ahorrar memoria/disco.</p>
+        </div>
+        <div style="background:rgba(255,255,0,0.10); border-left:3px solid var(--c-yellow); padding:0.6em 0.8em; border-radius:6px;">
+          <p style="color: var(--c-yellow); margin:0;"><strong>🧹 Eliminar redundancia</strong></p>
+          <p style="margin:0.3em 0 0;">Features correlacionadas (altura cm vs pulgadas) cargan info redundante.</p>
+        </div>
+        <div style="background:rgba(252,98,85,0.10); border-left:3px solid var(--c-red); padding:0.6em 0.8em; border-radius:6px;">
+          <p style="color: var(--c-red); margin:0;"><strong>🎯 Mejor señal</strong></p>
+          <p style="margin:0.3em 0 0;">Conservar las direcciones de <strong>máxima varianza</strong> elimina ruido en direcciones poco informativas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>La Idea Geométrica de PCA</h3>
+    <div style="font-size: 0.58em; margin-top:0.3em;">
+      <p>Imagina una nube de puntos 2D inclinada. PCA encuentra el <strong>eje a lo largo del cual los puntos se extienden más</strong> — la dirección de <strong>máxima varianza</strong>.</p>
+      <p>Al <strong>proyectar</strong> los puntos sobre este eje, retenemos la mayor cantidad de información posible al reducir a 1D.</p>
+      <p>El siguiente eje (PC2) es <strong>ortogonal</strong> a PC1, con la segunda mayor varianza. Y así sucesivamente.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>PCA Interactivo 🎯</h3>
+    <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;">Gira manualmente el eje candidato (slider) y observa la <strong>varianza proyectada</strong>. ¿Cuándo es máxima? Presiona <strong>"Encontrar PC1"</strong> para que el algoritmo lo encuentre automáticamente (vía SVD).</p>
+    <canvas id="pca-canvas" width="960" height="450" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
+    <div style="margin-top:0.15em; font-size:0.48em; display:flex; gap:0.8em; flex-wrap:wrap; align-items:center;">
+      <button id="pca-run-btn" style="background: var(--c-red); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer;">🎯 Encontrar PC1</button>
+      <button id="pca-reset-btn" style="background: var(--c-green); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer;">↻ Reiniciar</button>
+      <label style="color: var(--c-text-dim);">ángulo: <input type="range" id="pca-angle-slider" min="-90" max="90" step="1" value="0" style="width:200px; vertical-align:middle;"> <b id="pca-angle-val" style="color:var(--c-yellow);">0.0</b>°</label>
+      <span style="color: var(--c-text-dim); margin-left:auto;">varianza: <b id="pca-var-val" style="color:var(--c-red);">—</b></span>
+    </div>
+  </section>
+
+  <section>
+    <h3>Eligiendo cuántas Componentes 📉</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <p>Cada PC explica un porcentaje de la <strong>varianza total</strong>. Una heurística común: retener el <strong>k</strong> mínimo tal que <strong>≥95%</strong> de la varianza esté explicada.</p>
+      <div style="display:flex; gap:1em; justify-content:center; align-items:center; margin-top:0.4em;">
+        <svg viewBox="0 0 320 200" style="width:320px;">
+          <line x1="40" y1="170" x2="290" y2="170" stroke="#a8a290"/><line x1="40" y1="20" x2="40" y2="180" stroke="#a8a290"/>
+          <text x="170" y="192" fill="#a8a290" font-size="11" text-anchor="middle">k componentes</text>
+          <text x="22" y="100" fill="#a8a290" font-size="11" text-anchor="middle" transform="rotate(-90,22,100)">varianza acum.</text>
+          <!-- curve -->
+          <path d="M 40 170 L 80 80 L 120 50 L 160 38 L 200 30 L 240 25 L 280 23" fill="none" stroke="#58C4DD" stroke-width="2.5"/>
+          <g fill="#58C4DD"><circle cx="40" cy="170" r="3"/><circle cx="80" cy="80" r="3"/><circle cx="120" cy="50" r="3"/><circle cx="160" cy="38" r="3"/><circle cx="200" cy="30" r="3"/><circle cx="240" cy="25" r="3"/><circle cx="280" cy="23" r="3"/></g>
+          <!-- 95% line -->
+          <line x1="40" y1="32" x2="290" y2="32" stroke="#FFFF00" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="295" y="36" fill="#FFFF00" font-size="10">95%</text>
+          <circle cx="200" cy="30" r="8" fill="none" stroke="#FFFF00" stroke-width="2"/>
+          <text x="200" y="15" fill="#FFFF00" font-size="10" text-anchor="middle">k=5</text>
+        </svg>
+        <div style="max-width:280px;">
+          <p>En sklearn: <code>pca.explained_variance_ratio_</code> da el % de cada PC.</p>
+          <p style="margin-top:0.4em;">Para <strong>visualización</strong>, casi siempre <code>n_components=2</code> o <code>3</code>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 63: t-SNE ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-red);">t-SNE: Visualización No Lineal 🌐</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Cuando los datos viven en un manifold curvo</p>
+  </section>
+
+  <section>
+    <h3>La Limitación de PCA</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <p>PCA solo encuentra direcciones <strong>lineales</strong>. Si los datos viven sobre una <strong>superficie curva</strong> (manifold), PCA los aplasta sin preservar la estructura.</p>
+      <div style="display:flex; gap:1.5em; justify-content:center; align-items:center; margin-top:0.4em;">
+        <svg viewBox="0 0 240 180" style="width:240px;">
+          <text x="120" y="20" fill="#a8a290" font-size="12" text-anchor="middle">S-curve 3D (manifold)</text>
+          <!-- S-shape -->
+          <path d="M 40 60 Q 90 60 100 90 Q 110 120 60 120 Q 30 120 30 150 Q 30 165 80 165" fill="none" stroke="#58C4DD" stroke-width="3"/>
+          <path d="M 60 60 Q 110 60 120 90 Q 130 120 80 120 Q 50 120 50 150 Q 50 165 100 165" fill="none" stroke="#83C167" stroke-width="3"/>
+          <path d="M 80 60 Q 130 60 140 90 Q 150 120 100 120 Q 70 120 70 150 Q 70 165 120 165" fill="none" stroke="#FFFF00" stroke-width="3"/>
+        </svg>
+        <p style="max-width:280px;">Puntos cercanos a lo largo de la curva (mismo color) pueden estar lejos en línea recta. PCA no respeta esa estructura local.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>La Idea de t-SNE</h3>
+    <div style="font-size: 0.56em; margin-top:0.3em;">
+      <p><strong>t-SNE</strong> = <em>t-distributed Stochastic Neighbor Embedding</em>.</p>
+      <p>En vez de preservar direcciones lineales, preserva <strong>vecindarios locales</strong>:</p>
+      <ul>
+        <li>Si <span class="katex-inline">x^{(i)}</span> y <span class="katex-inline">x^{(j)}</span> están cerca en alta-dim → también deben estarlo en 2D.</li>
+        <li>Si están lejos → su posición relativa en 2D es menos importante.</li>
+      </ul>
+      <p style="color: var(--c-yellow); margin-top:0.4em;">Resultado: <strong>clusters bien separados visualmente</strong>, ideal para inspeccionar datos.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>PCA vs t-SNE (animación) 🎬</h3>
+    <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;">Misma S-curve 3D. Izquierda: PCA (estática, fracasa). Derecha: t-SNE evoluciona con <code>n_iter</code> creciente y <strong>"desenrolla"</strong> el manifold.</p>
+    <canvas id="tsne-canvas" width="960" height="400" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
+    <div style="margin-top:0.15em; font-size:0.48em;">
+      <button id="tsne-play-btn" style="background: var(--c-red); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer;">▶ Reproducir</button>
+      <button id="tsne-reset-btn" style="background: var(--c-green); color:#1b1b2f; border:none; border-radius:5px; padding:4px 14px; font-family:'Fira Code'; font-weight:bold; cursor:pointer; margin-left:0.5em;">↻ Reiniciar</button>
+      <span id="tsne-frame" style="color: var(--c-text-dim); margin-left:1em; font-family:'Fira Code';">snapshot 0/6</span>
+    </div>
+    <p style="color: var(--c-text-dim); text-align:center; margin:0.3em 0 0; font-size:0.5em;">Datos precomputados con <code>sklearn.manifold.TSNE</code> sobre 120 puntos de <code>make_s_curve</code>.</p>
+  </section>
+
+  <section>
+    <h3>Limitaciones de t-SNE ⚠️</h3>
+    <div style="font-size: 0.55em; margin-top:0.3em;">
+      <ul>
+        <li><strong>Solo para visualizar</strong>: no se usa como preprocesamiento para otro modelo.</li>
+        <li><strong>Distancias globales</strong> entre clusters NO son confiables. Solo la <strong>estructura local</strong>.</li>
+        <li><strong>Estocástico</strong>: diferentes seeds dan diferentes embeddings.</li>
+        <li><strong>Lento</strong>: <span class="katex-inline">O(m^2)</span> en memoria, costoso para >10k puntos.</li>
+        <li><strong>Hiperparámetro perplexity</strong>: requiere experimentación (5–50 típico).</li>
+      </ul>
+      <div style="background: rgba(92,208,179,0.10); border-left:3px solid var(--c-teal); padding:0.5em 0.7em; border-radius:6px; margin-top:0.4em;">
+        <p style="margin:0;">🎁 <strong>UMAP</strong> es una alternativa moderna más rápida y preserva mejor la estructura global. Mismo tipo de uso.</p>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 64: Resumen + Cuándo usar ========== -->
+<section>
+  <section>
+    <h2 style="color: var(--c-red);">¿Cuándo Usar Cada Técnica? 🎯</h2>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Guía rápida de decisión</p>
+  </section>
+
+  <section>
+    <h3>Tabla Comparativa</h3>
+    <div style="font-size: 0.42em; margin-top:0.3em;">
+      <table style="width:96%; margin:0 auto; border-collapse:collapse; font-family:'Fira Code';">
+        <thead>
+          <tr style="color: var(--c-red); border-bottom:2px solid var(--c-red);">
+            <th style="text-align:left; padding:0.3em;">Algoritmo</th>
+            <th style="text-align:left; padding:0.3em;">Objetivo</th>
+            <th style="text-align:left; padding:0.3em;">Salida</th>
+            <th style="text-align:left; padding:0.3em;">Ventajas</th>
+            <th style="text-align:left; padding:0.3em;">Limitaciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(168,162,144,0.25);">
+            <td style="padding:0.3em; color:var(--c-blue);"><strong>K-Means</strong></td>
+            <td style="padding:0.3em;">Agrupar (hard)</td>
+            <td style="padding:0.3em;">K clusters; asignación binaria</td>
+            <td style="padding:0.3em;">Simple, rápido, escalable</td>
+            <td style="padding:0.3em;">Asume clusters esféricos; sensible a init</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(168,162,144,0.25);">
+            <td style="padding:0.3em; color:var(--c-blue);"><strong>GMM</strong></td>
+            <td style="padding:0.3em;">Agrupar (soft)</td>
+            <td style="padding:0.3em;">Probabilidad por cluster; gaussianas</td>
+            <td style="padding:0.3em;">Soporta clusters elipsoidales; modelo generativo</td>
+            <td style="padding:0.3em;">Más parámetros; aún asume normalidad</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(168,162,144,0.25);">
+            <td style="padding:0.3em; color:var(--c-yellow);"><strong>Anomaly</strong></td>
+            <td style="padding:0.3em;">Detectar raros</td>
+            <td style="padding:0.3em;">p(x) por punto; umbral ε</td>
+            <td style="padding:0.3em;">No requiere etiquetas; detecta novedades</td>
+            <td style="padding:0.3em;">Asume features ~ gaussianas independientes</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(168,162,144,0.25);">
+            <td style="padding:0.3em; color:var(--c-teal);"><strong>PCA</strong></td>
+            <td style="padding:0.3em;">Reducir dim. (lineal)</td>
+            <td style="padding:0.3em;">k coordenadas; ejes principales</td>
+            <td style="padding:0.3em;">Determinista; rápido; útil como preprocesamiento</td>
+            <td style="padding:0.3em;">Solo direcciones lineales; pierde no-linealidades</td>
+          </tr>
+          <tr>
+            <td style="padding:0.3em; color:var(--c-teal);"><strong>t-SNE</strong></td>
+            <td style="padding:0.3em;">Visualizar (no lineal)</td>
+            <td style="padding:0.3em;">Embedding 2D/3D</td>
+            <td style="padding:0.3em;">Separa clusters visualmente; descubre estructura local</td>
+            <td style="padding:0.3em;">Solo viz; lento; estocástico; distancias globales no fiables</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h3>Árbol de Decisión 🌳</h3>
+    <div style="font-size: 0.5em; margin-top:0.3em;">
+      <svg viewBox="0 0 800 380" style="width:96%; max-width:800px;">
+        <!-- root -->
+        <rect x="320" y="20" width="160" height="40" rx="8" fill="rgba(252,98,85,0.15)" stroke="#FC6255" stroke-width="2"/>
+        <text x="400" y="44" fill="#ece6d0" font-size="13" text-anchor="middle" font-weight="bold">¿Qué quiero hacer?</text>
+        <!-- 3 branches -->
+        <line x1="400" y1="60" x2="180" y2="100" stroke="#a8a290" stroke-width="1.5"/>
+        <line x1="400" y1="60" x2="400" y2="100" stroke="#a8a290" stroke-width="1.5"/>
+        <line x1="400" y1="60" x2="620" y2="100" stroke="#a8a290" stroke-width="1.5"/>
+        <!-- AGRUPAR -->
+        <rect x="80" y="100" width="200" height="40" rx="8" fill="rgba(88,196,221,0.15)" stroke="#58C4DD" stroke-width="2"/>
+        <text x="180" y="124" fill="#58C4DD" font-size="12" text-anchor="middle">📊 Agrupar similares</text>
+        <line x1="180" y1="140" x2="100" y2="180" stroke="#a8a290" stroke-width="1.5"/>
+        <line x1="180" y1="140" x2="260" y2="180" stroke="#a8a290" stroke-width="1.5"/>
+        <text x="120" y="170" fill="#a8a290" font-size="10">hard</text>
+        <text x="220" y="170" fill="#a8a290" font-size="10">soft</text>
+        <rect x="40" y="180" width="120" height="36" rx="6" fill="rgba(88,196,221,0.20)" stroke="#58C4DD"/>
+        <text x="100" y="203" fill="#58C4DD" font-size="13" text-anchor="middle" font-weight="bold">K-Means</text>
+        <rect x="200" y="180" width="120" height="36" rx="6" fill="rgba(88,196,221,0.20)" stroke="#58C4DD"/>
+        <text x="260" y="203" fill="#58C4DD" font-size="13" text-anchor="middle" font-weight="bold">GMM</text>
+        <!-- DETECTAR RAROS -->
+        <rect x="320" y="100" width="160" height="40" rx="8" fill="rgba(255,255,0,0.10)" stroke="#FFFF00" stroke-width="2"/>
+        <text x="400" y="124" fill="#FFFF00" font-size="12" text-anchor="middle">⚠️ Detectar raros</text>
+        <line x1="400" y1="140" x2="400" y2="180" stroke="#a8a290" stroke-width="1.5"/>
+        <rect x="320" y="180" width="160" height="36" rx="6" fill="rgba(255,255,0,0.10)" stroke="#FFFF00"/>
+        <text x="400" y="203" fill="#FFFF00" font-size="13" text-anchor="middle" font-weight="bold">Anomaly Detection</text>
+        <!-- REDUCIR DIM -->
+        <rect x="520" y="100" width="200" height="40" rx="8" fill="rgba(92,208,179,0.15)" stroke="#5CD0B3" stroke-width="2"/>
+        <text x="620" y="124" fill="#5CD0B3" font-size="12" text-anchor="middle">🔻 Reducir dim.</text>
+        <line x1="620" y1="140" x2="560" y2="180" stroke="#a8a290" stroke-width="1.5"/>
+        <line x1="620" y1="140" x2="680" y2="180" stroke="#a8a290" stroke-width="1.5"/>
+        <text x="565" y="170" fill="#a8a290" font-size="10">preproc.</text>
+        <text x="690" y="170" fill="#a8a290" font-size="10">viz.</text>
+        <rect x="500" y="180" width="120" height="36" rx="6" fill="rgba(92,208,179,0.20)" stroke="#5CD0B3"/>
+        <text x="560" y="203" fill="#5CD0B3" font-size="13" text-anchor="middle" font-weight="bold">PCA</text>
+        <rect x="640" y="180" width="120" height="36" rx="6" fill="rgba(92,208,179,0.20)" stroke="#5CD0B3"/>
+        <text x="700" y="203" fill="#5CD0B3" font-size="13" text-anchor="middle" font-weight="bold">t-SNE</text>
+        <!-- bottom note -->
+        <text x="400" y="290" fill="#a8a290" font-size="13" text-anchor="middle" font-style="italic">Estos son los más clásicos. Otras opciones: DBSCAN (clusters no esféricos),</text>
+        <text x="400" y="312" fill="#a8a290" font-size="13" text-anchor="middle" font-style="italic">UMAP (similar a t-SNE pero más rápido), Autoencoders (no lineales aprendidos).</text>
+      </svg>
+    </div>
+  </section>
+</section>
+
+<!-- ========== Sección 65: Resumen Semana 7 ========== -->
+<section>
+  <section>
+    <h3>Resumen Semana 7</h3>
+    <div style="font-size: 0.5em; margin-top:0.3em;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5em; max-width:800px; margin:0 auto;">
+        <div style="background: rgba(88,196,221,0.12); border-left:3px solid var(--c-blue); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-blue);">📊 K-Means</strong><br>Asignar → mover → repetir. Minimiza distortion <span class="katex-inline">J</span>. Eligir K con elbow o propósito.
+        </div>
+        <div style="background: rgba(88,196,221,0.12); border-left:3px solid var(--c-blue); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-blue);">🧠 GMM</strong><br>EM (E-step / M-step). Soft assignment con probabilidades. Modelo generativo.
+        </div>
+        <div style="background: rgba(255,255,0,0.10); border-left:3px solid var(--c-yellow); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-yellow);">⚠️ Anomaly</strong><br>Modelar <span class="katex-inline">p(x)</span>. Si <span class="katex-inline">p(x_{\text{test}}) < \varepsilon</span> → anomalía. Mejor cuando hay pocos positivos heterogéneos.
+        </div>
+        <div style="background: rgba(92,208,179,0.12); border-left:3px solid var(--c-teal); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-teal);">🔻 PCA</strong><br>Direcciones de máxima varianza (SVD). Lineal, rápido, determinista. Útil como preprocesamiento.
+        </div>
+        <div style="background: rgba(92,208,179,0.12); border-left:3px solid var(--c-teal); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-teal);">🌐 t-SNE</strong><br>Preserva vecindarios locales. Ideal para <strong>visualización</strong> de datos altos-dim. Lento y solo viz.
+        </div>
+        <div style="background: rgba(252,98,85,0.10); border-left:3px solid var(--c-red); padding:0.4em 0.6em; border-radius:6px;">
+          <strong style="color:var(--c-red);">📦 Sin etiquetas</strong><br>Toda esta semana: dataset <span class="katex-inline">\{x^{(i)}\}</span> sin <span class="katex-inline">y</span>. Encontrar estructura, no predecir.
+        </div>
+      </div>
+      <div class="fragment fade-up" style="margin-top:0.5em;">
+        <p style="font-size: 0.62em; color: var(--c-red); text-align:center;">Próxima semana: <strong>buenas prácticas y evaluación de modelos</strong> (train/val/test, bias/variance, regularización).</p>
+      </div>
+      <p style="font-size: 0.45em; color: var(--c-text-dim); text-align:center; margin-top:0.3em;">Material adaptado de DeepLearning.AI / Stanford (C3_W1, CC BY-SA 2.0) y Universidad Galileo</p>
+    </div>
+  </section>
+</section>
+
 </div><!-- .slides -->
 </div><!-- .reveal -->
 
@@ -11315,10 +12004,18 @@ model.fit(X, Y, epochs=100)</code></pre>
 <script src="js/widgets/nn-layer-compute.js"></script>
 <script src="js/widgets/random-forest-widget.js"></script>
 <script src="js/widgets/activation-functions-widget.js"></script>
+<script src="js/widgets/activation-gallery-widget.js"></script>
 <script src="js/widgets/linear-collapse-widget.js"></script>
 <script src="js/widgets/adam-widget.js"></script>
 <script src="js/widgets/nn-numpy-stepwise.js"></script>
 <script src="js/widgets/matmul-stepwise.js"></script>
+<script src="js/widgets/nn-training-cycle.js"></script>
+<script src="js/widgets/kmeans-anim-widget.js"></script>
+<script src="js/widgets/gmm-widget.js"></script>
+<script src="js/widgets/gaussian-pdf-widget.js"></script>
+<script src="js/widgets/anomaly-2d-widget.js"></script>
+<script src="js/widgets/pca-widget.js"></script>
+<script src="js/widgets/tsne-anim-widget.js"></script>
 
 <script>
 // ============================================================
@@ -12004,12 +12701,10 @@ Reveal.on('slidechanged', function(event) {
     if (typeof initVectorizationWidget === 'function') {
       initVectorizationWidget();
       widgetsInitialized.vectorization = true;
-<script src="js/widgets/activation-gallery-widget.js"></script>
     }
   }
   if (slide.querySelector('#feature-scaling-canvas') && !widgetsInitialized.featureScaling) {
     if (typeof initFeatureScalingWidget === 'function') {
-<script src="js/widgets/nn-training-cycle.js"></script>
       initFeatureScalingWidget();
       widgetsInitialized.featureScaling = true;
     }
@@ -12117,6 +12812,9 @@ Reveal.on('slidechanged', function(event) {
   if (slide.querySelector('#activation-fn-canvas') && !widgetsInitialized.activationFn) {
     if (typeof initActivationFunctions === 'function') { initActivationFunctions(); widgetsInitialized.activationFn = true; }
   }
+  if (slide.querySelector('#activation-gallery-canvas') && !widgetsInitialized.activationGallery) {
+    if (typeof initActivationGallery === 'function') { initActivationGallery(); widgetsInitialized.activationGallery = true; }
+  }
   if (slide.querySelector('#linear-collapse-canvas') && !widgetsInitialized.linearCollapse) {
     if (typeof initLinearCollapse === 'function') { initLinearCollapse(); widgetsInitialized.linearCollapse = true; }
   }
@@ -12128,6 +12826,28 @@ Reveal.on('slidechanged', function(event) {
   }
   if (slide.querySelector('#matmul-canvas') && !widgetsInitialized.matmul) {
     if (typeof initMatmulStepwise === 'function') { initMatmulStepwise(); widgetsInitialized.matmul = true; }
+  }
+  if (slide.querySelector('#nn-training-cycle-canvas') && !widgetsInitialized.nnTrainingCycle) {
+    if (typeof initNNTrainingCycle === 'function') { initNNTrainingCycle(); widgetsInitialized.nnTrainingCycle = true; }
+  }
+  // Semana 7 widgets (Aprendizaje No Supervisado)
+  if (slide.querySelector('#kmeans-canvas') && !widgetsInitialized.kmeansAnim) {
+    if (typeof initKMeansAnim === 'function') { initKMeansAnim(); widgetsInitialized.kmeansAnim = true; }
+  }
+  if (slide.querySelector('#gmm-canvas') && !widgetsInitialized.gmmWidget) {
+    if (typeof initGMMWidget === 'function') { initGMMWidget(); widgetsInitialized.gmmWidget = true; }
+  }
+  if (slide.querySelector('#gauss-canvas') && !widgetsInitialized.gaussianPDF) {
+    if (typeof initGaussianPDF === 'function') { initGaussianPDF(); widgetsInitialized.gaussianPDF = true; }
+  }
+  if (slide.querySelector('#anom-canvas') && !widgetsInitialized.anomaly2D) {
+    if (typeof initAnomaly2D === 'function') { initAnomaly2D(); widgetsInitialized.anomaly2D = true; }
+  }
+  if (slide.querySelector('#pca-canvas') && !widgetsInitialized.pcaWidget) {
+    if (typeof initPCAWidget === 'function') { initPCAWidget(); widgetsInitialized.pcaWidget = true; }
+  }
+  if (slide.querySelector('#tsne-canvas') && !widgetsInitialized.tsneAnim) {
+    if (typeof initTSNEAnim === 'function') { initTSNEAnim(); widgetsInitialized.tsneAnim = true; }
   }
   // Semana 5 widgets (Redes Neuronales)
   if (slide.querySelector('#neuron-sigmoid-canvas') && !widgetsInitialized.neuronSig) {
@@ -12466,6 +13186,3 @@ Reveal.on('slidechanged', function(event) {
 
 </body>
 </html>
-  if (slide.querySelector('#nn-training-cycle-canvas') && !widgetsInitialized.nnTrainingCycle) {
-    if (typeof initNNTrainingCycle === 'function') { initNNTrainingCycle(); widgetsInitialized.nnTrainingCycle = true; }
-  }
