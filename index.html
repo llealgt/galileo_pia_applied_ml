@@ -11922,6 +11922,39 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
+    <h3>Gaussiana Multivariada</h3>
+    <div style="font-size: 0.5em; margin-top:0.2em;">
+      <p>El producto de gaussianas asume features <strong>independientes</strong> → contornos siempre <strong>alineados a los ejes</strong>. Pero si dos features están <strong style="color:var(--c-yellow);">correlacionadas</strong>, no lo captura. La <strong>gaussiana multivariada</strong> modela todas las features <strong>juntas</strong> con una matriz de covarianza <span class="katex-inline">\Sigma</span>:</p>
+      <p class="katex-block" style="font-size:0.85em;">p(\vec{x};\vec\mu,\Sigma) = \frac{1}{(2\pi)^{n/2}\,|\Sigma|^{1/2}}\,\exp\!\Bigl(-\tfrac{1}{2}(\vec{x}-\vec\mu)^{\!\top}\Sigma^{-1}(\vec{x}-\vec\mu)\Bigr)</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; margin-top:0.2em;">
+        <div style="background:rgba(131,193,103,0.10); border-left:3px solid var(--c-green); padding:0.4em 0.7em; border-radius:6px;">
+          <p style="margin:0;"><strong style="color:var(--c-green);">Σ diagonal</strong> (covarianzas = 0) → equivale al <strong>producto de gaussianas independientes</strong>. Elipses alineadas a los ejes.</p>
+        </div>
+        <div style="background:rgba(255,255,0,0.08); border-left:3px solid var(--c-yellow); padding:0.4em 0.7em; border-radius:6px;">
+          <p style="margin:0;"><strong style="color:var(--c-yellow);">Σ con off-diagonal ≠ 0</strong> → captura la <strong>correlación</strong>. Las elipses se <strong>inclinan</strong> siguiendo los datos.</p>
+        </div>
+      </div>
+      <p style="margin-top:0.3em; color: var(--c-text-dim);">Estima <span class="katex-inline">\vec\mu = \tfrac{1}{m}\sum_i \vec{x}^{(i)}</span> y <span class="katex-inline">\Sigma = \tfrac{1}{m}\sum_i (\vec{x}^{(i)}-\vec\mu)(\vec{x}^{(i)}-\vec\mu)^{\!\top}</span>. Costo: necesita más datos (<span class="katex-inline">m \gg n</span>) e invertir <span class="katex-inline">\Sigma</span>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Gaussiana Multivariada: 2D y 3D (interactivo)</h3>
+    <p style="font-size: 0.44em; color: var(--c-text-dim); margin:0;">Izquierda: <strong>contornos</strong> de <span class="katex-inline">p(x)</span>. Derecha: la misma densidad como <strong>superficie 3D</strong> (rotable). Mueve <strong>ρ</strong> (correlación): con <span style="color:var(--c-green);">ρ=0</span> la campana está alineada a los ejes (= gaussianas independientes); al subir <strong>ρ</strong> se <strong>inclina</strong>. <strong>Arrastra</strong> el punto de prueba en el panel 2D.</p>
+    <div style="display:flex; gap:0.6em; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:0.15em;">
+      <canvas id="mvg-canvas" width="440" height="430" style="border-radius:8px; width:430px;"></canvas>
+      <div id="mvg-3d" style="width:430px; height:430px;"></div>
+    </div>
+    <div style="margin-top:0.1em; font-size:0.44em; display:flex; gap:1em; flex-wrap:wrap; align-items:center; justify-content:center;">
+      <label style="color:#58C4DD;">σ₁ <input type="range" id="mvg-s1" min="0.5" max="3" step="0.05" value="1.6" style="width:90px; vertical-align:middle;"> <b id="mvg-s1-val">1.60</b></label>
+      <label style="color:#58C4DD;">σ₂ <input type="range" id="mvg-s2" min="0.5" max="3" step="0.05" value="1.3" style="width:90px; vertical-align:middle;"> <b id="mvg-s2-val">1.30</b></label>
+      <label style="color:#FFFF00;">ρ <input type="range" id="mvg-rho" min="-0.95" max="0.95" step="0.01" value="0" style="width:140px; vertical-align:middle;"> <b id="mvg-rho-val">0.00</b></label>
+      <label style="color:var(--c-text-dim);">ε <input type="range" id="mvg-eps" min="0.001" max="0.08" step="0.001" value="0.02" style="width:110px; vertical-align:middle;"> <b id="mvg-eps-val">0.020</b></label>
+      <span style="color: var(--c-text-dim);">p(x_test)=<b id="mvg-p" style="color:#FFFF00;">—</b> · d=<b id="mvg-d" style="color:#a8a290;">—</b> · <b id="mvg-verdict">✓ normal</b></span>
+    </div>
+  </section>
+
+  <section>
     <h3>Detector 2D Interactivo</h3>
     <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;"><strong>Arrastra</strong> el punto <span style="color:#FFFF00;">amarillo</span> por el espacio. Las curvas son <strong>contornos de p(x)</strong>. Ajusta <strong>ε</strong> para cambiar el umbral.</p>
     <canvas id="anom-canvas" width="900" height="380" style="border-radius:8px; width:100%; max-width:900px; margin-top:0.15em;"></canvas>
@@ -12023,6 +12056,45 @@ model.fit(X, Y, epochs=100)</code></pre>
           <p style="color: var(--c-red); margin:0;"><strong>🎯 Mejor señal</strong></p>
           <p style="margin:0.3em 0 0;">Conservar las direcciones de <strong>máxima varianza</strong> elimina ruido en direcciones poco informativas.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Eliminar Dimensiones que No Aportan</h3>
+    <div style="font-size: 0.5em; margin-top:0.15em;">
+      <p>PCA busca <strong>quitar las dimensiones que casi no aportan información relevante</strong>, conservando las que sí.</p>
+      <div style="display:flex; gap:1em; align-items:center; justify-content:center; margin:0.3em 0;">
+        <svg viewBox="0 0 460 180" style="width:80%; max-width:560px;">
+          <!-- mundo real 3D: cubo con escena -->
+          <text x="80" y="18" fill="#a8a290" font-size="12" text-anchor="middle" font-family="Fira Code">mundo real (3D)</text>
+          <g stroke="#58C4DD" stroke-width="2" fill="rgba(88,196,221,0.08)">
+            <rect x="35" y="40" width="70" height="70"/>
+            <line x1="35" y1="40" x2="60" y2="22"/><line x1="105" y1="40" x2="130" y2="22"/>
+            <line x1="35" y1="110" x2="60" y2="92"/><line x1="105" y1="110" x2="130" y2="92"/>
+            <polyline points="60,22 130,22 130,92" fill="none"/>
+          </g>
+          <!-- escena: arbolito + persona dentro -->
+          <circle cx="62" cy="72" r="9" fill="#83C167"/><rect x="60" y="80" width="4" height="14" fill="#83C167"/>
+          <circle cx="88" cy="70" r="6" fill="#FFFF00"/><rect x="86" y="76" width="4" height="16" fill="#FFFF00"/>
+          <!-- flecha proyección -->
+          <g stroke="#FC6255" stroke-width="2.5" fill="#FC6255">
+            <line x1="150" y1="75" x2="230" y2="75"/><polygon points="230,69 242,75 230,81"/>
+          </g>
+          <text x="196" y="64" fill="#FC6255" font-size="12" text-anchor="middle" font-family="Fira Code">proyectar</text>
+          <!-- pantalla 2D -->
+          <text x="350" y="18" fill="#a8a290" font-size="12" text-anchor="middle" font-family="Fira Code">pantalla (2D)</text>
+          <rect x="270" y="35" width="160" height="95" rx="6" fill="rgba(255,255,255,0.05)" stroke="#E48BB0" stroke-width="2.5"/>
+          <circle cx="320" cy="80" r="11" fill="#83C167"/><rect x="317" y="90" width="6" height="18" fill="#83C167"/>
+          <circle cx="365" cy="78" r="8" fill="#FFFF00"/><rect x="362" y="85" width="6" height="20" fill="#FFFF00"/>
+          <text x="350" y="148" fill="#83C167" font-size="11" text-anchor="middle" font-family="Fira Code">¡seguimos entendiendo!</text>
+        </svg>
+      </div>
+      <p>🎬 <strong>Ejemplo — una película en cine o TV:</strong> el mundo real es <strong style="color:var(--c-blue);">3D</strong>, pero la pantalla solo muestra <strong style="color:var(--c-pink);">2D</strong>… y aún así entendemos perfectamente la escena. La dimensión "perdida" (la profundidad exacta) aportaba <strong>poca información</strong> para comprender — igual que las direcciones de baja varianza que PCA descarta.</p>
+      <div style="background: rgba(88,196,221,0.10); border-left:3px solid var(--c-blue); padding:0.45em 0.7em; border-radius:6px; margin-top:0.3em; font-size:0.92em;">
+        <p style="margin:0;">📺 <strong style="color: var(--c-blue);">Video recomendado:</strong>
+          <a href="https://youtu.be/_UVHneBUBW0" target="_blank" rel="noopener" style="color: var(--c-pink);">youtu.be/_UVHneBUBW0</a>
+        </p>
       </div>
     </div>
   </section>
@@ -12340,6 +12412,7 @@ model.fit(X, Y, epochs=100)</code></pre>
 <script src="js/widgets/kmeans-anim-widget.js"></script>
 <script src="js/widgets/gmm-widget.js"></script>
 <script src="js/widgets/gaussian-pdf-widget.js"></script>
+<script src="js/widgets/multivariate-gaussian-widget.js"></script>
 <script src="js/widgets/anomaly-2d-widget.js"></script>
 <script src="js/widgets/pca-widget.js"></script>
 <script src="js/widgets/tsne-anim-widget.js"></script>
@@ -13175,6 +13248,9 @@ Reveal.on('slidechanged', function(event) {
   }
   if (slide.querySelector('#anom-canvas') && !widgetsInitialized.anomaly2D) {
     if (typeof initAnomaly2D === 'function') { initAnomaly2D(); widgetsInitialized.anomaly2D = true; }
+  }
+  if (slide.querySelector('#mvg-canvas') && !widgetsInitialized.mvg) {
+    if (typeof initMultivariateGaussian === 'function') { initMultivariateGaussian(); widgetsInitialized.mvg = true; }
   }
   if (slide.querySelector('#pca-canvas') && !widgetsInitialized.pcaWidget) {
     if (typeof initPCAWidget === 'function') { initPCAWidget(); widgetsInitialized.pcaWidget = true; }
