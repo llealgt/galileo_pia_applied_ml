@@ -10658,7 +10658,7 @@ def dense(AT, W, b, g):
 
   <!-- ===== SLIDE C: widget centerpiece ===== -->
   <section>
-    <h3>Backpropagation = Propagación de la Culpa (interactivo) 🎯</h3>
+    <h3>Backpropagation = Propagación de la Culpa (interactivo)</h3>
     <p style="font-size: 0.46em; color: var(--c-text-dim); margin:0;">Presiona <strong style="color: var(--c-pink);">"Siguiente fase ▶"</strong> para recorrer un epoch completo: <span style="color:#58C4DD;">Forward</span> → <span style="color:#FC6255;">Loss</span> → <span style="color:#FFFF00;">Backward (culpa)</span> → <span style="color:#83C167;">Update</span>. Cada neurona oculta recibe una culpa <code>∂J/∂a</code> de la salida — propagada <strong>de derecha a izquierda</strong>.</p>
     <canvas id="nn-training-cycle-canvas" width="960" height="400" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
     <div style="margin-top:0.15em; font-size:0.46em;">
@@ -10868,7 +10868,63 @@ model.compile(loss=MeanSquaredError())</code></pre>
           🎁 TensorFlow y PyTorch lo hacen <strong>automáticamente</strong> con su <strong>autograd</strong>: tú escribes el forward, ellos calculan las derivadas con backprop.
         </p>
       </div>
+
+      <div style="background: rgba(88,196,221,0.10); border-left:3px solid var(--c-blue); padding:0.45em 0.7em; border-radius:6px; margin-top:0.4em; font-size:0.92em;">
+        <p style="margin:0;">📖 <strong style="color: var(--c-blue);">Referencia recomendada:</strong>
+          para una explicación detallada (y muy visual) de backpropagation:
+          <a href="http://neuralnetworksanddeeplearning.com/chap2.html" target="_blank" rel="noopener" style="color: var(--c-pink);">neuralnetworksanddeeplearning.com/chap2.html</a>
+        </p>
+      </div>
     </div>
+  </section>
+
+  <section>
+    <h3>Un Cambio se Propaga hacia Adelante (interactivo)</h3>
+    <p style="font-size: 0.46em; color: var(--c-text-dim); margin:0;">Elige un parámetro y muévelo: el cambio se <strong>propaga</strong> a las capas siguientes, a la predicción <span class="katex-inline">\hat{y}</span> y al costo <span class="katex-inline">J</span>. La <strong style="color:#FC6255;">pendiente</strong> de la curva <span class="katex-inline">J</span> vs. el parámetro es justo el gradiente <span class="katex-inline">\partial J/\partial \theta</span> que <strong>backpropagation</strong> calcula.</p>
+    <canvas id="backprop-sensitivity-canvas" width="960" height="430" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
+    <div style="margin-top:0.2em; font-size:0.55em; display:flex; gap:1.4em; justify-content:center; align-items:center; flex-wrap:wrap;">
+      <label style="color:var(--c-text-dim);">parámetro:
+        <select id="bps-param" style="background:#1b1b2f; color:#ece6d0; border:1px solid #58C4DD; border-radius:4px; padding:2px 6px; font-family:'Fira Code';">
+          <option value="w1">w₁ (capa 1)</option>
+          <option value="b1">b₁ (capa 1)</option>
+          <option value="w2">w₂ (capa 2)</option>
+          <option value="b2">b₂ (capa 2)</option>
+          <option value="w3">w₃ (salida)</option>
+          <option value="b3">b₃ (salida)</option>
+        </select>
+      </label>
+      <span style="color:var(--c-text-dim);">valor = <input type="range" id="bps-val" min="-3" max="3" step="0.05" value="1.00" style="width:200px; vertical-align:middle;"> <b id="bps-val-label" style="color:#FFFF00;">1.00</b></span>
+    </div>
+  </section>
+
+  <section>
+    <h3>El Costo Depende de Cada Parámetro (interactivo)</h3>
+    <p style="font-size: 0.46em; color: var(--c-text-dim); margin:0;">Una red <strong>completa</strong> (2 → 4 → 1). <strong>Selecciona cualquier parámetro</strong> — clic en una arista (peso) o un nodo (bias), o usa el menú — y mueve el slider: la salida <span class="katex-inline">\hat{y}</span> cambia y con ella el costo <span class="katex-inline">J</span>. Entrenar = encontrar el valor de <strong>cada</strong> parámetro que minimiza <span class="katex-inline">J</span>.</p>
+    <canvas id="full-net-cost-canvas" width="960" height="460" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
+    <div style="margin-top:0.2em; font-size:0.55em; display:flex; gap:1.4em; justify-content:center; align-items:center; flex-wrap:wrap;">
+      <label style="color:var(--c-text-dim);">parámetro:
+        <select id="fnc-param" style="background:#1b1b2f; color:#ece6d0; border:1px solid #58C4DD; border-radius:4px; padding:2px 6px; font-family:'Fira Code';"></select>
+      </label>
+      <span style="color:var(--c-text-dim);">valor = <input type="range" id="fnc-val" min="-3" max="3" step="0.05" value="0.90" style="width:220px; vertical-align:middle;"> <b id="fnc-val-label" style="color:#FFFF00;">0.90</b></span>
+    </div>
+  </section>
+
+  <section>
+    <h3>Resumen: las Ecuaciones de Backpropagation</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">Las cuatro ecuaciones fundamentales (BP1–BP4): error de salida, propagación del error y gradientes respecto a pesos y biases.</p>
+    <div style="background:#ffffff; border-radius:8px; padding:0.6em; display:inline-block; margin-top:0.3em;">
+      <img src="img/backprop_resumen_ecuaciones.png" alt="Resumen: las cuatro ecuaciones de backpropagation (BP1-BP4)" style="display:block; max-height:62vh; max-width:100%;">
+    </div>
+    <p style="font-size: 0.4em; color: var(--c-text-dim); margin:0.3em 0 0;">Fuente: <a href="http://neuralnetworksanddeeplearning.com/chap2.html" target="_blank" rel="noopener" style="color: var(--c-pink);">neuralnetworksanddeeplearning.com/chap2.html</a></p>
+  </section>
+
+  <section>
+    <h3>El Algoritmo de Backpropagation (paso a paso)</h3>
+    <p style="font-size: 0.5em; color: var(--c-text-dim); margin:0;">De la entrada al gradiente: forward para calcular activaciones, error en la salida, y backward para propagarlo capa por capa.</p>
+    <div style="background:#ffffff; border-radius:8px; padding:0.6em; display:inline-block; margin-top:0.3em;">
+      <img src="img/backprop_algoritmo_5pasos.png" alt="Algoritmo de backpropagation en 5 pasos: input, feedforward, output error, backpropagate, output gradient" style="display:block; max-height:62vh; max-width:100%;">
+    </div>
+    <p style="font-size: 0.4em; color: var(--c-text-dim); margin:0.3em 0 0;">Fuente: <a href="http://neuralnetworksanddeeplearning.com/chap2.html" target="_blank" rel="noopener" style="color: var(--c-pink);">neuralnetworksanddeeplearning.com/chap2.html</a></p>
   </section>
 
   <section>
@@ -12005,6 +12061,8 @@ model.fit(X, Y, epochs=100)</code></pre>
 <script src="js/widgets/random-forest-widget.js"></script>
 <script src="js/widgets/activation-functions-widget.js"></script>
 <script src="js/widgets/activation-gallery-widget.js"></script>
+<script src="js/widgets/backprop-sensitivity-widget.js"></script>
+<script src="js/widgets/full-net-cost-widget.js"></script>
 <script src="js/widgets/linear-collapse-widget.js"></script>
 <script src="js/widgets/adam-widget.js"></script>
 <script src="js/widgets/nn-numpy-stepwise.js"></script>
@@ -12814,6 +12872,12 @@ Reveal.on('slidechanged', function(event) {
   }
   if (slide.querySelector('#activation-gallery-canvas') && !widgetsInitialized.activationGallery) {
     if (typeof initActivationGallery === 'function') { initActivationGallery(); widgetsInitialized.activationGallery = true; }
+  }
+  if (slide.querySelector('#backprop-sensitivity-canvas') && !widgetsInitialized.backpropSensitivity) {
+    if (typeof initBackpropSensitivity === 'function') { initBackpropSensitivity(); widgetsInitialized.backpropSensitivity = true; }
+  }
+  if (slide.querySelector('#full-net-cost-canvas') && !widgetsInitialized.fullNetCost) {
+    if (typeof initFullNetCost === 'function') { initFullNetCost(); widgetsInitialized.fullNetCost = true; }
   }
   if (slide.querySelector('#linear-collapse-canvas') && !widgetsInitialized.linearCollapse) {
     if (typeof initLinearCollapse === 'function') { initLinearCollapse(); widgetsInitialized.linearCollapse = true; }
