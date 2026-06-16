@@ -11243,7 +11243,7 @@ model.fit(X, Y, epochs=100)</code></pre>
 <section>
   <section>
     <h2 style="color: var(--c-pink);">Otros Tipos de Capas 🧩</h2>
-    <p style="font-size: 0.65em; color: var(--c-text-dim);">Más allá de la capa densa: la capa convolucional</p>
+    <p style="font-size: 0.65em; color: var(--c-text-dim);">Más allá de la densa y la convolucional: el catálogo del deep learning</p>
   </section>
 
   <section>
@@ -11278,9 +11278,32 @@ model.fit(X, Y, epochs=100)</code></pre>
         <text x="330" y="115" fill="#a8a290" font-size="13" text-anchor="start"><tspan style="fill:#FF40FF;">parte</tspan> de la entrada</text>
       </svg>
       <ul>
+        <li>Muy usada en <strong>visión por computadora</strong>.</li>
+        <li>Analiza <strong>distintas regiones</strong> de la imagen para <strong>detectar objetos</strong> en diferentes partes.</li>
         <li>Cálculo <strong>más rápido</strong>.</li>
         <li>Necesita <strong>menos datos</strong> (menos propenso a overfitting).</li>
       </ul>
+    </div>
+  </section>
+
+  <section>
+    <h3>Inspiración Biológica: Hubel &amp; Wiesel</h3>
+    <div style="font-size: 0.5em; margin-top:0.1em;">
+      <div style="display:flex; gap:1em; align-items:center; justify-content:center;">
+        <div style="background:#f2f2f2; border-radius:8px; padding:0.4em;">
+          <img src="img/hubel_wiesel_experimento.jpg" alt="Figura del experimento de Hubel y Wiesel: estímulos de barras orientadas y los trenes de spikes de una neurona de la corteza visual, mostrando selectividad por orientación" style="display:block; max-height:46vh; max-width:100%;">
+        </div>
+        <div style="text-align:left; max-width:46%;">
+          <p style="margin:0 0 0.3em;"><strong>1959–1962:</strong> registraron neuronas de la <strong>corteza visual</strong> de un gato mientras le mostraban barras de luz.</p>
+          <ul style="margin:0;">
+            <li>Cada neurona responde solo a un <strong>estímulo en una <span style="color:var(--c-pink);">región pequeña</span></strong> de la imagen (su <em>campo receptivo</em>).</li>
+            <li>Dispara fuerte ante una <strong>orientación</strong> específica del borde, y poco ante otras.</li>
+            <li>Neuronas <strong>simples → complejas</strong>: las siguientes capas combinan rasgos simples en patrones más ricos.</li>
+          </ul>
+          <p style="margin:0.3em 0 0; color: var(--c-yellow);">💡 Esta jerarquía local es la base biológica de la <strong>capa convolucional</strong> (Premio Nobel 1981).</p>
+        </div>
+      </div>
+      <p style="font-size: 0.72em; color: var(--c-text-dim); margin:0.2em 0 0; text-align:center;">Imagen: Wikimedia Commons, CC BY-SA 3.0</p>
     </div>
   </section>
 
@@ -11299,6 +11322,252 @@ model.fit(X, Y, epochs=100)</code></pre>
         <text x="500" y="118" fill="#FF40FF" font-size="12" text-anchor="start">¿enfermedad cardiaca?</text>
       </svg>
       <p style="color: var(--c-text-dim);">Cada neurona de una capa convolucional mira solo una <strong>ventana</strong> de la señal. Apilando capas convolucionales se forma una <strong>CNN</strong>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Otras Capas Comunes en Deep Learning</h3>
+    <p style="font-size: 0.42em; color: var(--c-text-dim); margin:0;">Cada tipo de capa aporta una <strong>inductive bias</strong> distinta. Los frameworks (TensorFlow / PyTorch) las ofrecen como bloques que apilas.</p>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.5em; font-size:0.4em; margin-top:0.4em; text-align:left;">
+
+      <div style="background:rgba(255,255,255,0.04); border-left:3px solid var(--c-orange); border-radius:6px; padding:0.4em 0.6em;">
+        <p style="margin:0; color:var(--c-orange);"><strong>Recurrente (RNN / LSTM / GRU)</strong></p>
+        <p style="margin:0.2em 0; color:var(--c-text-dim);">Procesa <strong>secuencias</strong> manteniendo un estado/memoria; cada paso depende de los anteriores.</p>
+        <code style="font-size:0.85em;">LSTM(units=64)</code> · texto, series de tiempo, audio
+      </div>
+
+      <div style="background:rgba(255,255,255,0.04); border-left:3px solid #FF40FF; border-radius:6px; padding:0.4em 0.6em;">
+        <p style="margin:0; color:#FF40FF;"><strong>Pooling (Max / Average)</strong></p>
+        <p style="margin:0.2em 0; color:var(--c-text-dim);">Resume ventanas (p.ej. el <strong>máximo</strong>) → reduce la resolución y da invariancia a pequeñas traslaciones.</p>
+        <code style="font-size:0.85em;">MaxPooling2D()</code> · tras capas conv en CNNs
+      </div>
+
+      <div style="background:rgba(255,255,255,0.04); border-left:3px solid var(--c-green); border-radius:6px; padding:0.4em 0.6em;">
+        <p style="margin:0; color:var(--c-green);"><strong>Dropout</strong></p>
+        <p style="margin:0.2em 0; color:var(--c-text-dim);">Durante el entrenamiento <strong>apaga al azar</strong> una fracción de neuronas → regulariza y evita overfitting. En inferencia se desactiva.</p>
+        <code style="font-size:0.85em;">Dropout(0.5)</code> · regularización
+      </div>
+
+      <div style="background:rgba(255,255,255,0.04); border-left:3px solid var(--c-teal); border-radius:6px; padding:0.4em 0.6em;">
+        <p style="margin:0; color:var(--c-teal);"><strong>Batch Normalization</strong></p>
+        <p style="margin:0.2em 0; color:var(--c-text-dim);">Normaliza las activaciones de cada <strong>mini-batch</strong> (media 0, var 1) y las reescala → entrena más rápido y estable.</p>
+        <code style="font-size:0.85em;">BatchNormalization()</code> · estabilidad
+      </div>
+
+      <div style="background:rgba(255,255,255,0.04); border-left:3px solid var(--c-purple); border-radius:6px; padding:0.4em 0.6em;">
+        <p style="margin:0; color:var(--c-purple);"><strong>Embedding</strong></p>
+        <p style="margin:0.2em 0; color:var(--c-text-dim);">Convierte índices/categorías (p.ej. <strong>palabras</strong>) en vectores densos <strong>aprendidos</strong>.</p>
+        <code style="font-size:0.85em;">Embedding(V, d)</code> · NLP, recomendación
+      </div>
+
+      <div style="background:rgba(255,255,255,0.04); border-left:3px solid var(--c-red); border-radius:6px; padding:0.4em 0.6em;">
+        <p style="margin:0; color:var(--c-red);"><strong>Atención / Transformer</strong></p>
+        <p style="margin:0.2em 0; color:var(--c-text-dim);">Cada elemento <strong>atiende</strong> a los más relevantes de la secuencia, con pesos dinámicos. Base de los <strong>LLMs</strong> modernos.</p>
+        <code style="font-size:0.85em;">MultiHeadAttention()</code> · NLP, visión
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== Detalle: Recurrente ===== -->
+  <section>
+    <h3 style="color: var(--c-orange);">Capa Recurrente (RNN / LSTM / GRU)</h3>
+    <div style="font-size: 0.5em; margin-top:0.1em;">
+      <svg viewBox="0 0 580 210" style="width:74%;">
+        <!-- salidas -->
+        <g fill="rgba(255,134,47,0.25)" stroke="#FF862F" stroke-width="2">
+          <circle cx="150" cy="35" r="11"/><circle cx="330" cy="35" r="11"/><circle cx="510" cy="35" r="11"/>
+        </g>
+        <!-- celdas -->
+        <g fill="rgba(255,134,47,0.15)" stroke="#FF862F" stroke-width="2">
+          <rect x="110" y="80" width="80" height="60" rx="10"/><rect x="290" y="80" width="80" height="60" rx="10"/><rect x="470" y="80" width="80" height="60" rx="10"/>
+        </g>
+        <g fill="#ece6d0" font-size="14" font-family="Fira Code" text-anchor="middle">
+          <text x="150" y="115">h₋₁</text><text x="330" y="115">hₜ</text><text x="510" y="115">hₜ₊₁</text>
+        </g>
+        <!-- entradas -->
+        <g fill="rgba(88,196,221,0.25)" stroke="#58C4DD" stroke-width="2">
+          <circle cx="150" cy="185" r="11"/><circle cx="330" cy="185" r="11"/><circle cx="510" cy="185" r="11"/>
+        </g>
+        <g stroke="#a8a290" stroke-width="1.6" fill="#a8a290">
+          <line x1="150" y1="174" x2="150" y2="142"/><polygon points="146,148 150,140 154,148"/>
+          <line x1="330" y1="174" x2="330" y2="142"/><polygon points="326,148 330,140 334,148"/>
+          <line x1="510" y1="174" x2="510" y2="142"/><polygon points="506,148 510,140 514,148"/>
+          <line x1="150" y1="78" x2="150" y2="48"/><polygon points="146,54 150,46 154,54"/>
+          <line x1="330" y1="78" x2="330" y2="48"/><polygon points="326,54 330,46 334,54"/>
+          <line x1="510" y1="78" x2="510" y2="48"/><polygon points="506,54 510,46 514,54"/>
+        </g>
+        <!-- flechas recurrentes (estado) -->
+        <g stroke="#FF862F" stroke-width="2.4" fill="#FF862F">
+          <line x1="190" y1="110" x2="282" y2="110"/><polygon points="282,105 292,110 282,115"/>
+          <line x1="370" y1="110" x2="462" y2="110"/><polygon points="462,105 472,110 462,115"/>
+        </g>
+        <g fill="#a8a290" font-size="11" font-family="Fira Code" text-anchor="middle">
+          <text x="150" y="205">xₜ₋₁</text><text x="330" y="205">xₜ</text><text x="510" y="205">xₜ₊₁</text>
+          <text x="236" y="100" fill="#FF862F">estado</text><text x="416" y="100" fill="#FF862F">estado</text>
+        </g>
+      </svg>
+      <p style="margin:0.3em 0 0;">La misma celda se aplica en cada paso y <strong style="color:var(--c-orange);">pasa su estado</strong> al siguiente: así "recuerda" el contexto. LSTM/GRU añaden <em>compuertas</em> para retener memoria a largo plazo.</p>
+    </div>
+  </section>
+
+  <!-- ===== Detalle: Pooling ===== -->
+  <section>
+    <h3 style="color:#FF40FF;">Capa de Pooling (Max / Average)</h3>
+    <div style="font-size: 0.5em; margin-top:0.1em;">
+      <svg viewBox="0 0 560 220" style="width:70%;">
+        <!-- grid 4x4 -->
+        <g font-family="Fira Code" font-size="15" text-anchor="middle">
+          <!-- celdas con valores -->
+          <g stroke="#58C4DD" stroke-width="1.2" fill="rgba(88,196,221,0.08)">
+            <rect x="40" y="30" width="34" height="34"/><rect x="74" y="30" width="34" height="34"/><rect x="108" y="30" width="34" height="34"/><rect x="142" y="30" width="34" height="34"/>
+            <rect x="40" y="64" width="34" height="34"/><rect x="74" y="64" width="34" height="34"/><rect x="108" y="64" width="34" height="34"/><rect x="142" y="64" width="34" height="34"/>
+            <rect x="40" y="98" width="34" height="34"/><rect x="74" y="98" width="34" height="34"/><rect x="108" y="98" width="34" height="34"/><rect x="142" y="98" width="34" height="34"/>
+            <rect x="40" y="132" width="34" height="34"/><rect x="74" y="132" width="34" height="34"/><rect x="108" y="132" width="34" height="34"/><rect x="142" y="132" width="34" height="34"/>
+          </g>
+          <g fill="#ece6d0">
+            <text x="57" y="52">1</text><text x="91" y="52">3</text><text x="125" y="52">2</text><text x="159" y="52">1</text>
+            <text x="57" y="86">4</text><text x="91" y="86">2</text><text x="125" y="86">0</text><text x="159" y="86">5</text>
+            <text x="57" y="120">1</text><text x="91" y="120">0</text><text x="125" y="120">6</text><text x="159" y="120">3</text>
+            <text x="57" y="154">2</text><text x="91" y="154">1</text><text x="125" y="154">1</text><text x="159" y="154">0</text>
+          </g>
+          <!-- ventana 2x2 resaltada -->
+          <rect x="40" y="30" width="68" height="68" fill="none" stroke="#FF40FF" stroke-width="3"/>
+          <!-- flecha -->
+          <g stroke="#a8a290" stroke-width="2" fill="#a8a290"><line x1="195" y1="98" x2="290" y2="98"/><polygon points="290,93 300,98 290,103"/></g>
+          <text x="247" y="88" fill="#FF40FF" font-size="12">max 2×2</text>
+          <!-- salida 2x2 -->
+          <g stroke="#FF40FF" stroke-width="1.6" fill="rgba(255,64,255,0.12)">
+            <rect x="320" y="64" width="42" height="42"/><rect x="362" y="64" width="42" height="42"/>
+            <rect x="320" y="106" width="42" height="42"/><rect x="362" y="106" width="42" height="42"/>
+          </g>
+          <g fill="#ece6d0">
+            <text x="341" y="91">4</text><text x="383" y="91">5</text>
+            <text x="341" y="133">2</text><text x="383" y="133">6</text>
+          </g>
+        </g>
+      </svg>
+      <p style="margin:0.3em 0 0;">Resume cada ventana con un solo valor (el <strong style="color:#FF40FF;">máximo</strong> o el promedio): <strong>reduce el tamaño</strong> del mapa y aporta cierta <strong>invariancia</strong> a pequeñas traslaciones. Muy usada entre capas conv en CNNs.</p>
+    </div>
+  </section>
+
+  <!-- ===== Detalle: Dropout ===== -->
+  <section>
+    <h3 style="color: var(--c-green);">Dropout</h3>
+    <div style="font-size: 0.5em; margin-top:0.1em;">
+      <svg viewBox="0 0 560 210" style="width:64%;">
+        <!-- edges -->
+        <g stroke="rgba(168,162,144,0.30)" stroke-width="1">
+          <line x1="140" y1="40" x2="380" y2="40"/><line x1="140" y1="40" x2="380" y2="100"/><line x1="140" y1="40" x2="380" y2="160"/>
+          <line x1="140" y1="100" x2="380" y2="40"/><line x1="140" y1="100" x2="380" y2="100"/><line x1="140" y1="100" x2="380" y2="160"/>
+          <line x1="140" y1="160" x2="380" y2="40"/><line x1="140" y1="160" x2="380" y2="100"/><line x1="140" y1="160" x2="380" y2="160"/>
+        </g>
+        <!-- neuronas activas -->
+        <g fill="rgba(131,193,103,0.25)" stroke="#83C167" stroke-width="2.2">
+          <circle cx="140" cy="40" r="16"/><circle cx="140" cy="160" r="16"/>
+          <circle cx="380" cy="100" r="16"/><circle cx="380" cy="160" r="16"/>
+        </g>
+        <!-- neuronas "apagadas" -->
+        <g fill="rgba(120,116,100,0.12)" stroke="#6f6a5a" stroke-width="2" stroke-dasharray="4 3">
+          <circle cx="140" cy="100" r="16"/><circle cx="380" cy="40" r="16"/>
+        </g>
+        <g stroke="#FC6255" stroke-width="2.4">
+          <line x1="131" y1="91" x2="149" y2="109"/><line x1="149" y1="91" x2="131" y2="109"/>
+          <line x1="371" y1="31" x2="389" y2="49"/><line x1="389" y1="31" x2="371" y2="49"/>
+        </g>
+        <text x="260" y="200" fill="#a8a290" font-size="13" font-family="Fira Code" text-anchor="middle">en cada paso de entrenamiento se apaga un subconjunto distinto</text>
+      </svg>
+      <p style="margin:0.3em 0 0;">Durante el entrenamiento <strong style="color:var(--c-green);">apaga al azar</strong> una fracción de neuronas (p.ej. 50%). Obliga a la red a no depender de una sola neurona → <strong>regulariza</strong> y reduce overfitting. En inferencia se usan todas.</p>
+    </div>
+  </section>
+
+  <!-- ===== Detalle: Batch Normalization ===== -->
+  <section>
+    <h3 style="color: var(--c-teal);">Batch Normalization</h3>
+    <div style="font-size: 0.5em; margin-top:0.1em;">
+      <svg viewBox="0 0 560 200" style="width:74%;">
+        <!-- antes -->
+        <line x1="40" y1="150" x2="240" y2="150" stroke="#a8a290" stroke-width="1.5"/>
+        <g fill="rgba(252,98,85,0.45)" stroke="#FC6255" stroke-width="1">
+          <rect x="150" y="120" width="14" height="30"/><rect x="166" y="95" width="14" height="55"/><rect x="182" y="80" width="14" height="70"/><rect x="198" y="105" width="14" height="45"/><rect x="214" y="128" width="14" height="22"/>
+        </g>
+        <text x="140" y="172" fill="#FC6255" font-size="12" font-family="Fira Code" text-anchor="middle">antes: media ≠ 0, dispersa</text>
+        <!-- flecha -->
+        <g stroke="#a8a290" stroke-width="2" fill="#a8a290"><line x1="255" y1="110" x2="300" y2="110"/><polygon points="300,105 310,110 300,115"/></g>
+        <text x="282" y="98" fill="#5CD0B3" font-size="12" font-family="Fira Code" text-anchor="middle">normaliza</text>
+        <!-- después -->
+        <line x1="320" y1="150" x2="520" y2="150" stroke="#a8a290" stroke-width="1.5"/>
+        <line x1="420" y1="60" x2="420" y2="150" stroke="rgba(168,162,144,0.4)" stroke-width="1" stroke-dasharray="3 3"/>
+        <g fill="rgba(92,208,179,0.5)" stroke="#5CD0B3" stroke-width="1">
+          <rect x="398" y="100" width="14" height="50"/><rect x="414" y="70" width="14" height="80"/><rect x="430" y="100" width="14" height="50"/>
+        </g>
+        <text x="420" y="172" fill="#5CD0B3" font-size="12" font-family="Fira Code" text-anchor="middle">después: μ=0, σ=1</text>
+      </svg>
+      <p style="margin:0.3em 0 0;">Normaliza las activaciones de cada <strong>mini-batch</strong> (media 0, varianza 1) y luego las reescala con parámetros aprendidos. Estabiliza y <strong style="color:var(--c-teal);">acelera</strong> el entrenamiento; permite learning rates más altos.</p>
+    </div>
+  </section>
+
+  <!-- ===== Detalle: Embedding ===== -->
+  <section>
+    <h3 style="color: var(--c-purple);">Capa de Embedding</h3>
+    <div style="font-size: 0.5em; margin-top:0.1em;">
+      <svg viewBox="0 0 580 210" style="width:80%;">
+        <!-- token -->
+        <rect x="20" y="80" width="70" height="36" rx="6" fill="rgba(255,134,47,0.18)" stroke="#FF862F" stroke-width="2"/>
+        <text x="55" y="103" fill="#ece6d0" font-size="14" font-family="Fira Code" text-anchor="middle">"gato"</text>
+        <text x="55" y="135" fill="#a8a290" font-size="11" font-family="Fira Code" text-anchor="middle">índice 17</text>
+        <g stroke="#a8a290" stroke-width="2" fill="#a8a290"><line x1="92" y1="98" x2="150" y2="98"/><polygon points="150,93 160,98 150,103"/></g>
+        <!-- tabla -->
+        <rect x="170" y="20" width="150" height="170" rx="6" fill="none" stroke="#9A72AC" stroke-width="1.6"/>
+        <text x="245" y="14" fill="#9A72AC" font-size="11" font-family="Fira Code" text-anchor="middle">tabla embeddings (V × d)</text>
+        <g stroke="rgba(154,114,172,0.4)" stroke-width="1">
+          <line x1="170" y1="48" x2="320" y2="48"/><line x1="170" y1="76" x2="320" y2="76"/><line x1="170" y1="104" x2="320" y2="104"/><line x1="170" y1="132" x2="320" y2="132"/><line x1="170" y1="160" x2="320" y2="160"/>
+        </g>
+        <rect x="170" y="104" width="150" height="28" fill="rgba(154,114,172,0.35)" stroke="#9A72AC" stroke-width="2"/>
+        <text x="245" y="123" fill="#ece6d0" font-size="12" font-family="Fira Code" text-anchor="middle">fila 17</text>
+        <!-- flecha a vector -->
+        <g stroke="#a8a290" stroke-width="2" fill="#a8a290"><line x1="322" y1="118" x2="375" y2="118"/><polygon points="375,113 385,118 375,123"/></g>
+        <!-- vector denso -->
+        <g stroke="#9A72AC" stroke-width="1.6" fill="rgba(154,114,172,0.15)">
+          <rect x="395" y="100" width="40" height="36"/><rect x="435" y="100" width="40" height="36"/><rect x="475" y="100" width="40" height="36"/><rect x="515" y="100" width="40" height="36"/>
+        </g>
+        <g fill="#ece6d0" font-size="12" font-family="Fira Code" text-anchor="middle">
+          <text x="415" y="123">0.2</text><text x="455" y="123">−0.5</text><text x="495" y="123">0.8</text><text x="535" y="123">0.1</text>
+        </g>
+        <text x="475" y="92" fill="#9A72AC" font-size="11" font-family="Fira Code" text-anchor="middle">vector denso aprendido</text>
+      </svg>
+      <p style="margin:0.3em 0 0;">Convierte un <strong>índice</strong> (palabra, categoría, ID) en un <strong style="color:var(--c-purple);">vector denso</strong> que la red aprende. Palabras con significado parecido terminan con vectores cercanos. Base de NLP y sistemas de recomendación.</p>
+    </div>
+  </section>
+
+  <!-- ===== Detalle: Atención / Transformer ===== -->
+  <section>
+    <h3 style="color: var(--c-red);">Capa de Atención (Transformer)</h3>
+    <div style="font-size: 0.5em; margin-top:0.1em;">
+      <svg viewBox="0 0 580 210" style="width:78%;">
+        <!-- query -->
+        <rect x="240" y="20" width="100" height="34" rx="6" fill="rgba(252,98,85,0.2)" stroke="#FC6255" stroke-width="2.2"/>
+        <text x="290" y="42" fill="#ece6d0" font-size="13" font-family="Fira Code" text-anchor="middle">"sentó"</text>
+        <text x="290" y="12" fill="#FC6255" font-size="11" font-family="Fira Code" text-anchor="middle">consulta</text>
+        <!-- tokens -->
+        <g font-family="Fira Code" font-size="13" text-anchor="middle">
+          <rect x="40" y="150" width="80" height="34" rx="6" fill="rgba(88,196,221,0.12)" stroke="#58C4DD" stroke-width="1.6"/><text x="80" y="172" fill="#ece6d0">El</text>
+          <rect x="170" y="150" width="80" height="34" rx="6" fill="rgba(88,196,221,0.12)" stroke="#58C4DD" stroke-width="1.6"/><text x="210" y="172" fill="#ece6d0">gato</text>
+          <rect x="300" y="150" width="80" height="34" rx="6" fill="rgba(88,196,221,0.12)" stroke="#58C4DD" stroke-width="1.6"/><text x="340" y="172" fill="#ece6d0">se</text>
+          <rect x="430" y="150" width="100" height="34" rx="6" fill="rgba(88,196,221,0.12)" stroke="#58C4DD" stroke-width="1.6"/><text x="480" y="172" fill="#ece6d0">sentó</text>
+        </g>
+        <!-- pesos de atención (grosor ∝ peso) -->
+        <g stroke="#FC6255" fill="none">
+          <line x1="278" y1="54" x2="80"  y2="150" stroke-width="1.4" opacity="0.5"/>
+          <line x1="285" y1="54" x2="210" y2="150" stroke-width="6.5"/>
+          <line x1="295" y1="54" x2="340" y2="150" stroke-width="2.6" opacity="0.7"/>
+          <line x1="302" y1="54" x2="480" y2="150" stroke-width="1.4" opacity="0.5"/>
+        </g>
+        <g fill="#FC6255" font-size="11" font-family="Fira Code" text-anchor="middle">
+          <text x="150" y="108" opacity="0.7">0.1</text><text x="232" y="108">0.6</text><text x="332" y="108" opacity="0.8">0.2</text><text x="410" y="108" opacity="0.7">0.1</text>
+        </g>
+      </svg>
+      <p style="margin:0.3em 0 0;">Para cada palabra, la atención <strong style="color:var(--c-red);">pondera</strong> qué tan relevantes son las demás (pesos que suman 1) y mezcla su información. Capta dependencias a larga distancia; es el corazón de los <strong>Transformers</strong> y los LLMs.</p>
     </div>
   </section>
 </section>
@@ -11398,7 +11667,7 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
-    <h3>Tres Grandes Familias 🧩</h3>
+    <h3>Tres Grandes Familias</h3>
     <div style="font-size: 0.55em; margin-top:0.3em;">
       <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.8em;">
         <div style="background: rgba(252,98,85,0.10); border-left:3px solid var(--c-red); padding:0.6em 0.8em; border-radius:6px;">
@@ -11425,7 +11694,7 @@ model.fit(X, Y, epochs=100)</code></pre>
 <!-- ========== Sección 59: K-Means ========== -->
 <section>
   <section>
-    <h2 style="color: var(--c-red);">K-Means: Clustering 📊</h2>
+    <h2 style="color: var(--c-red);">K-Means: Clustering</h2>
     <p style="font-size: 0.65em; color: var(--c-text-dim);">El algoritmo de clustering más usado</p>
   </section>
 
@@ -11442,7 +11711,7 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
-    <h3>La Idea: Dos Pasos Repetidos 🔁</h3>
+    <h3>La Idea: Dos Pasos Repetidos</h3>
     <div style="font-size: 0.55em; margin-top:0.3em;">
       <div style="display:flex; gap:1em; justify-content:center; align-items:center;">
         <div style="background:rgba(255,255,0,0.10); border-left:3px solid var(--c-yellow); padding:0.6em 1em; border-radius:6px;">
@@ -11461,7 +11730,7 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
-    <h3>K-Means Paso a Paso (interactivo) 🎯</h3>
+    <h3>K-Means Paso a Paso (interactivo)</h3>
     <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;">Configura <strong>K</strong>, presiona <strong style="color:var(--c-red);">"Paso ▶"</strong> para alternar entre ① asignar y ② mover. El cost <span class="katex-inline">J</span> (distortion) baja en cada paso.</p>
     <canvas id="kmeans-canvas" width="960" height="420" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
     <div style="margin-top:0.15em; font-size:0.48em; display:flex; gap:0.6em; align-items:center; flex-wrap:wrap;">
@@ -11514,7 +11783,7 @@ model.fit(X, Y, epochs=100)</code></pre>
 <!-- ========== Sección 60: GMM ========== -->
 <section>
   <section>
-    <h2 style="color: var(--c-red);">GMM: Soft Clustering 🧠</h2>
+    <h2 style="color: var(--c-red);">GMM: Soft Clustering</h2>
     <p style="font-size: 0.65em; color: var(--c-text-dim);">K-Means + probabilidades de pertenencia</p>
   </section>
 
@@ -11538,7 +11807,7 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
-    <h3>GMM por Expectation-Maximization (interactivo) 🎯</h3>
+    <h3>GMM por Expectation-Maximization (interactivo)</h3>
     <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;">Presiona <strong>"Paso EM ▶"</strong> para alternar entre ① E-step (responsibilities) y ② M-step (re-fit gaussianas). Los puntos se pintan con la <strong>mezcla RGB</strong> de los colores de cluster según sus probabilidades.</p>
     <canvas id="gmm-canvas" width="960" height="420" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
     <div style="margin-top:0.15em; font-size:0.48em;">
@@ -11582,12 +11851,12 @@ model.fit(X, Y, epochs=100)</code></pre>
 <!-- ========== Sección 61: Anomaly Detection ========== -->
 <section>
   <section>
-    <h2 style="color: var(--c-red);">Detección de Anomalías ⚠️</h2>
+    <h2 style="color: var(--c-red);">Detección de Anomalías</h2>
     <p style="font-size: 0.65em; color: var(--c-text-dim);">Encontrar eventos inusuales</p>
   </section>
 
   <section>
-    <h3>Ejemplo: Motor de Avión 🛩️</h3>
+    <h3>Ejemplo: Motor de Avión</h3>
     <div style="font-size: 0.55em; margin-top:0.3em; display:flex; gap:1em; justify-content:center; align-items:center;">
       <svg viewBox="0 0 320 220" style="width:320px;">
         <line x1="30" y1="180" x2="290" y2="180" stroke="#a8a290"/><line x1="40" y1="20" x2="40" y2="190" stroke="#a8a290"/>
@@ -11629,7 +11898,7 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
-    <h3>La Distribución Gaussiana (Normal) 🔔</h3>
+    <h3>La Distribución Gaussiana (Normal)</h3>
     <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;">Mueve <strong>μ</strong> (centro) y <strong>σ</strong> (ancho), y el punto <strong>x_test</strong>. Observa <span class="katex-inline">p(x_{\text{test}})</span>.</p>
     <canvas id="gauss-canvas" width="800" height="340" style="border-radius:8px; width:100%; max-width:800px; margin-top:0.15em;"></canvas>
     <div style="margin-top:0.15em; font-size:0.48em; display:flex; gap:0.8em; flex-wrap:wrap;">
@@ -11653,7 +11922,7 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
-    <h3>Detector 2D Interactivo 🎯</h3>
+    <h3>Detector 2D Interactivo</h3>
     <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;"><strong>Arrastra</strong> el punto <span style="color:#FFFF00;">amarillo</span> por el espacio. Las curvas son <strong>contornos de p(x)</strong>. Ajusta <strong>ε</strong> para cambiar el umbral.</p>
     <canvas id="anom-canvas" width="900" height="380" style="border-radius:8px; width:100%; max-width:900px; margin-top:0.15em;"></canvas>
     <div style="margin-top:0.15em; font-size:0.48em; display:flex; gap:1em; flex-wrap:wrap; align-items:center;">
@@ -11730,7 +11999,7 @@ model.fit(X, Y, epochs=100)</code></pre>
 <!-- ========== Sección 62: PCA ========== -->
 <section>
   <section>
-    <h2 style="color: var(--c-red);">PCA: Reducción Lineal 🔻</h2>
+    <h2 style="color: var(--c-red);">PCA: Reducción Lineal</h2>
     <p style="font-size: 0.65em; color: var(--c-text-dim);">Principal Component Analysis</p>
   </section>
 
@@ -11768,7 +12037,7 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
-    <h3>PCA Interactivo 🎯</h3>
+    <h3>PCA Interactivo</h3>
     <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;">Gira manualmente el eje candidato (slider) y observa la <strong>varianza proyectada</strong>. ¿Cuándo es máxima? Presiona <strong>"Encontrar PC1"</strong> para que el algoritmo lo encuentre automáticamente (vía SVD).</p>
     <canvas id="pca-canvas" width="960" height="450" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
     <div style="margin-top:0.15em; font-size:0.48em; display:flex; gap:0.8em; flex-wrap:wrap; align-items:center;">
@@ -11780,7 +12049,7 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
-    <h3>Eligiendo cuántas Componentes 📉</h3>
+    <h3>Eligiendo cuántas Componentes</h3>
     <div style="font-size: 0.55em; margin-top:0.3em;">
       <p>Cada PC explica un porcentaje de la <strong>varianza total</strong>. Una heurística común: retener el <strong>k</strong> mínimo tal que <strong>≥95%</strong> de la varianza esté explicada.</p>
       <div style="display:flex; gap:1em; justify-content:center; align-items:center; margin-top:0.4em;">
@@ -11809,7 +12078,7 @@ model.fit(X, Y, epochs=100)</code></pre>
 <!-- ========== Sección 63: t-SNE ========== -->
 <section>
   <section>
-    <h2 style="color: var(--c-red);">t-SNE: Visualización No Lineal 🌐</h2>
+    <h2 style="color: var(--c-red);">t-SNE: Visualización No Lineal</h2>
     <p style="font-size: 0.65em; color: var(--c-text-dim);">Cuando los datos viven en un manifold curvo</p>
   </section>
 
@@ -11844,7 +12113,7 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
-    <h3>PCA vs t-SNE (animación) 🎬</h3>
+    <h3>PCA vs t-SNE (animación)</h3>
     <p style="font-size: 0.48em; color: var(--c-text-dim); margin:0;">Misma S-curve 3D. Izquierda: PCA (estática, fracasa). Derecha: t-SNE evoluciona con <code>n_iter</code> creciente y <strong>"desenrolla"</strong> el manifold.</p>
     <canvas id="tsne-canvas" width="960" height="400" style="border-radius:8px; width:100%; max-width:960px; margin-top:0.15em;"></canvas>
     <div style="margin-top:0.15em; font-size:0.48em;">
@@ -11856,7 +12125,7 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
-    <h3>Limitaciones de t-SNE ⚠️</h3>
+    <h3>Limitaciones de t-SNE</h3>
     <div style="font-size: 0.55em; margin-top:0.3em;">
       <ul>
         <li><strong>Solo para visualizar</strong>: no se usa como preprocesamiento para otro modelo.</li>
@@ -11875,7 +12144,7 @@ model.fit(X, Y, epochs=100)</code></pre>
 <!-- ========== Sección 64: Resumen + Cuándo usar ========== -->
 <section>
   <section>
-    <h2 style="color: var(--c-red);">¿Cuándo Usar Cada Técnica? 🎯</h2>
+    <h2 style="color: var(--c-red);">¿Cuándo Usar Cada Técnica?</h2>
     <p style="font-size: 0.65em; color: var(--c-text-dim);">Guía rápida de decisión</p>
   </section>
 
@@ -11934,7 +12203,7 @@ model.fit(X, Y, epochs=100)</code></pre>
   </section>
 
   <section>
-    <h3>Árbol de Decisión 🌳</h3>
+    <h3>Árbol de Decisión</h3>
     <div style="font-size: 0.5em; margin-top:0.3em;">
       <svg viewBox="0 0 800 380" style="width:96%; max-width:800px;">
         <!-- root -->
