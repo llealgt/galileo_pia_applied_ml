@@ -11779,6 +11779,26 @@ model.fit(X, Y, epochs=100)</code></pre>
       </div>
     </div>
   </section>
+
+  <section>
+    <h3>Ejemplo en Python: K-Means</h3>
+    <p style="font-size:0.5em; color: var(--c-text-dim); margin:0;">Con <code>scikit-learn</code>, en pocas líneas:</p>
+    <pre style="font-size:0.52em; line-height:1.35; width:84%; margin:0.2em auto;"><code class="language-python">from sklearn.cluster import KMeans
+
+# X: datos sin etiquetas, shape (m, n)
+km = KMeans(n_clusters=3, n_init=10, random_state=0)
+km.fit(X)
+
+labels  = km.labels_            # cluster de cada punto
+centros = km.cluster_centers_   # centroides
+print("distortion J:", km.inertia_)
+
+km.predict([[1.2, 0.8]])        # cluster de un punto nuevo
+
+# Elbow: distortion J para varios K
+for k in range(1, 8):
+    print(k, KMeans(n_clusters=k, n_init=10).fit(X).inertia_)</code></pre>
+  </section>
 </section>
 
 <!-- ========== Sección 60: GMM ========== -->
@@ -11945,6 +11965,26 @@ model.fit(X, Y, epochs=100)</code></pre>
         </div>
       </div>
     </div>
+  </section>
+
+  <section>
+    <h3>Ejemplo en Python: GMM</h3>
+    <p style="font-size:0.5em; color: var(--c-text-dim); margin:0;">Soft clustering, modelo generativo y selección de K con BIC:</p>
+    <pre style="font-size:0.52em; line-height:1.35; width:84%; margin:0.2em auto;"><code class="language-python">from sklearn.mixture import GaussianMixture
+
+gmm = GaussianMixture(n_components=3, covariance_type='full',
+                      random_state=0).fit(X)
+
+labels = gmm.predict(X)        # asignacion dura
+probs  = gmm.predict_proba(X)  # responsibilities (soft)
+gmm.means_, gmm.weights_       # mu_k , pi_k
+
+# Modelo generativo: muestrear puntos nuevos
+X_new, _ = gmm.sample(5)
+
+# Elegir K con BIC (menor es mejor)
+for k in range(1, 7):
+    print(k, GaussianMixture(n_components=k).fit(X).bic(X))</code></pre>
   </section>
 </section>
 
@@ -12169,6 +12209,26 @@ model.fit(X, Y, epochs=100)</code></pre>
       </div>
     </div>
   </section>
+
+  <section>
+    <h3>Ejemplo en Python: Detección de Anomalías</h3>
+    <p style="font-size:0.5em; color: var(--c-text-dim); margin:0;">Densidad gaussiana con umbral <span class="katex-inline">\varepsilon</span> (y una alternativa lista para usar):</p>
+    <pre style="font-size:0.52em; line-height:1.35; width:84%; margin:0.2em auto;"><code class="language-python">import numpy as np
+from scipy.stats import multivariate_normal
+
+# Ajustar gaussiana multivariada a los datos "normales"
+mu, Sigma = X.mean(axis=0), np.cov(X, rowvar=False)
+p = multivariate_normal(mean=mu, cov=Sigma)
+
+dens = p.pdf(X)                    # densidad de cada punto
+eps = 1e-3
+anomalias = np.where(dens &lt; eps)[0]
+
+# Alternativa lista para usar (sklearn):
+from sklearn.ensemble import IsolationForest
+iso = IsolationForest(contamination=0.01).fit(X)
+iso.predict(X)        # -1 = anomalia, 1 = normal</code></pre>
+  </section>
 </section>
 
 <!-- ========== Sección 62: PCA ========== -->
@@ -12287,6 +12347,24 @@ model.fit(X, Y, epochs=100)</code></pre>
       </div>
     </div>
   </section>
+
+  <section>
+    <h3>Ejemplo en Python: PCA</h3>
+    <p style="font-size:0.5em; color: var(--c-text-dim); margin:0;">Proyectar, ver la varianza explicada y elegir k automáticamente:</p>
+    <pre style="font-size:0.52em; line-height:1.35; width:84%; margin:0.2em auto;"><code class="language-python">from sklearn.decomposition import PCA
+
+pca = PCA(n_components=2)
+X_2d = pca.fit_transform(X)          # proyeccion a 2D
+
+pca.explained_variance_ratio_        # % varianza por PC
+pca.explained_variance_ratio_.sum()  # varianza retenida
+
+# Retener 95% de la varianza automaticamente
+pca95 = PCA(n_components=0.95).fit(X)
+print("componentes:", pca95.n_components_)
+
+X_rec = pca.inverse_transform(X_2d)  # reconstruccion aprox.</code></pre>
+  </section>
 </section>
 
 <!-- ========== Sección 63: t-SNE ========== -->
@@ -12352,6 +12430,24 @@ model.fit(X, Y, epochs=100)</code></pre>
         <p style="margin:0;">🎁 <strong>UMAP</strong> es una alternativa moderna más rápida y preserva mejor la estructura global. Mismo tipo de uso.</p>
       </div>
     </div>
+  </section>
+
+  <section>
+    <h3>Ejemplo en Python: t-SNE</h3>
+    <p style="font-size:0.5em; color: var(--c-text-dim); margin:0;">Reducir con PCA primero y luego t-SNE para <strong>visualizar</strong>:</p>
+    <pre style="font-size:0.52em; line-height:1.35; width:84%; margin:0.2em auto;"><code class="language-python">from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
+
+# PCA primero (50 dims) acelera y reduce ruido
+X_50 = PCA(n_components=50).fit_transform(X)
+
+tsne = TSNE(n_components=2, perplexity=30,
+            init='pca', learning_rate='auto', random_state=0)
+X_2d = tsne.fit_transform(X_50)      # SOLO para visualizar
+
+import matplotlib.pyplot as plt
+plt.scatter(X_2d[:, 0], X_2d[:, 1], c=labels, s=8)
+# nota: no interpretar distancias ni tamanos globales</code></pre>
   </section>
 </section>
 
